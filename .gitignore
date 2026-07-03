@@ -14,9 +14,19 @@ site/public/pagefind/
 # python virtualenv
 .venv/
 
+# secrets / local env (never commit; keep a .env.example instead)
+.env
+.env.*
+!.env.example
+
 # scratch / logs
 _probe/
 *.log
+
+# editors
+.vscode/
+.idea/
+*.swp
 
 # os
 .DS_Store
