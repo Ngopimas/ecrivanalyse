@@ -1,0 +1,443 @@
+/* compact [
+	page=theme.css(mfx_fichier=layout_setup)
+	page=theme.css(mfx_fichier=header)
+	page=theme.css(mfx_fichier=layout_text)
+	page=theme.css(mfx_fichier=multiflex)
+	plugins-dist/mediabox/colorbox/black-striped/colorbox.css
+	plugins-dist/porte_plume/css/barre_outils.css?1612275875
+	local/cache-css/cssdyn-css_barre_outils_icones_css-a93550bd.css?1782946068
+] 81.5% */
+
+/* page=theme.css(mfx_fichier=layout_setup) */
+@media screen,projection,print {
+*{padding:0;margin:0}
+body{font-size:62.5%;background-color:#fff;font-family:verdana,arial,sans-serif}
+.page-container{width:900px;margin:0 auto;margin-top:10px;margin-bottom:10px;border:solid 1px #969696;font-size:1em}
+.main{clear:both;width:900px;padding-bottom:30px}
+.main-navigation{display:inline;width:200px;overflow:visible!important;overflow:hidden}
+.main-content{display:inline;float:left;margin:0 0 0 30px;overflow:visible!important;overflow:hidden}
+.main-subcontent{display:inline;width:185px;overflow:visible!important;overflow:hidden}
+.footer{clear:both;width:900px;padding:1em 0;background:#e1e1e1 url(//ecrivanalyse.net/local/cache-gd2/75/94e93dde02de53765e5a54ad30110d.jpg?1612275941) no-repeat;font-size:1em;overflow:visible!important;overflow:hidden}
+.layout1 .main{background:transparent url(//ecrivanalyse.net/local/cache-gd2/04/e0fc22045266cf09a136f071a83df7.jpg?1612275941) repeat-y}
+.layout2 .main,.layout4 .main{background:transparent url(//ecrivanalyse.net/local/cache-gd2/f7/c56418d1b2fbed3e849f2174d5cdb7.jpg?1612275941) top left repeat-y}
+.layout3 .main,.layout5 .main{background:transparent url(//ecrivanalyse.net/local/cache-gd2/bc/ef5906f3670ba11c6499cde3d2de94.jpg?1612275941) top left repeat-y}
+.layout2 .main-navigation,.layout4 .main-navigation{float:left}
+.layout3 .main-navigation,.layout5 .main-navigation{float:right}
+.layout1 .main-content{width:840px}
+.layout2 .main-content,.layout3 .main-content{width:640px}
+.layout4 .main-content,.layout5 .main-content{width:440px}
+.layout4 .main-subcontent{float:right;margin:0 15px 0 0}
+.layout5 .main-subcontent{float:left;margin:0 0 0 15px}
+.main-navigation .round-border-topright{width:10px;height:10px;position:absolute;z-index:100}
+.layout2 .main-navigation .round-border-topright,.layout4 .main-navigation .round-border-topright{margin:0 0 0 190px;background:url(//ecrivanalyse.net/plugins/auto/squelette_multiflex/v0.4.3/img/bg_corner_topright.gif) no-repeat}
+.layout3 .main-navigation .round-border-topright,.layout5 .main-navigation .round-border-topright{margin:0;background:url(//ecrivanalyse.net/plugins/auto/squelette_multiflex/v0.4.3/img/bg_corner_topleft.gif) no-repeat}
+.column1-unit{margin-bottom:10px!important;margin-bottom:5px}
+.column2-unit-left{float:left;margin-bottom:10px!important;margin-bottom:5px}
+.column2-unit-right{float:right;margin-bottom:10px!important;margin-bottom:5px}
+.column3-unit-left{float:left;margin-bottom:10px!important;margin-bottom:5px}
+.column3-unit-middle{float:left;margin-bottom:10px!important;margin-bottom:5px;margin-left:40px}
+.column3-unit-right{float:right;margin-bottom:10px!important;margin-bottom:5px}
+.layout1 .column1-unit{width:840px}
+.layout2 .column1-unit,.layout3 .column1-unit{width:640px}
+.layout4 .column1-unit,.layout5 .column1-unit{width:440px}
+.layout1 .column2-unit-left,.layout1 .column2-unit-right{width:400px}
+.layout2 .column2-unit-left,.layout3 .column2-unit-left,.layout2 .column2-unit-right,.layout3 .column2-unit-right{width:300px}
+.layout4 .column2-unit-left,.layout5 .column2-unit-left,.layout4 .column2-unit-right,.layout5 .column2-unit-right{width:200px}
+.layout1 .column3-unit-left,.layout1 .column3-unit-middle,.layout1 .column3-unit-right{width:253px}
+.layout2 .column3-unit-left,.layout3 .column3-unit-left,.layout2 .column3-unit-middle,.layout3 .column3-unit-middle,.layout2 .column3-unit-right,.layout3 .column3-unit-right{width:186px}
+.layout4 .column3-unit-left,.layout5 .column3-unit-left,.layout4 .column3-unit-middle,.layout5 .column3-unit-middle,.layout4 .column3-unit-right,.layout5 .column3-unit-right{width:120px}
+.subcontent-unit-border{width:183px;margin:0 0 2em;padding:0 0 5px;border:solid 1px #bebebe;background:#ebebeb}
+.subcontent-unit-border-green{width:183px;margin:0 0 2.5em;padding:0 0 10px;border:solid 1px #000;background-color:#000}
+.subcontent-unit-border-blue{width:183px;margin:0 0 2.5em;padding:0 0 10px;border:solid 1px #000;background-color:#000}
+.subcontent-unit-border-orange{width:183px;margin:0 0 2.5em;padding:0 0 10px;border:solid 1px #e5e5e5;background-color:#e5e5e5}
+.subcontent-unit-noborder{width:185px;margin:0 0 2.5em;padding:0 0 10px;background:#ebebeb}
+.subcontent-unit-noborder-green{width:185px;margin:0 0 2.5em;padding:0 0 10px;background-color:#000}
+.subcontent-unit-noborder-blue{width:185px;margin:0 0 2.5em;padding:0 0 10px;background-color:#000}
+.subcontent-unit-noborder-orange{width:185px;margin:0 0 2.5em;padding:0 0 10px;background-color:#e5e5e5}
+.round-border-topleft{width:10px;height:10px;position:absolute;z-index:100;background:url(//ecrivanalyse.net/plugins/auto/squelette_multiflex/v0.4.3/img/bg_corner_topleft.gif) no-repeat;margin-top:-1px;margin-left:-1px}
+.round-border-topright{width:10px;height:10px;position:absolute;z-index:100;background:url(//ecrivanalyse.net/plugins/auto/squelette_multiflex/v0.4.3/img/bg_corner_topright.gif) no-repeat;margin-top:-1px;margin-left:174px}
+.round-noborder-topleft{width:10px;height:10px;position:absolute;z-index:100;background:url(//ecrivanalyse.net/plugins/auto/squelette_multiflex/v0.4.3/img/bg_corner_topleft.gif) no-repeat;margin-top:0;margin-left:0}
+.round-noborder-topright{width:10px;height:10px;position:absolute;z-index:100;background:url(//ecrivanalyse.net/plugins/auto/squelette_multiflex/v0.4.3/img/bg_corner_topright.gif) no-repeat;margin-top:0;margin-left:175px}
+.footer p{line-height:1.3em;text-align:center;color:#7d7d7d;font-weight:700;font-size:110%}
+.footer p.credits{font-weight:400}
+.footer a{text-decoration:underline;color:#7d7d7d}
+.footer a:hover{text-decoration:none;color:#000}
+.footer a:visited{color:#000}
+.page-container:after,.header:after,.header-bottom:after,.header-breadcrumbs:after,.main:after,.main-navigation:after,.main-content:after,.main-content div:after,.main-subcontent:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+.column1-unit:after,.column2-unit-left:after,.column2-unit-right:after,.column3-unit-left:after,.column3-unit-middle:after,.column3-unit-right:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+.subcontent-unit-border:after,.subcontent-unit-noborder:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+.subcontent-unit-border-blue:after,.subcontent-unit-border-green:after,.subcontent-unit-border-orange:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+.subcontent-unit-noborder-blue:after,.subcontent-unit-noborder-green:after,.subcontent-unit-noborder-orange:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+.footer:after,p:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+.clear-contentunit{clear:both;height:.1em;border:none;background:#d2d2d2;color:#d2d2d2}
+.layout1 .clear-contentunit{width:840px}
+.layout2 .clear-contentunit,.layout3 .clear-contentunit{width:640px}
+.layout4 .clear-contentunit,.layout5 .clear-contentunit{width:440px}
+}
+@media print {
+.header-top{width:900px;height:80px;background:#f0f0f0;overflow:visible!important;overflow:hidden}
+.header-breadcrumbs{width:900px;background:transparent}
+.nav2{float:left;width:900px;border:none;background:#f0f0f0;color:#4b4b4b;font-size:1em;font-size:130%}
+.main{clear:both;width:900px;padding-bottom:30px;background:transparent}
+.main-navigation{display:inline;float:left;width:199px;border-right:solid 1px #c8c8c8;border-bottom:solid 1px #c8c8c8;background-color:#f0f0f0;overflow:visible!important;overflow:hidden}
+.footer{clear:both;width:900px;height:3.7em;padding:1.1em 0 0;background:#f0f0f0;font-size:1em;overflow:visible!important;overflow:hidden}
+}
+
+/* page=theme.css(mfx_fichier=header) */
+@media screen,projection,print {
+*{padding:0;margin:0}
+body{font-size:62.5%;background-color:#fff;font-family:verdana,arial,sans-serif}
+.page-container{width:900px;margin:0 auto;margin-top:10px;margin-bottom:10px;border:solid 1px #969696;font-size:1em}
+.header{width:900px;font-family:"trebuchet ms",arial,sans-serif}
+.header-top{width:900px;height:80px;background:#f0f0f0 url(//ecrivanalyse.net/local/cache-gd2/ed/fdc67667ccdd6783c753d29da908dd.jpg?1612275941);overflow:visible!important;overflow:hidden}
+.header-middle{width:900px;height:150px;background:#e6e6e6 url(//ecrivanalyse.net/plugins/auto/squelette_multiflex/v0.4.3/img/bg_head_middle.jpg);overflow:visible!important;overflow:hidden}
+.header-bottom{width:900px}
+.header-breadcrumbs{clear:both;width:900px;padding:1em 0 1.5em;background:#fff url(//ecrivanalyse.net/local/cache-gd2/12/a5f5c97c4ad168c121d589b5654d3b.jpg?1612275941) repeat-y}
+.sitelogo{width:60px;height:40px;position:absolute;z-index:1;margin:22px 0 0 20px;background:url(//ecrivanalyse.net/plugins/auto/squelette_multiflex/v0.4.3/img/bg_head_top_logo.jpg)}
+.sitename{width:300px;height:45px;position:absolute;z-index:1;margin:20px 0 0 90px;overflow:visible!important;overflow:hidden}
+.sitename h1{font-size:220%}
+.sitename h2{margin:-4px 0 0;font-size:120%}
+.sitename a{text-decoration:none}
+.sitename a:hover{text-decoration:none;color:#323232}
+.header-top .sitename a{color:#7d7d7d}
+.header-top .sitename h2{color:#7d7d7d}
+.header-middle .sitename a{color:#eaeff7}
+.header-middle .sitename h2{color:#eaeff7}
+.nav0{width:400px;position:absolute;z-index:2;margin:25px 0 0;margin-left:500px!important;margin-left:503px}
+.nav0 ul{float:right;padding:0 20px 0 0}
+.nav0 li{display:inline;list-style:none}
+.nav0 li a{padding:0 0 0 3px}
+.nav0 a:hover{text-decoration:none}
+.nav0 a img{height:14px;border:none}
+.nav1{width:400px;position:absolute;z-index:3;margin:45px 0 0 500px}
+.nav1 ul{float:right;padding:0 15px 0 0;font-weight:700}
+.nav1 li{display:inline;list-style:none}
+.nav1 li a{display:block;float:left;padding:2px 5px;text-decoration:none;font-size:120%}
+.nav1 a:hover{text-decoration:none;color:#323232}
+.header-top li a{color:#7d7d7d}
+.header-middle li a{color:#eaeff7}
+.sitemessage{width:400px;height:120px;position:absolute;z-index:1;margin:20px 0 0 480px;color:#eaeff7;overflow:hidden}
+.sitemessage h1{width:400px;text-align:right;font-size:230%}
+.sitemessage h2{float:right;width:320px;margin:8px 0 0;text-align:right;line-height:100%;font-size:160%}
+.sitemessage h3{float:right;width:320px;margin:10px 0 0;text-align:right;font-size:140%}
+.sitemessage h3 a{text-decoration:none;color:#eaeff7}
+.sitemessage h3 a:hover{text-decoration:none;color:#323232}
+.nav2{white-space:nowrap;float:left;width:900px;border:none;background:#e1e1e1 url(//ecrivanalyse.net/local/cache-gd2/9c/83d98df02c046eecfdada5917433d1.jpg?1612275941) no-repeat;color:#4b4b4b;font-size:130%}
+.nav2 ul{list-style-type:none}
+.nav2 ul li{float:left;z-index:auto!important;z-index:1000;border-right:solid 1px #afafaf}
+.nav2 ul li a{float:none!important;float:left;display:block;height:3.1em;line-height:3.1em;padding:0 16px;text-decoration:none;font-weight:700;color:#646464}
+.nav2 ul li ul{display:none;border:none}
+.nav2 ul li:hover{position:relative}
+.nav2 ul li:hover a{background-color:#d2d2d2;text-decoration:none}
+.nav2 ul li:hover ul{display:block;width:10em;position:absolute;z-index:999;top:3em;margin-top:.1em;left:0}
+.nav2 ul li:hover ul li a{white-space:normal;display:block;width:10em;height:auto;line-height:1.3em;margin-left:-1px;padding:4px 16px;border-left:solid 1px #afafaf;border-bottom:solid 1px #afafaf;background-color:#ededed;font-weight:400;color:#323232}
+.nav2 ul li:hover ul li a:hover{background-color:#d2d2d2;text-decoration:none}
+.nav2 table{position:absolute;top:0;left:0;border-collapse:collapse}
+.nav2 ul li a:hover{position:relative;z-index:1000;background-color:#d2d2d2;text-decoration:none}
+.nav2 ul li a:hover ul{display:block;width:10em;position:absolute;z-index:999;top:3.1em;top:3em;left:0;margin-top:.1em}
+.nav2 ul li a:hover ul li a{white-space:normal;display:block;width:10em;height:1px;line-height:1.3em;padding:4px 16px;border-left:solid 1px #afafaf;border-bottom:solid 1px #afafaf;background-color:#ededed;font-weight:400;color:#323232}
+.nav2 ul li a:hover ul li a:hover{background-color:#d2d2d2;text-decoration:none}
+.header-breadcrumbs ul{float:left;width:560px;list-style:none;padding:0 0 0 15px;font-family:verdana,arial,sans-serif}
+.header-breadcrumbs ul li{display:inline;padding:0 0 0 10px;background:transparent url(//ecrivanalyse.net/plugins/auto/squelette_multiflex/v0.4.3/img/bg_bullet_arrow.gif) no-repeat 0 50%;font-weight:700;color:#7d7d7d;font-size:100%}
+.header-breadcrumbs ul a{color:#000;text-decoration:none}
+.header-breadcrumbs ul a:hover{color:#000;text-decoration:underline}
+.header-breadcrumbs .searchform{float:right;width:285px;padding:0 17px 0 0 !important;padding:0 12px 0 0}
+.header-breadcrumbs .searchform form fieldset{float:right;border:none}
+.header-breadcrumbs .searchform input.field{width:10em;padding:.2em 0;border:1px solid #c8c8c8;font-family:verdana,arial,sans-serif;font-size:120%}
+.header-breadcrumbs .searchform input.button{width:3em;padding:1px!important;padding:0;background:#e6e6e6;border:solid 1px #969696;text-align:center;font-family:verdana,arial,sans-serif;color:#969696;font-size:120%}
+.header-breadcrumbs .searchform input.button:hover{cursor:pointer;border:solid 1px #505050;background:#dcdcdc;color:#505050}
+.page-container:after,.header:after,.header-bottom:after,.header-breadcrumbs:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+}
+@media print {
+.header-top{width:900px;height:80px;background:#f0f0f0;overflow:visible!important;overflow:hidden}
+.nav2{float:left;width:900px;border:none;background:#f0f0f0;color:#4b4b4b;font-size:1em;font-size:130%}
+.header-breadcrumbs{width:900px;background:transparent}
+}
+
+/* page=theme.css(mfx_fichier=layout_text) */
+@media screen,projection,print{.nav3-grid{width:199px;border-bottom:solid 1px #c8c8c8}
+.nav3-grid dt a,.nav3-grid dt a:visited{display:block;min-height:2.0em;height:auto!important;height:2.0em;line-height:2.0em;padding:0 10px 0 20px;border-top:solid 1px #c8c8c8;text-decoration:none;color:#000;font-weight:700;font-size:120%}
+.nav3-grid dd a,.nav3-grid dd a:visited{display:block;min-height:1.7em;height:auto!important;height:1.7em;line-height:1.7em;padding:0 10px 0 40px;border:none;font-weight:400;text-decoration:none;color:#000;font-size:120%}
+.nav3-grid dt a:hover,.nav3-grid dd a:hover{background-color:#e1e1e1;color:#000;text-decoration:none}
+.nav3-bullet{width:170px;margin:10px 0 0 20px}
+.nav3-bullet dt a,.nav3-bullet dt a:visited{line-height:2.0em;padding:0 0 0 10px;background:url('//ecrivanalyse.net/plugins/auto/squelette_multiflex/v0.4.3/img/bg_bullet_full_1.gif') no-repeat 0 50%;text-decoration:none;color:#000;font-weight:700;font-size:120%}
+.nav3-bullet dd a,.nav3-bullet dd a:visited{line-height:1.7em;margin:0 0 0 15px;padding:0 0 0 10px;background:url('//ecrivanalyse.net/plugins/auto/squelette_multiflex/v0.4.3/img/bg_bullet_half_1.gif') no-repeat 0 50%;text-decoration:none;color:#000;font-weight:400;font-size:120%}
+.nav3-bullet dt a:hover{background:url('//ecrivanalyse.net/plugins/auto/squelette_multiflex/v0.4.3/img/bg_bullet_full_2.gif') no-repeat 0 50%;text-decoration:underline;color:#000}
+.nav3-bullet dd a:hover{background:url('//ecrivanalyse.net/plugins/auto/squelette_multiflex/v0.4.3/img/bg_bullet_half_2.gif') no-repeat 0 50%;text-decoration:underline;color:#000}
+.nav3-nobullet{width:170px;margin:10px 0 0 20px}
+.nav3-nobullet dt a,.nav3-nobullet dt a:visited{line-height:2.0em;text-decoration:none;color:#000;font-weight:700;font-size:120%}
+.nav3-nobullet dd a,.nav3-nobullet dd a:visited{line-height:1.7em;margin:0 0 0 15px;text-decoration:none;color:#000;font-weight:400;font-size:120%}
+.nav3-nobullet dt a:hover,.nav3-nobullet dd a:hover{text-decoration:underline;color:#000}
+.loginform{width:160px;margin:-10px 20px 0}
+.loginform p{clear:both;margin:0;padding:0}
+.loginform fieldset{width:160px;border:none}
+.loginform label.top{float:left;width:125px;margin:0 0 2px;font-size:110%}
+.loginform label.right{float:left;width:125px;margin:5px 0 0;padding:0 0 0 3px;;font-size:110%}
+.loginform input.field{width:158px;margin:0 0 5px;padding:.1em 0 .2em!important;padding:.2em 0 .3em;border:solid 1px #c8c8c8;font-family:verdana,arial,sans-serif;font-size:110%}
+.loginform input.checkbox{float:left;margin:5px 0 0!important;margin:2px 0 0 -3px;border:none}
+.loginform input.button{float:left;width:5.0em;margin:10px 0 5px;padding:1px;background:#e6e6e6;border:solid 1px #969696;text-align:center;font-family:verdana,arial,sans-serif;color:#969696;font-size:110%}
+.loginform input.button:hover{cursor:pointer;border:solid 1px #505050;background:#dcdcdc;color:#505050}
+.main-navigation .searchform{width:160px;margin:0 20px}
+.main-navigation .searchform fieldset{border:none}
+.main-navigation .searchform input.field{float:left;width:158px;padding:.1em 0 .2em!important;padding:.2em 0 .3em;border:1px solid #c8c8c8;font-family:verdana,arial,sans-serif;font-size:120%}
+.main-navigation .searchform input.button{float:left;width:3.0em;margin-top:.5em;padding:1px;background:#e6e6e6;border:solid 1px #969696;text-align:center;font-family:verdana,arial,sans-serif;color:#969696;font-size:120%}
+.main-navigation .searchform input.button:hover{cursor:pointer;border:solid 1px #505050;background:#dcdcdc;color:#505050}
+.main-navigation h1.first{clear:both;margin:0;padding:4px 20px 3px;background-color:#bebebe;font-family:"trebuchet ms",arial,sans-serif;color:#fff;font-weight:700;font-size:150%}
+.main-navigation h1{clear:both;margin:30px 0 20px;padding:4px 20px 3px;background:#bebebe;font-family:"trebuchet ms",arial,sans-serif;color:#fff;font-weight:700;font-size:150%}
+.main-navigation h2{clear:both;margin:20px 10px 10px 20px;font-family:"trebuchet ms",arial,sans-serif;color:#646464;font-weight:700;font-size:150%}
+.main-navigation h3{clear:both;margin:10px 10px 5px 20px;color:#505050;font-weight:700;font-size:110%}
+.main-navigation p{clear:both;margin:0 10px 10px 20px;color:#505050;line-height:1.3em;font-size:110%}
+.main-navigation p.center{text-align:center}
+.main-navigation p.right{text-align:right}
+.main-navigation ul{list-style:none;margin:.5em 10px 1.0em 20px}
+.main-navigation ul li{margin:5px 0 .2em 2px;padding:0 0 0 11px;background:url('//ecrivanalyse.net/plugins/auto/squelette_multiflex/v0.4.3/img/bg_bullet_full_1.gif') no-repeat 0 .4em;line-height:1.2em;font-size:110%}
+.main-navigation ol{margin:.5em 10px 1.0em 40px!important;margin:.5em 10px 1.0em 45px}
+.main-navigation ol li{list-style-position:outside;margin:0 0 .4em;font-size:110%}
+.main-content h1.pagetitle{margin:0 0 .4em;padding:0 0 2px;border-bottom:solid 7px #e1e1e1;font-family:"trebuchet ms",arial,sans-serif;color:#646464;font-weight:700;font-size:220%}
+.main-content p+h1.pagetitle{margin-top:2em}
+.main-content h1.block{clear:both;margin:1.0em 0 0;padding:2px 0 2px 2px;background:#bebebe;font-family:"trebuchet ms",arial,sans-serif;color:#fff;font-weight:700;font-size:220%}
+.main-content h1{clear:both;margin:1.0em 0 .5em;font-family:"trebuchet ms",arial,sans-serif;color:#505050;font-weight:400;font-size:210%}
+.main-content h2{clear:both;margin:1.0em 0 .5em;font-family:"trebuchet ms",arial,sans-serif;color:#505050;font-weight:400;font-size:170%}
+.main-content h3{clear:both;margin:-1.0em 0 .5em;font-family:"trebuchet ms",arial,sans-serif;color:#7d7d7d;font-weight:400;font-size:130%}
+.main-content h1.side{clear:none}
+.main-content h2.side{clear:none}
+.main-content h3.side{clear:none}
+.main-content h4{margin:1.5em 0 1.0em;color:#505050;font-family:"trebuchet ms",arial,sans-serif;font-weight:400;font-size:170%}
+.main-content h5{margin:1.5em 0 1.0em;color:#505050;font-family:"trebuchet ms",arial,sans-serif;font-size:140%}
+.main-content h6{margin:1.2em 0 .2em;color:#505050;font-weight:700;font-size:120%}
+.main-content p{margin:0 0 1.0em;line-height:1.5em;font-size:120%}
+.main-content p.center{text-align:center}
+.main-content p.right{text-align:right}
+.main-content p.details{clear:both;margin:-.25em 0 1.0em;line-height:1.0em;font-size:110%}
+.main-content blockquote{clear:both;margin:0 30px .6em;line-height:1.5em;font-size:120%}
+.main-content table{clear:both;margin:2.0em 0 .2em 20px;table-layout:fixed;border-collapse:collapse;empty-cells:show;background-color:rgb(233,232,244)}
+.main-content table th.top{height:3.5em;padding:0 7px;empty-cells:show;background-color:#afafaf;text-align:left;color:#fff;font-weight:700;font-size:110%}
+.main-content table th{height:3.0em;padding:2px 20px 2px 7px;border-left:solid 2px #fff;border-right:solid 2px #fff;border-top:solid 2px #fff;border-bottom:solid 2px #fff;background-color:#e1e1e1;text-align:left;color:#505050;font-weight:700;font-size:110%}
+.main-content table td{height:3.0em;padding:2px 7px;border-left:solid 2px #fff;border-right:solid 2px #fff;border-top:solid 2px #fff;border-bottom:solid 2px #fff;background-color:#e1e1e1;text-align:left;font-weight:400;color:#505050;font-size:110%}
+p.caption{clear:both;margin:.5em 0 2.0em 20px;text-align:left;color:#505050;font-size:110%}
+.layout1 .main-content table{width:800px}
+.layout2 .main-content table,.layout3 .main-content table{width:600px}
+.layout4 .main-content table,.layout5 .main-content table{width:400px}
+.main-content ul{list-style:none;margin:.5em 0 1.0em}
+.main-content ul li{margin:0 0 .2em 2px;padding:0 0 0 12px;background:url('//ecrivanalyse.net/plugins/auto/squelette_multiflex/v0.4.3/img/bg_bullet_full_1.gif') no-repeat 0 .5em;line-height:1.4em;font-size:120%}
+.main-content ol{margin:.5em 0 1.0em 20px!important;margin:.5em 0 1.0em 25px}
+.main-content ol li{list-style-position:outside;margin:0 0 .2em;line-height:1.4em;font-size:120%}
+.contactform{width:418px;margin:2.0em 0 0;padding:10px 10px 0;border:solid 1px #c8c8c8;background-color:#f0f0f0}
+.contactform fieldset{padding:20px 0 0!important;padding:0;margin:0 0 20px;border:solid 1px #dcdcdc}
+.contactform fieldset legend{margin:0 0 0 5px!important;margin:0 0 20px 5px;padding:0 2px;color:#505050;font-weight:700;font-size:130%}
+.contactform label.left{float:left;width:100px;margin:0 0 0 10px;padding:2px;font-size:110%}
+.contactform select.combo{width:175px;padding:2px;border:solid 1px #c8c8c8;font-family:verdana,arial,sans-serif;font-size:110%}
+.contactform input.field{width:275px;padding:2px;border:solid 1px #c8c8c8;font-family:verdana,arial,sans-serif;font-size:110%}
+.contactform textarea{width:275px;padding:2px;border:solid 1px #c8c8c8;font-family:verdana,arial,sans-serif;font-size:110%}
+.contactform input.button{float:right;width:9.0em;margin-right:20px;padding:1px!important;padding:0;background:#e6e6e6;border:solid 1px #969696;text-align:center;font-family:verdana,arial,sans-serif;color:#969696;font-size:110%}
+.contactform input.button:hover{cursor:pointer;border:solid 1px #505050;background:#dcdcdc;color:#505050}
+.main-subcontent h1{clear:both;margin:0 0 10px;padding:4px 10px 3px;background-color:#bebebe;font-family:"trebuchet ms",arial,sans-serif;color:#fff;font-weight:700;font-size:140%}
+.main-subcontent h1.green{clear:both;margin:0 0 5px;padding:4px 10px 3px;background-color:#000;font-family:"trebuchet ms",verdana,arial,sans-serif;color:#fff;font-weight:700;font-size:140%}
+.main-subcontent h1.blue{clear:both;margin:0 0 5px;padding:4px 10px 3px;background-color:#000;font-family:"trebuchet ms",verdana,arial,sans-serif;color:#fff;font-weight:700;font-size:140%}
+.main-subcontent h1.orange{clear:both;margin:0 0 5px;padding:4px 10px 3px;background-color:#e5e5e5;font-family:"trebuchet ms",verdana,arial,sans-serif;color:#fff;font-weight:700;font-size:140%}
+.main-subcontent h3{clear:both;margin:1.0em 10px .5em;color:#505050;font-weight:700;font-size:110%}
+.main-subcontent p{clear:both;margin:0 10px 1.0em;color:#505050;line-height:1.3em;font-size:110%}
+.main-subcontent p.center{text-align:center}
+.main-subcontent p.right{text-align:right}
+.main-subcontent ul{list-style:none;margin:.5em 10px 1.0em}
+.main-subcontent ul li{margin:5px 0 .2em 2px;padding:0 0 0 11px;background:url('//ecrivanalyse.net/plugins/auto/squelette_multiflex/v0.4.3/img/bg_bullet_full_1.gif') no-repeat 0 .4em;line-height:1.2em;font-size:110%}
+.xmain-subcontent ol{margin:.5em 10px 1.0em 30px!important;margin:.5em 10px 1.0em 34px}
+.main-subcontent ol{margin:.5em 10px 1.0em 30px!important;margin:.5em 10px 1.0em 35px}
+.main-subcontent ol li{list-style-position:outside;margin:0 0 .4em;font-size:110%}
+.main-subcontent .loginform{width:160px;margin:0 10px}
+.main-subcontent .loginform p{clear:both;margin:0;padding:0}
+.main-subcontent .loginform fieldset{width:160px;border:none}
+.main-subcontent .loginform label.top{float:left;width:125px;margin:0 0 2px;font-size:110%}
+.main-subcontent .loginform label.right{float:left;width:125px;margin:5px 0 0;padding:0 0 0 3px;;font-size:110%}
+.main-subcontent .loginform input.field{width:158px;margin:0 0 5px;padding:.1em 0 .2em!important;padding:.2em 0 .3em;border:solid 1px #c8c8c8;font-family:verdana,arial,sans-serif;font-size:110%}
+.main-subcontent .loginform input.checkbox{float:left;margin:5px 0 0!important;margin:2px 0 0 -3px;border:none}
+.main-subcontent .loginform input.button{float:left;width:5.0em;margin:10px 0 5px;padding:1px;background:#e6e6e6;border:solid 1px #969696;text-align:center;font-family:verdana,arial,sans-serif;color:#969696;font-size:110%}
+.main-subcontent .loginform input.button:hover{cursor:pointer;border:solid 1px #505050;background:#dcdcdc;color:#505050}
+.main-subcontent .searchform{width:160px;margin:0 10px}
+.main-subcontent .searchform fieldset{border:none}
+.main-subcontent .searchform input.field{float:left;width:158px;padding:.1em 0 .2em!important;padding:.2em 0 .3em;border:1px solid #c8c8c8;font-family:verdana,arial,sans-serif;font-size:120%}
+.main-subcontent .searchform input.button{float:left;width:3.0em;margin-top:.5em;padding:1px;background:#e6e6e6;border:solid 1px #969696;text-align:center;font-family:verdana,arial,sans-serif;color:#969696;font-size:120%}
+.main-subcontent .searchform input.button:hover{cursor:pointer;border:solid 1px #505050;background:#dcdcdc;color:#505050}
+.main img{clear:both;float:left;margin:3px 10px 7px 0;padding:1px;border:1px solid #969696}
+.main img.center{clear:both;float:none;display:block;margin:0 auto;padding:1px;border:1px solid #969696}
+.main img.right{clear:both;float:right;margin:3px 0 7px 10px;padding:1px;border:1px solid #969696}
+.main a{color:#000;font-weight:700;text-decoration:none}
+.main-content h1 a{color:#000;font-weight:400;text-decoration:none}
+.main a:hover{color:#000;text-decoration:underline}
+.main a:visited{color:#000}
+.main a img{border:solid 1px #969696}
+.main a:hover img{border:solid 1px #dcdcdc}}
+
+/* page=theme.css(mfx_fichier=multiflex) */
+@media screen,projection,print{.sitelogo{width:60px;height:40px;position:absolute;z-index:1;margin:22px 0 0 20px;background:url('//ecrivanalyse.net/plugins/auto/squelette_multiflex/v0.4.3/img/bg_head_top.jpg') no-repeat center center}
+.nav3-grid dl{padding-left:15px}
+.nav3-bullet dl{padding-left:15px}
+.nav3-nobullet dl{padding-left:15px}
+.header-breadcrumbs ul li{padding:0 5px 0 10px}
+.main{font-size:90%}
+.main-content h1{font-size:150%;font-weight:700;margin-top:2.5em}
+.main-content h1.titre{font-size:210%;margin-top:1.5em}
+.main-content p{text-align:justify}
+.main-content ul li li,.main-content ol li{font-size:100%}
+.main-content ul li strong,.main-content ol li strong{border-bottom:1px solid #c8c8c8}
+.main-content h3{font-size:160%;margin:1em 0 .2em}
+.main-content h3.surtitre{font-size:160%;margin:1.0em 0 -2em}
+.main-content h3.soustitre{font-size:160%;margin:-.9em 0 .5em}
+.column2-one-third-left,.column2-two-third-left{float:left;margin-bottom:10px!important;margin-bottom:5px}
+.column2-two-third-right,.column2-one-third-right{float:right;margin-bottom:10px!important;margin-bottom:5px}
+.layout1 .column2-one-third-left,.layout1 .column2-one-third-right{width:270px}
+.layout1 .column2-two-third-left,.layout1 .column2-two-third-right{width:530px}
+.layout2 .column2-one-third-left,.layout3 .column2-one-third-left,.layout2 .column2-one-third-right,.layout3 .column2-one-third-right{width:200px}
+.layout2 .column2-two-third-left,.layout3 .column2-two-third-left,.layout2 .column2-two-third-right,.layout3 .column2-two-third-right{width:400px}
+.layout4 .column2-one-third-left,.layout5 .column2-one-third-left,.layout4 .column2-one-third-right,.layout5 .column2-one-third-right{width:140px}
+.layout4 .column2-two-third-left,.layout5 .column2-two-third-left,.layout4 .column2-two-third-right,.layout5 .column2-two-third-right{width:260px}
+.main .spip_documents{clear:both;float:left;margin:3px 10px 7px 0;padding:1px}
+.main .spip_documents_left{float:left;margin:3px 10px 7px 0}
+.main .spip_documents_center{float:none;display:block;margin:0 auto;text-align:center}
+.main .spip_documents_center img{float:none!important}
+.main .spip_documents_right{float:right;margin:3px 0 7px 10px}
+#documents_portfolio a{float:left}
+.forum ul li{font-size:100%}
+.forum .forum-fil{margin-bottom:2.5em}
+.forum-message{border:1px solid #dcdcdc}
+.forum-chapo{background:#f0f0f0;padding:.5em 1em;font-size:100%}
+.forum-texte{padding:1em 1em .5em;font-size:80%}
+.forum blockquote{border-left:1px solid rgb(234,239,247);margin:1em 2em;padding-left:2em}
+.contactform fieldset{padding:20px 10px 10px!important}
+.contactform input{width:98%;padding:2px;border:solid 1px #c8c8c8;font-family:verdana,arial,sans-serif;font-size:110%}
+.contactform textarea{width:98%}
+.contactform ul{margin:.5em 0}
+.contactform ul li{margin-bottom:.5em}
+.contactform table.spip_barre{width:98%}
+table.spip_barre{table-layout:auto;margin:.2em;background:#f0f0f0}
+table.spip_barre td{height:auto;border:0;padding:0;background:#f0f0f0}
+table.spip_barre a:hover img{background:#fafafa;border:1px solid #f0f0f0}
+table.spip_barre img{border:1px outset #f0f0f0;background:#fafafa;padding:0;margin:1px;float:none}
+.main .spip_documents img,.main .vignettes_portfolio img{clear:both;float:left;margin:3px 10px 7px 0;padding:1px;border:1px solid #969696}
+.main img{margin:0;padding:0;border:0}}
+
+/* plugins-dist/mediabox/colorbox/black-striped/colorbox.css */
+#colorbox,#cboxOverlay,#cboxWrapper{position:absolute;top:0;left:0;z-index:4999;overflow:hidden}
+#cboxWrapper{max-width:none}
+#cboxOverlay{position:fixed;width:100%;height:100%}
+#cboxMiddleLeft,#cboxBottomLeft{clear:left}
+#cboxContent{position:relative}
+#cboxLoadedContent{overflow:auto;-webkit-overflow-scrolling:touch}
+#cboxTitle{margin:0}
+#cboxLoadingOverlay,#cboxLoadingGraphic{position:absolute;top:0;left:0;width:100%;height:100%}
+#cboxPrevious,#cboxNext,#cboxClose,#cboxSlideshow{cursor:pointer}
+.cboxPhoto{float:left;margin:auto;border:0;display:block;max-width:none;-ms-interpolation-mode:bicubic}
+.cboxIframe{width:100%;height:100%;display:block;border:0;padding:0;margin:0}
+#colorbox,#cboxContent,#cboxLoadedContent{-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box}
+#cboxOverlay{background:url('//ecrivanalyse.net/plugins-dist/mediabox/colorbox/black-striped/images/overlay.png') repeat 0 0;opacity:0.9;filter:alpha(opacity = 90)}
+#colorbox{outline:0}
+#cboxTopLeft{width:21px;height:21px;background:url('//ecrivanalyse.net/plugins-dist/mediabox/colorbox/black-striped/images/controls.png') no-repeat -101px 0}
+#cboxTopRight{width:21px;height:21px;background:url('//ecrivanalyse.net/plugins-dist/mediabox/colorbox/black-striped/images/controls.png') no-repeat -130px 0}
+#cboxBottomLeft{width:21px;height:21px;background:url('//ecrivanalyse.net/plugins-dist/mediabox/colorbox/black-striped/images/controls.png') no-repeat -101px -29px}
+#cboxBottomRight{width:21px;height:21px;background:url('//ecrivanalyse.net/plugins-dist/mediabox/colorbox/black-striped/images/controls.png') no-repeat -130px -29px}
+#cboxMiddleLeft{width:21px;background:url('//ecrivanalyse.net/plugins-dist/mediabox/colorbox/black-striped/images/controls.png') left top repeat-y}
+#cboxMiddleRight{width:21px;background:url('//ecrivanalyse.net/plugins-dist/mediabox/colorbox/black-striped/images/controls.png') right top repeat-y}
+#cboxTopCenter{height:21px;background:url('//ecrivanalyse.net/plugins-dist/mediabox/colorbox/black-striped/images/border.png') 0 0 repeat-x}
+#cboxBottomCenter{height:21px;background:url('//ecrivanalyse.net/plugins-dist/mediabox/colorbox/black-striped/images/border.png') 0 -29px repeat-x}
+#cboxContent{background:#fff;overflow:hidden}
+.cboxIframe{background:#fff}
+#cboxError{padding:50px;border:1px solid #ccc}
+#cboxLoadedContent{margin-bottom:28px}
+#cboxTitle{position:absolute;bottom:0;left:0;text-align:center;width:100%;color:#949494}
+#cboxCurrent{position:absolute;bottom:0;left:58px;color:#949494}
+#cboxLoadingOverlay{background:url('//ecrivanalyse.net/plugins-dist/mediabox/colorbox/black-striped/images/loading_background.png') no-repeat center center}
+#cboxLoadingGraphic{background:url('//ecrivanalyse.net/plugins-dist/mediabox/colorbox/black-striped/images/loading.gif') no-repeat center center}
+#cboxPrevious,#cboxNext,#cboxSlideshow,#cboxClose{border:0;padding:0;margin:0;overflow:visible;width:auto;background:none}
+#cboxPrevious:active,#cboxNext:active,#cboxSlideshow:active,#cboxClose:active{outline:0}
+#cboxSlideshow{position:absolute;bottom:0;right:30px;color:#0092ef}
+#cboxPrevious{position:absolute;bottom:0;left:0;background:url('//ecrivanalyse.net/plugins-dist/mediabox/colorbox/black-striped/images/controls.png') no-repeat -75px 0;width:25px;height:25px;text-indent:-9999px}
+#cboxPrevious:hover{background-position:-75px -25px}
+#cboxNext{position:absolute;bottom:0;left:27px;background:url('//ecrivanalyse.net/plugins-dist/mediabox/colorbox/black-striped/images/controls.png') no-repeat -50px 0;width:25px;height:25px;text-indent:-9999px}
+#cboxNext:hover{background-position:-50px -25px}
+#cboxClose{position:absolute;bottom:0;right:0;background:url('//ecrivanalyse.net/plugins-dist/mediabox/colorbox/black-striped/images/controls.png') no-repeat -25px 0;width:25px;height:25px;text-indent:-9999px}
+#cboxClose:hover{background-position:-25px -25px}
+.cboxIE #cboxTopLeft,.cboxIE #cboxTopCenter,.cboxIE #cboxTopRight,.cboxIE #cboxBottomLeft,.cboxIE #cboxBottomCenter,.cboxIE #cboxBottomRight,.cboxIE #cboxMiddleLeft,.cboxIE #cboxMiddleRight{filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#00FFFFFF,endColorstr=#00FFFFFF)}
+
+/* plugins-dist/porte_plume/css/barre_outils.css?1612275875 */
+.markItUpHeader{text-align:left}
+.markItUp .markItUpHeader a,.markItUp .markItUpTabs a,.markItUp .markItUpFooter a{color:#000;text-decoration:none}
+.markItUp{margin:5px 0;position:relative}
+.markItUp .markItUpContainer{margin:0;padding:0}
+.markItUp .markItUpEditor{clear:both;display:block;overflow:auto;margin:0}
+#text_area{height:300px}
+.markItUp .markItUpFooter{margin:0;padding:0;width:100%}
+.markItUp .markItUpResizeHandle{overflow:hidden;width:22px;height:5px;margin-left:auto;margin-right:auto;background-image:url('//ecrivanalyse.net/plugins-dist/porte_plume/css/img/handle.png');cursor:ns-resize}
+.markItUp .markItUpTabs{font-size:12px;line-height:18px;text-align:right;padding:1px 1px 0;margin-bottom:-2px;top:6px;overflow:hidden;position:absolute;right:30px;clear:right;z-index:5}
+.markItUp .markItUpTabs a{display:block;float:right;border:1px solid #ccc;border-bottom:0;margin:0 1px;padding:3px 4px 2px;background:#EEE;border-radius:5px 5px 0 0}
+.markItUp .markItUpTabs a.on{background-color:#fff;border-bottom:1px solid #fff;box-shadow:1px 1px #eee inset}
+.markItUp .markItUpTabs a:hover{background-color:#fff}
+.markItUp .markItUpPreview{clear:both;border:1px solid #ccc;background:#fff;overflow:auto;padding:1em}
+.markItUp .preview p{margin-bottom:1em}
+.markItUp .preview ul{margin-bottom:1em;margin-top:.5em}
+.markItUp .preview li{border:none;padding:1px}
+.markItUp .preview .cadre ol,.markItUp .preview .cadre ul{padding:.5em}
+.markItUp .markItUpHeader{display:block;margin:0;padding:0;background-color:#F5F5F5;background:-webkit-gradient(linear,left top,left bottom,from(#F1F1F1),to(#DDD));background:-moz-linear-gradient(top,#F1F1F1,#DDD);border:1px solid #ccc;border-color:#F1F1F1 #EEE #CCC;border-color:#ddd #ddd #ccc;border-radius:6px 6px 0 0;min-height:29px}
+.markItUp .markItUpHeader:after{content:"\0020";display:block;height:0;clear:both;visibility:hidden;overflow:hidden}
+.lte7 .markItUp .markItUpHeader ul{height:29px}
+.markItUp .markItUpHeader ul{display:block;margin:0!important;padding:0}
+.markItUp .markItUpHeader ul li{list-style:none;float:left;position:relative;clear:none;border:0;margin:0;padding:0;overflow:visible}
+.markItUp .markItUpHeader ul li:first-child{padding-top:0}
+.markItUp .markItUpHeader ul .markItUpDropMenu ul{border-left:1px solid #CCC}
+.markItUp .markItUpHeader ul .markItUpDropMenu li{margin-right:0;padding:0 1px 1px 0;background-color:#CCC}
+.markItUp .markItUpHeader ul ul a{background-color:#F1F1F1}
+.markItUp .markItUpHeader ul ul{display:none;position:absolute;top:29px;left:-1px;width:150px;z-index:3;padding-top:2px}
+.lte8 .markItUp .markItUpHeader ul ul{padding-top:0;border-top:1px solid #ccc}
+.markItUp .markItUpHeader ul ul li{float:left}
+.markItUp .markItUpHeader ul ul .markItUpDropMenu{background:#F5F5F5 url('//ecrivanalyse.net/plugins-dist/porte_plume/css/img/submenu.png') no-repeat 50% 50%}
+.markItUp .markItUpHeader ul .separateur{border-left:1px solid #d2d2d2}
+.markItUp .markItUpHeader ul ul .separateur{margin:0;border:0}
+.markItUp .markItUpHeader ul a{clear:none;display:block;margin:0;padding:7px 6px 6px}
+.markItUp .markItUpHeader ul a:focus,.markItUp .markItUpHeader ul a:active{-moz-transform:translateY(1px);outline:none!important}
+.markItUp .markItUpHeader ul a:hover{background-color:#fff}
+.markItUp .markItUpHeader ul a em{display:block;background-repeat:no-repeat;width:16px;height:16px;text-indent:-10000px}
+.markItUp .markItUpContainer.fullscreen{position:fixed;top:0;left:0;height:100%;width:100%;background:#DDD;z-index:1002}
+.markItUp .fullscreen .markItUpHeader{position:absolute;top:0;right:50%;width:50%;max-width:40em;display:block!important}
+.markItUp .fullscreen .markItUpEditor{position:absolute!important;top:0;right:50%;width:50%;max-width:40em;height:95%!important;margin-top:30px;display:block!important}
+.markItUp .fullscreen .markItUpPreview{position:absolute;top:0;left:50%;width:50%;max-width:40em;height:95%!important;margin-top:30px;display:block!important;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
+.markItUp .fullscreen .markItUpTabs{position:absolute;left:50%;width:50%;max-width:40em}
+.markItUp .fullscreen .markItUpTabs .previsuVoir,.markItUp .fullscreen .markItUpTabs .previsuEditer,.markItUp .fullscreen .markItUpFooter{display:none}
+.markItUp .markItUpTabs .fullscreen{text-indent:-1000em;text-align:left;background-image:url('//ecrivanalyse.net/plugins-dist/porte_plume/css/img/arrow_out.png')!important;background-position:center center!important;background-repeat:no-repeat!important;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box;width:16px}
+.markItUp .fullscreen .markItUpTabs .fullscreen{background-image:url('//ecrivanalyse.net/plugins-dist/porte_plume/css/img/arrow_in.png')!important}
+
+/* local/cache-css/cssdyn-css_barre_outils_icones_css-a93550bd.css?1782946068 */
+.markItUp .outil_header1>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -226px}
+.markItUp .outil_bold>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -478px}
+.markItUp .outil_italic>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -586px}
+.markItUp .outil_stroke_through>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -946px}
+.markItUp .outil_liste_ul>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -622px}
+.markItUp .outil_liste_ol>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -658px}
+.markItUp .outil_indenter>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -514px}
+.markItUp .outil_desindenter>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -550px}
+.markItUp .outil_quote>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -442px}
+.markItUp .outil_poesie>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -1050px}
+.markItUp .outil_link>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -298px}
+.markItUp .outil_notes>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -334px}
+.markItUp .outil_guillemets>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -910px}
+.markItUp .outil_guillemets_simples>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -802px}
+.markItUp .outil_guillemets_de>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -766px}
+.markItUp .outil_guillemets_de_simples>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -838px}
+.markItUp .outil_guillemets_uniques>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -874px}
+.markItUp .outil_caracteres>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -262px}
+.markItUp .outil_a_maj_grave>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -82px}
+.markItUp .outil_e_maj_aigu>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -154px}
+.markItUp .outil_e_maj_grave>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -190px}
+.markItUp .outil_aelig>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -46px}
+.markItUp .outil_aelig_maj>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -10px}
+.markItUp .outil_oe>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -406px}
+.markItUp .outil_oe_maj>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -370px}
+.markItUp .outil_ccedil_maj>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -118px}
+.markItUp .outil_uppercase>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -730px}
+.markItUp .outil_lowercase>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -694px}
+.markItUp .outil_code>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -1086px}
+.markItUp .outil_cadre>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -1122px}
+.markItUp .outil_clean>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -982px}
+.markItUp .outil_preview>a>em{background-image:url(//ecrivanalyse.net/plugins-dist/porte_plume/icones_barre/spt-v1.png);background-position:-10px -1018px}
+.ajaxLoad{position:relative}
+.ajaxLoad:after{content:"";display:block;width:40px;height:40px;border:1px solid #eee;background:#fff url('//ecrivanalyse.net/prive/images/searching.gif') center no-repeat;position:absolute;left:50%;top:50%;margin-left:-20px;margin-top:-20px}
+.fullscreen .ajaxLoad:after{position:fixed;left:75%}
+

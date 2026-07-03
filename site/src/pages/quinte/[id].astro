@@ -1,0 +1,76 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { frDate, participant, quintesseObject, modeLabel, slug } from '../../lib/format';
+
+export async function getStaticPaths() {
+  const all = (await getCollection('quintes'))
+    .filter((q) => q.data.lines.length > 0)
+    .sort((a, b) => (a.data.id ?? 0) - (b.data.id ?? 0));
+  return all.map((q, i) => ({
+    params: { id: q.id },
+    props: { q: q.data, prev: all[i - 1]?.id ?? null, next: all[i + 1]?.id ?? null },
+  }));
+}
+
+const { q, prev, next } = Astro.props;
+---
+<Base title={`« ${q.title} » - Écrivanalyse`} description={q.soustitre || undefined}>
+  <div class="wrap">
+    <main data-pagefind-body>
+      <h1>{q.title}</h1>
+      {q.soustitre && <p class="desc">{q.soustitre}</p>}
+      <div class="breadcrumb">
+        {q.collection && <a class="col" href={`/collection/${slug(q.collection)}`}>«&#8239;{q.collection}&#8239;»</a>}
+        {q.date && <span class="oe"> · {frDate(q.date).slice(-4)}</span>}
+        {modeLabel(q.mode) && <span> · {modeLabel(q.mode)}</span>}
+      </div>
+
+      <div class="quinte">
+        {q.lines.map((l) => <span class="ln">{l}</span>)}
+      </div>
+
+      <div class="object">
+        {participant(q) && <div class="who oe">{participant(q)}</div>}
+        {quintesseObject(q) && <div class="obj">{quintesseObject(q)}</div>}
+        <div class="byline">{q.author} · {frDate(q.date)}</div>
+      </div>
+
+      <nav class="pager">
+        {prev ? <a href={`/quinte/${prev}`}>← précédente</a> : <span></span>}
+        <a href="/">rencontre au hasard ↻</a>
+        {next ? <a href={`/quinte/${next}`}>suivante →</a> : <span></span>}
+      </nav>
+    </main>
+  </div>
+
+  <style>
+    .wrap { max-width: 760px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 32px) 80px; }
+    header { display: flex; justify-content: space-between; align-items: center; padding: clamp(20px, 4vw, 34px) 0; }
+    .brand { font-family: var(--font-serif); font-size: 19px; text-decoration: none; }
+    nav { display: flex; gap: 20px; align-items: center; font-size: 13.5px; color: var(--color-muted); }
+    nav a { text-decoration: none; } nav a:hover { color: var(--color-ocre); }
+    .iconbtn { background: none; border: none; cursor: pointer; color: var(--color-muted); font-size: 15px; }
+
+    main { padding-top: 0; }
+    .breadcrumb { font-family: var(--font-mono); font-size: 11px; letter-spacing: .05em;
+      color: var(--color-muted); margin: 0 0 36px; }
+    .breadcrumb .oe { color: var(--color-ocre); }
+    .breadcrumb .col { color: inherit; text-decoration: none; }
+    .breadcrumb .col:hover { color: var(--color-ocre); }
+    h1 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(28px, 5vw, 42px);
+      letter-spacing: -.01em; margin: clamp(18px, 4vw, 32px) 0 8px; }
+    .desc { font-family: var(--font-serif); font-style: italic; color: var(--color-muted);
+      font-size: clamp(16px, 2.2vw, 19px); margin: 0 0 14px; }
+    .quinte { font-family: var(--font-serif); font-weight: 300; font-size: clamp(21px, 3vw, 28px);
+      line-height: 1.72; margin: 36px 0 44px; }
+    .quinte .ln { display: block; }
+    .object { font-family: var(--font-mono); font-size: 12px; color: var(--color-muted);
+      border-top: 1px solid var(--color-hair); padding-top: 20px; line-height: 1.9; }
+    .object .oe { color: var(--color-ocre); }
+    .pager { display: flex; justify-content: space-between; margin-top: 48px;
+      font-family: var(--font-serif); font-style: italic; font-size: 15px; }
+    .pager a { color: var(--color-ocre); text-decoration: none; }
+    .pager a:hover { text-decoration: underline; }
+  </style>
+</Base>

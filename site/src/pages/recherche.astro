@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Rechercher - Écrivanalyse" description="Chercher un mot, un vers, un nom dans les quintes.">
+  <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+  <div class="wrap">
+    <main>
+      <h1>Rechercher</h1>
+      <p class="lede">Un mot, un vers, un nom - dans l'ensemble des quintes.</p>
+      <div id="search"></div>
+      <noscript><p class="lede">La recherche nécessite JavaScript.</p></noscript>
+    </main>
+  </div>
+
+  <script is:inline src="/pagefind/pagefind-ui.js"></script>
+  <script is:inline>
+    window.addEventListener('DOMContentLoaded', function () {
+      if (window.PagefindUI) {
+        new window.PagefindUI({
+          element: '#search',
+          showSubResults: false,
+          showImages: false,
+          pageSize: 12,
+          translations: {
+            placeholder: 'un mot, un vers, un nom…',
+            clear_search: 'Effacer',
+            load_more: 'Voir plus',
+            search_label: 'Rechercher dans les quintes',
+            zero_results: 'Rien pour « [SEARCH_TERM] »',
+            many_results: '[COUNT] quintes pour « [SEARCH_TERM] »',
+            one_result: '[COUNT] quinte pour « [SEARCH_TERM] »',
+          },
+        });
+      }
+    });
+  </script>
+
+  <style>
+    .wrap { max-width: 760px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 32px) 90px; }
+    header { display: flex; justify-content: space-between; align-items: center; padding: clamp(20px, 4vw, 34px) 0; }
+    .brand { font-family: var(--font-serif); font-size: 19px; text-decoration: none; }
+    header nav { display: flex; gap: 20px; align-items: center; font-size: 13.5px; color: var(--color-muted); }
+    header nav a { text-decoration: none; } header nav a:hover { color: var(--color-ocre); }
+    .iconbtn { background: none; border: none; cursor: pointer; color: var(--color-muted); font-size: 15px; }
+    h1 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(28px, 5vw, 42px);
+      letter-spacing: -.01em; margin: clamp(18px, 4vw, 32px) 0 12px; }
+    .lede { color: var(--color-muted); font-size: 15px; margin: 0 0 28px; }
+
+    #search {
+      --pagefind-ui-primary: var(--color-ocre);
+      --pagefind-ui-text: var(--color-ink);
+      --pagefind-ui-background: var(--color-paper);
+      --pagefind-ui-border: var(--color-hair);
+      --pagefind-ui-tag: var(--color-paper-raised);
+      --pagefind-ui-border-width: 1px;
+      --pagefind-ui-border-radius: 8px;
+      --pagefind-ui-font: var(--font-sans);
+    }
+    #search :global(.pagefind-ui__result-title) { font-family: var(--font-serif); font-weight: 400; }
+  </style>
+</Base>

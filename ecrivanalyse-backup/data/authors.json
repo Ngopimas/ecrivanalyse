@@ -1,0 +1,119 @@
+[
+ {
+  "id": 1,
+  "url": "https://ecrivanalyse.net/spip.php?auteur1",
+  "name": "Écrivanalyse",
+  "bio": "Écrivanalyse Articles de cet auteur 29/08 — Ça ne se touche plus 22/08 — Ce qui seul se sent 9/02 — À feu et à sexe 28/11 — À penser à la mer 26/09 — Ça va se faire bien 25/04 — La plupart de la vie 21/04 — Ça se remet à l’écrit 31/03 — À ce qu’on a dit 20/12 — Être là aussi pour ça 9/10 — À ce que l’on rit 8/02 — Et pour tout renseignement complémentaire... 24/06 — Une inscription à la lettre de diffusion... Envoyer un message Votre adresse email (obligatoire) Sujet (obligatoire) Texte de votre message (obligatoire) Veuillez laisser ce champ vide :",
+  "article_ids": [
+   118,
+   136,
+   1090,
+   1137,
+   1637,
+   1646,
+   1648,
+   1713,
+   1744,
+   1782,
+   1864,
+   1869
+  ]
+ },
+ {
+  "id": 18,
+  "url": "https://ecrivanalyse.net/spip.php?auteur18",
+  "name": "Perrine Tamerlis",
+  "bio": "Perrine Tamerlis Articles de cet auteur 31/10 — 5.- Rythme hebdomadaire d’une écrivanalyse-type 31/10 — 4.- Un espace, un temps, un prix 31/10 — 3.- ... d’inspiration psychanalytique 31/10 — 2.- Une expérience de création littéraire... 31/10 — 1.- Introduction",
+  "article_ids": [
+   129,
+   130,
+   131,
+   132,
+   134
+  ]
+ },
+ {
+  "id": 19,
+  "url": "https://ecrivanalyse.net/spip.php?auteur19",
+  "name": "Ivan Joseph",
+  "bio": "Ivan Joseph Articles de cet auteur 2/07 — À très peu de pli 30/06 — À ne voir la nuit 28/06 — À ce penser à soi 27/06 — À qui y dit pense 25/06 — À ce qu’on y teste 23/06 — À ce bu de scotch 21/06 — À se panser à soi 20/06 — À ce qui fait tic 18/06 — À la fête du pair 16/06 — De l’âge de la mer 14/06 — À se penser à soi 13/06 — À qui suit le fou 11/06 — À la fête à l’écho 9/06 — À la fin du temps 7/06 — À l’aide de ce mal 6/06 — Par ce dé se voir 4/06 — À en jouir au max 2/06 — À sa tête se voir 31/05 — À n’être à la cave 30/05 — À l’aide et à l’Aïd 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | ... | 157 Envoyer un message Votre adresse email (obligatoire) Sujet (obligatoire) Texte de votre message (obligatoire) Veuillez laisser ce champ vide :",
+  "article_ids": [
+   3458,
+   3459,
+   3460,
+   3461,
+   3466,
+   3491,
+   3493,
+   3494,
+   3495,
+   3497,
+   3498,
+   3499,
+   3502,
+   3505,
+   3506,
+   3510,
+   3512,
+   3516,
+   3517,
+   3518
+  ]
+ },
+ {
+  "id": 21,
+  "url": "https://ecrivanalyse.net/spip.php?auteur21",
+  "name": "Annick Lebédyk",
+  "bio": "Annick Lebédyk Articles de cet auteur 13/07 — Le blocage de la fin 7/07 — Un pardon sans aucune excuse 30/06 — Questions et réponses sans sadisme 23/06 — Traité de tous les noms 13/06 — Le Gille est de sauvetage 6/06 — Le défaut seul de penser 30/05 — Une vraie moulinette à paroles 24/05 — Un petit bout de soie 9/05 — Carnet de notes qui dénote 19/04 — La marge de manne œuvre 14/04 — Annick et son petit chien 4/04 — ADN : Annick De Nulle part 31/03 — Petit à petit doser d’oser 23/03 — Si salaud-père pète tu hèles 4/03 — L’histoire qui raconte des histoires 23/02 — Aimer de travers en travers 12/02 — Les gros mots du silence 3/02 — L’exploit de l’abandon 21/01 — Belle comme une fausse poupée 13/12 — Tous des champions ! 1 | 2",
+  "article_ids": [
+   162,
+   183,
+   193,
+   195,
+   201,
+   202,
+   217,
+   226,
+   227,
+   237,
+   238,
+   245,
+   257,
+   265,
+   266,
+   270,
+   273,
+   283,
+   284,
+   290
+  ]
+ },
+ {
+  "id": 27,
+  "url": "https://ecrivanalyse.net/spip.php?auteur27",
+  "name": "Anna",
+  "bio": "Anna Articles de cet auteur 15/06 — Un parrain deux par deux 8/06 — Voir à travers la vie 1er/06 — La convenance personnelle du congé 25/05 — Une ascension due au mâle 11/05 — Le délit de la parenté 2/05 — La portée d’un tel attachement 28/04 — De la géographie aux racines 4/04 — Le prénom de la fuite 29/03 — Une enfance d’une autre enfance 20/03 — Avoir des mollets de coquette 18/03 — La drôlesse de guère mieux 14/03 — Par ailleurs comme par ici 11/03 — La vérité dans tout cela 1er/03 — Qui sait ce que c’est ? 10/02 — Des couches à la souche 20/01 — Avant-propos-entre-eux-deux 13/01 — La danse du nom 3/01 — Por una cabeza 28/12 — Au rythme du temps 25/12 — Germe 1 | 2",
+  "article_ids": [
+   167,
+   168,
+   169,
+   170,
+   182,
+   192,
+   206,
+   207,
+   208,
+   209,
+   210,
+   211,
+   212,
+   213,
+   249,
+   250,
+   251,
+   252,
+   253,
+   254
+  ]
+ }
+]

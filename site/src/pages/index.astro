@@ -1,0 +1,132 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { frDate, participant, quintesseObject } from '../lib/format';
+
+// Spread ~60 real quintes across the archive for the landing's random draw.
+// Not limited to exact 5×5 - the form allows liberty.
+const all = (await getCollection('quintes'))
+  .filter((q) => q.data.lines.length >= 2 && q.data.lines.length <= 8)
+  .sort((a, b) => (a.data.id ?? 0) - (b.data.id ?? 0));
+const step = Math.max(1, Math.floor(all.length / 60));
+const sample = all
+  .filter((_, i) => i % step === 0)
+  .slice(0, 60)
+  .map((q) => ({
+    id: q.id,
+    t: q.data.title,
+    desc: q.data.soustitre || '',
+    l: q.data.lines,
+    who: participant(q.data),
+    obj: quintesseObject(q.data),
+    d: frDate(q.data.date),
+    coll: q.data.collection || '',
+  }));
+---
+<Base>
+  <div class="page">
+    <main class="run" id="stage">
+      <div class="kicker">une quinte · cinq lignes, cinq mots, cinq ponctuations</div>
+      <svg class="flourish" viewBox="0 0 200 56" aria-hidden="true"><path d="M4 38 C 40 6, 72 8, 84 30 S 122 56, 150 28 C 168 10, 190 16, 196 32"></path></svg>
+      <div class="title" id="q-title"></div>
+      <div class="desc" id="q-desc"></div>
+      <a class="poem" id="q-poem" href="#"></a>
+      <div class="meta" id="q-meta"></div>
+    </main>
+
+    <footer>
+      <button class="rand" onclick="drawQuinte()">rencontre au hasard&nbsp; ↻</button>
+      <a class="tag" href="/archive">les quintes d'Ivan Joseph · depuis 2006</a>
+    </footer>
+  </div>
+
+  <script is:inline define:vars={{ sample }}>
+    let last = -1;
+    window.drawQuinte = function () {
+      if (!sample.length) return;
+      let i;
+      do { i = Math.floor(Math.random() * sample.length); } while (i === last && sample.length > 1);
+      last = i;
+      const q = sample[i];
+      document.getElementById('q-title').textContent = '« ' + q.t + ' »';
+      document.getElementById('q-desc').textContent = q.desc;
+      const poem = document.getElementById('q-poem');
+      poem.href = '/quinte/' + q.id;
+      poem.innerHTML = q.l
+        .map((line, n) => '<span class="ln" style="animation-delay:' + (0.5 + n * 0.75).toFixed(2) + 's">' + line + '</span>')
+        .join('');
+      const metaEl = document.getElementById('q-meta');
+      metaEl.style.animationDelay = (0.5 + q.l.length * 0.75 + 0.3).toFixed(2) + 's';
+      metaEl.innerHTML = (q.who ? '<span class="oe">' + q.who + '</span><br>' : '')
+        + (q.obj ? q.obj + '<br>' : '') + q.d + (q.coll ? ' · « ' + q.coll + ' »' : '');
+      const s = document.getElementById('stage');
+      s.classList.remove('run'); void s.offsetWidth; s.classList.add('run');
+    };
+    drawQuinte();
+  </script>
+
+  <style is:global>
+    /* The quinte lines + meta are injected via innerHTML, so they don't get
+       Astro's scoped attributes. Style them globally, by id. */
+    #q-poem .ln { display: block; clip-path: inset(0 100% 0 0); opacity: .14; }
+    #stage.run #q-poem .ln { animation: eaInk .8s cubic-bezier(.4, .1, .2, 1) forwards; }
+    @keyframes eaInk { from { clip-path: inset(0 100% 0 0); opacity: .14; } to { clip-path: inset(0 0 0 0); opacity: 1; } }
+    #q-meta .oe { color: var(--color-ocre); }
+    @media (prefers-reduced-motion: reduce) {
+      #q-poem .ln { clip-path: none !important; opacity: 1 !important; animation: none !important; }
+    }
+  </style>
+
+  <style>
+    .page { display: flex; flex-direction: column; flex: 1; }
+    header { display: flex; justify-content: space-between; align-items: center;
+      padding: clamp(20px, 4vw, 34px) clamp(20px, 5vw, 52px); }
+    .brand { font-family: var(--font-serif); font-size: 20px; letter-spacing: .02em; text-decoration: none; }
+    nav { display: flex; gap: 22px; align-items: center; font-size: 13.5px; color: var(--color-muted); }
+    nav a { text-decoration: none; }
+    nav a:hover { color: var(--color-ocre); }
+    .iconbtn { background: none; border: none; cursor: pointer; color: var(--color-muted);
+      font-size: 15px; font-family: var(--font-sans); }
+    .iconbtn:hover { color: var(--color-ocre); }
+
+    main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 0 clamp(20px, 6vw, 40px); }
+    .kicker { font-family: var(--font-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+      color: var(--color-muted); margin-bottom: clamp(12px, 3vw, 20px); }
+    .flourish { width: 150px; height: auto; color: var(--color-ocre); margin-bottom: 6px; opacity: .9; }
+    .flourish path { fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round;
+      stroke-dasharray: 1; stroke-dashoffset: 1; pathLength: 1; }
+    .run .flourish path { animation: draw 1.1s ease-out forwards; }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+    .title { font-family: var(--font-serif); font-weight: 400; font-size: clamp(19px, 2.6vw, 25px);
+      margin-bottom: 4px; }
+    .desc { font-family: var(--font-serif); font-style: italic; color: var(--color-muted);
+      font-size: clamp(14px, 1.9vw, 17px); margin-bottom: clamp(18px, 4vw, 32px); max-width: 34ch; }
+    .poem { font-family: var(--font-serif); font-style: italic; font-weight: 300; text-decoration: none;
+      font-size: clamp(22px, 3.6vw, 35px); line-height: 1.6; letter-spacing: -.01em; max-width: 24ch; }
+    .poem .ln { display: block; clip-path: inset(0 100% 0 0); opacity: .14; }
+    .run .poem .ln { animation: ink .8s cubic-bezier(.4, .1, .2, 1) forwards; }
+    @keyframes ink { from { clip-path: inset(0 100% 0 0); opacity: .14; } to { clip-path: inset(0 0 0 0); opacity: 1; } }
+    .meta { font-family: var(--font-mono); font-size: 12px; color: var(--color-muted); line-height: 1.9;
+      margin-top: clamp(24px, 5vw, 42px); opacity: 0; }
+    .run .meta { animation: fade .8s ease-out forwards; }
+    @keyframes fade { to { opacity: 1; } }
+    .meta .oe { color: var(--color-ocre); }
+
+    footer { display: flex; flex-direction: column; align-items: center; gap: 14px;
+      padding: 0 20px clamp(28px, 6vw, 54px); }
+    .rand { font-family: var(--font-mono); font-size: 13px; color: var(--color-ocre); background: none;
+      border: 1px solid var(--color-ocre); border-radius: 999px; padding: 10px 20px; cursor: pointer;
+      letter-spacing: .02em; transition: background .2s, color .2s; }
+    .rand:hover { background: var(--color-ocre); color: var(--color-paper); }
+    .tag { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--color-muted); text-decoration: none; }
+    .tag:hover { color: var(--color-ocre); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .poem .ln { clip-path: none !important; opacity: 1 !important; animation: none !important; }
+      .flourish path { stroke-dashoffset: 0 !important; animation: none !important; }
+      .meta { opacity: 1 !important; animation: none !important; }
+    }
+  </style>
+</Base>

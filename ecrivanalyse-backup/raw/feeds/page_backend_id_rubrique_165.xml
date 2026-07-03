@@ -1,0 +1,93 @@
+<?xml 
+version="1.0" encoding="iso-8859-1"?>
+<rss version="2.0" 
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+>
+
+<channel xml:lang="fr">
+	<title>&#201;crivanalyse</title>
+	<link>http://ecrivanalyse.net/</link>
+	<description></description>
+	<language>fr</language>
+	<generator>SPIP - www.spip.net</generator>
+
+
+
+
+<item xml:lang="fr">
+		<title>D&#232;s l&#224; o&#249; y aller</title>
+		<link>https://ecrivanalyse.net/spip.php?article2981</link>
+		<guid isPermaLink="true">https://ecrivanalyse.net/spip.php?article2981</guid>
+		<dc:date>2024-06-13T05:09:48Z</dc:date>
+		<dc:format>text/html</dc:format>
+		<dc:language>fr</dc:language>
+		<dc:creator>Ivan Joseph</dc:creator>
+
+
+
+		<description>
+
+-
+&lt;a href="https://ecrivanalyse.net/spip.php?rubrique165" rel="directory"&gt;La&#768; ou&#768; il s'en faut&lt;/a&gt;
+
+
+		</description>
+
+
+ <content:encoded>&lt;div class='rss_chapo'&gt;&lt;p&gt;&lt;br&gt;&lt;body&gt;&lt;small&gt;&lt;span style=&#034;font-style: italic;&#034;&gt;Analisant&lt;/span&gt; : anonyme&lt;br&gt;Quintesse II achet&#233;e par l'&lt;span style=&#034;font-style: italic;&#034;&gt;analisant&lt;/span&gt;&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/div&gt;
+		&lt;div class='rss_texte'&gt;&lt;p&gt;&lt;br&gt;&lt;body&gt;&#192; bien ma&#238;triser son l&#226;cher-prise,&lt;br&gt;
+capable de faire des b&#234;tises&#8230;&lt;br&gt;
+d'engager de bons regrets &#224;&lt;br&gt;
+&#234;tre&#8230; quitte &#224; &#234;tre quitt&#233; !&lt;br&gt;
+s'ouvrir la voie de voix&#8230;&lt;br&gt;
+&lt;br&gt;&lt;/body&gt;&lt;/p&gt;&lt;/div&gt;
+		
+		</content:encoded>
+
+
+		
+
+	</item>
+<item xml:lang="fr">
+		<title>Si avec un des si</title>
+		<link>https://ecrivanalyse.net/spip.php?article2955</link>
+		<guid isPermaLink="true">https://ecrivanalyse.net/spip.php?article2955</guid>
+		<dc:date>2024-05-15T05:04:41Z</dc:date>
+		<dc:format>text/html</dc:format>
+		<dc:language>fr</dc:language>
+		<dc:creator>Ivan Joseph</dc:creator>
+
+
+
+		<description>
+
+-
+&lt;a href="https://ecrivanalyse.net/spip.php?rubrique165" rel="directory"&gt;La&#768; ou&#768; il s'en faut&lt;/a&gt;
+
+
+		</description>
+
+
+ <content:encoded>&lt;div class='rss_chapo'&gt;&lt;p&gt;&lt;br&gt;&lt;body&gt;&lt;small&gt;&lt;span style=&#034;font-style: italic;&#034;&gt;Analisant&lt;/span&gt; : anonyme&lt;br&gt;Quintesse I achet&#233;e par l'&lt;span style=&#034;font-style: italic;&#034;&gt;analisant&lt;/span&gt;&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/div&gt;
+		&lt;div class='rss_texte'&gt;&lt;p&gt;&lt;br&gt;&lt;body&gt;Homme fractal pour femmes fatales,&lt;br&gt;
+s'utilisant plus pour gagner plus !&lt;br&gt;
+qui va aller &#234;tre conservateur &#8211;&lt;br&gt;
+&#224; faire de meilleures erreurs ?&lt;br&gt;
+&#234;tre un manuel &#224; l'espagnole.&lt;br&gt;
+&lt;br&gt;&lt;/body&gt;&lt;/p&gt;&lt;/div&gt;
+		
+		</content:encoded>
+
+
+		
+
+	</item>
+
+
+
+</channel>
+
+</rss>

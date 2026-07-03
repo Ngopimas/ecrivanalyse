@@ -1,0 +1,48 @@
+---
+// Shared top bar, rendered once from Base.astro so every page is identical.
+const path = (Astro.url.pathname.replace(/\/+$/, '') || '/');
+const links = [
+  { href: '/archive', label: "L'archive" },
+  { href: '/collections', label: 'Collections' },
+  { href: '/projet', label: 'Le projet' },
+  { href: '/recherche', label: 'Rechercher' },
+];
+const active = (href: string) => path === href || path.startsWith(href + '/');
+---
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="/">Écrivanalyse</a>
+    <nav>
+      {links.map((l) => (
+        <a href={l.href} class:list={['navlink', { active: active(l.href) }]}>{l.label}</a>
+      ))}
+      <button class="iconbtn" onclick="toggleTheme()" title="Jour / Nuit" aria-label="Jour / Nuit">☾</button>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header { width: 100%; }
+  .bar {
+    max-width: 760px; margin: 0 auto;
+    padding: clamp(18px, 3.4vw, 26px) clamp(20px, 5vw, 32px);
+    display: flex; justify-content: space-between; align-items: center; gap: 20px;
+  }
+  .brand {
+    font-family: var(--font-serif); font-size: 20px; letter-spacing: .01em;
+    text-decoration: none; color: var(--color-ink);
+  }
+  nav { display: flex; gap: clamp(14px, 2.2vw, 24px); align-items: center;
+    font-size: 13.5px; color: var(--color-muted); }
+  .navlink { text-decoration: none; color: var(--color-muted); white-space: nowrap; }
+  .navlink:hover { color: var(--color-ocre); }
+  .navlink.active { color: var(--color-ink); }
+  .iconbtn { background: none; border: none; cursor: pointer; color: var(--color-muted);
+    font-size: 15px; font-family: var(--font-sans); line-height: 1; }
+  .iconbtn:hover { color: var(--color-ocre); }
+
+  @media (max-width: 560px) {
+    .bar { flex-direction: column; align-items: flex-start; gap: 12px; }
+    nav { flex-wrap: wrap; gap: 16px; }
+  }
+</style>

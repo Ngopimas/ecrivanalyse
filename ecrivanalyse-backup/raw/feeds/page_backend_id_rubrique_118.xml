@@ -1,0 +1,59 @@
+<?xml 
+version="1.0" encoding="iso-8859-1"?>
+<rss version="2.0" 
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+>
+
+<channel xml:lang="fr">
+	<title>&#201;crivanalyse</title>
+	<link>http://ecrivanalyse.net/</link>
+	<description></description>
+	<language>fr</language>
+	<generator>SPIP - www.spip.net</generator>
+
+
+
+
+<item xml:lang="fr">
+		<title>La plupart de la vie</title>
+		<link>https://ecrivanalyse.net/spip.php?article1648</link>
+		<guid isPermaLink="true">https://ecrivanalyse.net/spip.php?article1648</guid>
+		<dc:date>2017-04-25T12:42:23Z</dc:date>
+		<dc:format>text/html</dc:format>
+		<dc:language>fr</dc:language>
+		<dc:creator>&#201;crivanalyse</dc:creator>
+
+
+
+		<description>
+
+-
+&lt;a href="https://ecrivanalyse.net/spip.php?rubrique118" rel="directory"&gt;Comme si &#231;a n'existait pas&lt;/a&gt;
+
+
+		</description>
+
+
+ <content:encoded>&lt;div class='rss_chapo'&gt;&lt;p&gt;&lt;br&gt;&lt;body&gt;&lt;small&gt;&lt;span style=&#034;font-style: italic;&#034;&gt;Analisante&lt;/span&gt; : anonyme&lt;br&gt;Quintesse I achet&#233;e par l'&lt;span style=&#034;font-style: italic;&#034;&gt;analisante&lt;/span&gt;&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/div&gt;
+		&lt;div class='rss_texte'&gt;&lt;p&gt;&lt;br&gt;&lt;body&gt;En vertu de ses rues,&lt;br&gt;
+ce qui vaut d'&#234;tre dit,&lt;br&gt;
+ce pour quoi l'on paye &#8211;&lt;br&gt;
+ce qui s'appartient de droit,&lt;br&gt;
+se r&#233;active avec les retrouvailles&#8230;&lt;br&gt;
+&lt;br&gt;
+&lt;/body&gt;&lt;/p&gt;&lt;/div&gt;
+		
+		</content:encoded>
+
+
+		
+
+	</item>
+
+
+
+</channel>
+
+</rss>

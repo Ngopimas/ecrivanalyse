@@ -1,0 +1,101 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { year, roleLabel } from '../lib/format';
+
+const all = (await getCollection('quintes'))
+  .filter((q) => q.data.lines.length > 0)
+  .sort((a, b) => (b.data.id ?? 0) - (a.data.id ?? 0));
+
+// group by year (desc)
+const byYear = new Map<string, typeof all>();
+for (const q of all) {
+  const y = year(q.data.date);
+  if (!byYear.has(y)) byYear.set(y, []);
+  byYear.get(y)!.push(q);
+}
+const years = [...byYear.keys()].sort((a, b) => b.localeCompare(a));
+const total = all.length;
+const nPause = all.filter((q) => q.data.mode === 'pause').length;
+const nEcri = all.filter((q) => q.data.mode === 'ecrivanalyse').length;
+const nCols = new Set(all.filter((q) => q.data.collection).map((q) => q.data.collection)).size;
+---
+<Base title="L'archive - Écrivanalyse">
+  <div class="wrap">
+    <main>
+      <h1>L'archive</h1>
+      <p class="lede">{total} quintes, {years[years.length - 1]} - {years[0]}.</p>
+
+      <div class="facets" role="group" aria-label="Filtrer par mode">
+        <button class="facet on" data-f="all">tout · {total}</button>
+        <button class="facet" data-f="pause">séances de p(au)se · {nPause}</button>
+        <button class="facet" data-f="ecrivanalyse">écrivanalyse · {nEcri}</button>
+      </div>
+      <a href="/collections" class="browse-col">parcourir par collection · {nCols} →</a>
+
+      {years.map((y) => (
+        <section class="yr">
+          <h2>{y}</h2>
+          <ul>
+            {byYear.get(y)!.map((q) => (
+              <li data-mode={q.data.mode || 'none'}>
+                <a href={`/quinte/${q.id}`}>
+                  <span class="entry">
+                    <span class="t">{q.data.title}</span>
+                    {q.data.soustitre && <span class="d">{q.data.soustitre}</span>}
+                  </span>
+                  <span class="r">{roleLabel(q.data.participant_role)}{q.data.quintesse_num ? ` · ${q.data.quintesse_num}` : ''}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </main>
+  </div>
+
+  <script is:inline>
+    const btns = document.querySelectorAll('.facet');
+    btns.forEach((b) => b.addEventListener('click', () => {
+      btns.forEach((x) => x.classList.remove('on'));
+      b.classList.add('on');
+      const f = b.getAttribute('data-f');
+      document.querySelectorAll('.yr li').forEach((li) => {
+        const show = f === 'all' || li.getAttribute('data-mode') === f;
+        li.style.display = show ? '' : 'none';
+      });
+      document.querySelectorAll('.yr').forEach((s) => {
+        const any = [...s.querySelectorAll('li')].some((li) => li.style.display !== 'none');
+        s.style.display = any ? '' : 'none';
+      });
+    }));
+  </script>
+
+  <style>
+    .wrap { max-width: 760px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 32px) 80px; }
+    h1 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(28px, 5vw, 42px);
+      letter-spacing: -.01em; margin: clamp(18px, 4vw, 32px) 0 12px; }
+    .lede { color: var(--color-muted); font-size: 15px; margin: 0 0 24px; }
+    .facets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    .facet { font-family: var(--font-mono); font-size: 12px; cursor: pointer; color: var(--color-muted);
+      background: none; border: 1px solid var(--color-hair); border-radius: 999px; padding: 7px 14px; }
+    .facet:hover { border-color: var(--color-ocre); color: var(--color-ocre); }
+    .facet.on { border-color: var(--color-ocre); color: var(--color-ocre); background: color-mix(in srgb, var(--color-ocre) 8%, transparent); }
+    .browse-col { display: inline-block; font-family: var(--font-mono); font-size: 12px; color: var(--color-ocre);
+      text-decoration: none; border: 1px solid var(--color-hair); border-radius: 999px; padding: 7px 14px; margin: 0 0 40px; }
+    .browse-col:hover { background: var(--color-ocre); color: var(--color-paper); border-color: var(--color-ocre); }
+
+    .yr { margin-bottom: 34px; }
+    .yr h2 { font-family: var(--font-mono); font-size: 12px; letter-spacing: .14em; color: var(--color-ocre);
+      border-bottom: 1px solid var(--color-hair); padding-bottom: 8px; margin: 0 0 4px; }
+    .yr ul { list-style: none; margin: 0; padding: 0; }
+    .yr li a { display: flex; justify-content: space-between; gap: 24px; align-items: baseline;
+      text-decoration: none; padding: 11px 2px; border-bottom: 1px solid color-mix(in srgb, var(--color-hair) 55%, transparent); }
+    .yr li a:hover .t { color: var(--color-ocre); }
+    .yr .entry { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .yr .t { font-family: var(--font-serif); font-size: 17px; }
+    .yr .d { font-family: var(--font-serif); font-style: italic; font-size: 13.5px;
+      color: var(--color-muted); line-height: 1.35; }
+    .yr .r { font-family: var(--font-mono); font-size: 10.5px; color: var(--color-muted); white-space: nowrap; }
+  </style>
+</Base>

@@ -1,0 +1,59 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { slug, roleLabel, modeLabel, year } from '../../lib/format';
+
+export async function getStaticPaths() {
+  const all = (await getCollection('quintes'))
+    .filter((q) => q.data.lines.length > 0 && q.data.collection);
+  const map = new Map<string, { name: string; mode: string | null; items: typeof all }>();
+  for (const q of all) {
+    const s = slug(q.data.collection);
+    if (!map.has(s)) map.set(s, { name: q.data.collection!, mode: q.data.mode, items: [] });
+    map.get(s)!.items.push(q);
+  }
+  return [...map.entries()].map(([s, v]) => ({
+    params: { slug: s },
+    props: { name: v.name, mode: v.mode, items: v.items.sort((a, b) => (b.data.id ?? 0) - (a.data.id ?? 0)) },
+  }));
+}
+
+const { name, mode, items } = Astro.props;
+---
+<Base title={`« ${name} » - Écrivanalyse`}>
+  <div class="wrap">
+    <main>
+      <h1>«&#8239;{name}&#8239;»</h1>
+      <div class="breadcrumb"><a href="/collections">← Collections</a>{modeLabel(mode) && <span> · {modeLabel(mode)}</span>} · {items.length} quintes</div>
+      <ul>
+        {items.map((q) => (
+          <li>
+            <a href={`/quinte/${q.id}`}>
+              <span class="t">{q.data.title}</span>
+              <span class="r">{year(q.data.date)}{q.data.quintesse_num ? ` · ${q.data.quintesse_num}` : ''}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </main>
+  </div>
+
+  <style>
+    .wrap { max-width: 760px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 32px) 80px; }
+    header { display: flex; justify-content: space-between; align-items: center; padding: clamp(20px, 4vw, 34px) 0; }
+    .brand { font-family: var(--font-serif); font-size: 19px; text-decoration: none; }
+    header nav { display: flex; gap: 20px; align-items: center; font-size: 13.5px; color: var(--color-muted); }
+    header nav a { text-decoration: none; } header nav a:hover { color: var(--color-ocre); }
+    .iconbtn { background: none; border: none; cursor: pointer; color: var(--color-muted); font-size: 15px; }
+    .breadcrumb { font-family: var(--font-mono); font-size: 11px; letter-spacing: .05em; color: var(--color-muted); margin: 0 0 28px; }
+    .breadcrumb a { color: var(--color-ocre); text-decoration: none; }
+    h1 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(28px, 5vw, 42px);
+      letter-spacing: -.01em; margin: clamp(18px, 4vw, 32px) 0 10px; }
+    ul { list-style: none; margin: 0; padding: 0; }
+    li a { display: flex; justify-content: space-between; gap: 20px; align-items: baseline; text-decoration: none;
+      padding: 10px 2px; border-bottom: 1px solid color-mix(in srgb, var(--color-hair) 60%, transparent); }
+    li a:hover { color: var(--color-ocre); }
+    .t { font-family: var(--font-serif); font-size: 18px; }
+    .r { font-family: var(--font-mono); font-size: 10.5px; color: var(--color-muted); white-space: nowrap; }
+  </style>
+</Base>

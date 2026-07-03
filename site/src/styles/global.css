@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+/* Design tokens (DESIGN.md) exposed as Tailwind theme + CSS vars */
+@theme {
+  --color-paper: #F6F1E7;
+  --color-paper-raised: #FBF8F1;
+  --color-ink: #17130F;
+  --color-muted: #6B635A;
+  --color-hair: #E2DACA;
+  --color-ocre: #B0472C;
+  --color-inkblue: #26324D;
+
+  --font-serif: "Fraunces Variable", Georgia, serif;
+  --font-sans: "Instrument Sans Variable", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+}
+
+@layer base {
+  :root[data-theme="dark"] {
+    --color-paper: #1E1A16;
+    --color-paper-raised: #241F1A;
+    --color-ink: #EDE6D8;
+    --color-muted: #A79E90;
+    --color-hair: #38322B;
+    --color-ocre: #CE7659;
+  }
+  html { color-scheme: light; }
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    transition: background .5s, color .5s;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+  }
+  /* fills the viewport below the shared header; lets the landing center itself */
+  .site-body { flex: 1; display: flex; flex-direction: column; }
+  /* .wrap is a flex item (body is a column); without width:100% an auto-margin
+     flex item shrinks to its content, so pages ended up different widths. */
+  .wrap { width: 100%; }
+  ::selection { background: color-mix(in srgb, var(--color-ocre) 22%, transparent); }
+  a { color: inherit; }
+}

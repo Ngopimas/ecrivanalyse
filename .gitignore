@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+
+# build output & caches
+dist/
+.astro/
+.output/
+.vercel/
+.netlify/
+
+# generated Pagefind index (rebuilt by `npm run build`)
+site/public/pagefind/
+
+# python virtualenv
+.venv/
+
+# scratch / logs
+_probe/
+*.log
+
+# os
+.DS_Store
+Thumbs.db

@@ -1,0 +1,84 @@
+<?xml 
+version="1.0" encoding="iso-8859-1"?>
+<rss version="2.0" 
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+>
+
+<channel xml:lang="fr">
+	<title>&#201;crivanalyse</title>
+	<link>http://ecrivanalyse.net/</link>
+	<description></description>
+	<language>fr</language>
+	<generator>SPIP - www.spip.net</generator>
+
+
+
+
+<item xml:lang="fr">
+		<title>Et pour tout renseignement compl&#233;mentaire...</title>
+		<link>https://ecrivanalyse.net/spip.php?article136</link>
+		<guid isPermaLink="true">https://ecrivanalyse.net/spip.php?article136</guid>
+		<dc:date>2007-02-08T20:38:23Z</dc:date>
+		<dc:format>text/html</dc:format>
+		<dc:language>fr</dc:language>
+		<dc:creator>&#201;crivanalyse</dc:creator>
+
+
+
+		<description>&lt;p&gt;Les coordonn&#233;es du Point &#233;crivanalytique...&lt;/p&gt;
+
+-
+&lt;a href="https://ecrivanalyse.net/spip.php?rubrique40" rel="directory"&gt;Contact et lettre de diffusion&lt;/a&gt;
+
+
+		</description>
+
+
+ <content:encoded>&lt;div class='rss_texte'&gt;&lt;p&gt;Ivan Joseph&lt;br&gt; &lt;br&gt; &lt;span style=&#034;font-style: italic;&#034;&gt;Le Point&lt;/span&gt;&lt;br&gt; 43, rue Notre-Dame-de-Nazareth&lt;br&gt; 75003 Paris&lt;br&gt; &lt;br&gt;&lt;br&gt; &lt;a href=&#034;mailto:poste@ivanjoseph.fr&#034;&gt;poste@ivanjoseph.fr&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+		
+		</content:encoded>
+
+
+		
+
+	</item>
+<item xml:lang="fr">
+		<title>Une inscription &#224; la lettre de diffusion...</title>
+		<link>https://ecrivanalyse.net/spip.php?article118</link>
+		<guid isPermaLink="true">https://ecrivanalyse.net/spip.php?article118</guid>
+		<dc:date>2006-06-24T13:42:45Z</dc:date>
+		<dc:format>text/html</dc:format>
+		<dc:language>fr</dc:language>
+		<dc:creator>&#201;crivanalyse</dc:creator>
+
+
+		<dc:subject>Newsletter</dc:subject>
+		<dc:subject>Lettre d'information</dc:subject>
+
+		<description>&lt;p&gt;... simple comme une adresse &#233;lectronique !&lt;/p&gt;
+
+-
+&lt;a href="https://ecrivanalyse.net/spip.php?rubrique40" rel="directory"&gt;Contact et lettre de diffusion&lt;/a&gt;
+
+/ 
+&lt;a href="https://ecrivanalyse.net/spip.php?mot246" rel="tag"&gt;Newsletter&lt;/a&gt;, 
+&lt;a href="https://ecrivanalyse.net/spip.php?mot247" rel="tag"&gt;Lettre d'information&lt;/a&gt;
+
+		</description>
+
+
+ <content:encoded>&lt;div class='rss_texte'&gt;&lt;p&gt;La lettre d'information du site &lt;i&gt;&#201;crivanalyse&lt;/i&gt; est d&#233;sormais op&#233;rationnelle. En vous y abonnant, vous pourrez ainsi recevoir, de fa&#231;on hebdomadaire, l'annonce les derni&#232;res nouveaut&#233;s (articles et br&#232;ves r&#233;cemment publi&#233;s).&lt;/p&gt; &lt;form method=&#034;get&#034; action=&#034;http://fr.groups.yahoo.com/subscribe/ecrivanalyse&#034;&gt; &lt;div style=&#034;text-align: left;&#034;&gt; &lt;/div&gt; &lt;table bgcolor=&#034;#ffffff&#034; border=&#034;0&#034; cellpadding=&#034;2&#034; cellspacing=&#034;0&#034;&gt; &lt;tbody&gt;&lt;tr&gt; &lt;td colspan=&#034;2&#034; align=&#034;center&#034;&gt; &lt;div style=&#034;text-align: left;&#034;&gt; &lt;b&gt;Pour vous inscrire &#224; la lettre d'information d'&#201;crivanalyse, ...&lt;/b&gt;&lt;/div&gt; &lt;/td&gt; &lt;/tr&gt; &lt;tr&gt; &lt;td&gt; &lt;input name=&#034;user&#034; value=&#034;... merci de saisir ici votre e-mail&#034; size=&#034;38&#034; type=&#034;text&#034;&gt; &lt;/td&gt; &lt;td&gt; &lt;input title=&#034;Cliquez ici pour vous inscrire&#034; alt=&#034;Cliquez ici pour vous inscrire&#034; name=&#034;Cliquez ici pour vous inscrire &#224; la lettre d'information d'&#201;crivanalyse&#034; src=&#034;http://ecrivanalyse.net/ecrire/upload/signecri.jpg&#034; size=&#034;10&#034; border=&#034;0&#034; height=&#034;37&#034; type=&#034;image&#034; width=&#034;142&#034;&gt; &lt;/td&gt; &lt;/tr&gt; &lt;tr align=&#034;center&#034;&gt; &lt;td colspan=&#034;2&#034;&gt; &lt;div style=&#034;text-align: left;&#034;&gt; Un service de : &lt;a href=&#034;http://fr.groups.yahoo.com/&#034;&gt;fr.groups.yahoo.com&lt;/a&gt;&lt;/div&gt; &lt;/td&gt; &lt;/tr&gt; &lt;/tbody&gt;&lt;/table&gt; &lt;/form&gt;&lt;br&gt;&lt;br&gt; ... sans oublier de cliquer sur le logo pour valider !&lt;br&gt;&lt;/div&gt;
+		
+		</content:encoded>
+
+
+		
+
+	</item>
+
+
+
+</channel>
+
+</rss>

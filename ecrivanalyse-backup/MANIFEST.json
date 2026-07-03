@@ -1,0 +1,22 @@
+{
+  "generated": "2026-07-02T10:18:29.504582+00:00",
+  "base_url": "https://ecrivanalyse.net/",
+  "cms": "SPIP 3.2.8",
+  "encoding": "iso-8859-1",
+  "counts": {
+    "article/404": 386,
+    "article/done": 3157,
+    "auteur/404": 24,
+    "auteur/done": 5,
+    "feed/done": 194,
+    "media/404": 2,
+    "media/done": 12,
+    "misc/done": 2,
+    "rubrique/404": 67,
+    "rubrique/done": 126
+  },
+  "media_files": 12,
+  "media_missing": 0,
+  "media_zero_byte": 0,
+  "failures": 0
+}

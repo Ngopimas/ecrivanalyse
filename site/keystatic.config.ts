@@ -1,0 +1,69 @@
+import { config, collection, fields } from '@keystatic/core';
+
+// Local, Git-based editing. Runs at /keystatic during `astro dev` only
+// (the production build stays pure static). Manages the YAML quinte files.
+export default config({
+  storage: { kind: 'local' },
+  ui: {
+    brand: { name: 'Écrivanalyse' },
+  },
+  collections: {
+    quintes: collection({
+      label: 'Quintes',
+      path: 'src/content/quintes/*',
+      format: { data: 'yaml' },
+      slugField: 'title',
+      columns: ['title', 'date'],
+      schema: {
+        id: fields.integer({ label: 'ID (hérité — laisser tel quel)' }),
+        title: fields.slug({
+          name: { label: 'Titre', validation: { isRequired: true } },
+        }),
+        soustitre: fields.text({ label: 'Description (une ligne)' }),
+        lines: fields.array(fields.text({ label: 'Ligne' }), {
+          label: 'La quinte',
+          description: 'Cinq lignes, cinq mots, cinq ponctuations — mais libre.',
+          itemLabel: (p) => p.value || 'ligne',
+        }),
+        date: fields.text({ label: 'Date', description: 'AAAA-MM-JJ' }),
+        mode: fields.select({
+          label: 'Mode',
+          options: [
+            { label: '—', value: '' },
+            { label: 'Séance de p(au)se', value: 'pause' },
+            { label: 'Écrivanalyse', value: 'ecrivanalyse' },
+          ],
+          defaultValue: '',
+        }),
+        participant_role: fields.select({
+          label: 'Rôle du·de la participant·e',
+          options: [
+            { label: '—', value: '' },
+            { label: 'Analisante', value: 'analisante' },
+            { label: 'Analisant', value: 'analisant' },
+            { label: 'Pauseuse', value: 'pauseuse' },
+            { label: 'Pauseur', value: 'pauseur' },
+          ],
+          defaultValue: '',
+        }),
+        participant_name: fields.text({ label: 'Nom du·de la participant·e' }),
+        quintesse_num: fields.text({ label: 'Quintesse (n° romain)' }),
+        status: fields.select({
+          label: 'Statut de la quintesse',
+          options: [
+            { label: '—', value: '' },
+            { label: 'Achetée', value: 'achetée' },
+            { label: 'Autorisée à la vente', value: 'autorisée à la vente' },
+            { label: 'Détruite', value: 'détruite' },
+            { label: 'Achevable', value: 'achevable' },
+          ],
+          defaultValue: '',
+        }),
+        collection: fields.text({ label: 'Collection / série' }),
+        recueil: fields.text({ label: 'Recueil (si publiée)' }),
+        author: fields.text({ label: 'Auteur', defaultValue: 'Ivan Joseph' }),
+        is_5x5: fields.checkbox({ label: '5×5 exact' }),
+      },
+    }),
+  },
+});

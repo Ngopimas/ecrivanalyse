@@ -1,0 +1,39 @@
+---
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/instrument-sans';
+import '@fontsource-variable/jetbrains-mono';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+
+interface Props { title?: string; description?: string; }
+const {
+  title = 'Écrivanalyse',
+  description = "L'écrivanalyse d'Ivan Joseph - des quintesse, cinq lignes de cinq mots.",
+} = Astro.props;
+---
+<!doctype html>
+<html lang="fr" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <script is:inline>
+    const t = localStorage.getItem('ea-theme');
+    if (t) document.documentElement.dataset.theme = t;
+  </script>
+</head>
+<body class="min-h-screen">
+  <Header />
+  <div class="site-body"><slot /></div>
+  <script is:inline>
+    window.toggleTheme = function () {
+      const r = document.documentElement;
+      const n = r.dataset.theme === 'dark' ? 'light' : 'dark';
+      r.dataset.theme = n;
+      localStorage.setItem('ea-theme', n);
+    };
+  </script>
+</body>
+</html>
