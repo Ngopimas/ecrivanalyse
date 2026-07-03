@@ -6,11 +6,23 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import { ClientRouter } from 'astro:transitions';
 
-interface Props { title?: string; description?: string; }
+interface Props {
+  title?: string;
+  description?: string;
+  /** Path to the social card, e.g. `/og/647.png`. */
+  ogImage?: string;
+  ogImageAlt?: string;
+  ogType?: 'website' | 'article';
+}
 const {
   title = 'Écrivanalyse',
-  description = "L'écrivanalyse d'Ivan Joseph - des quintesse, cinq lignes de cinq mots.",
+  description = "L'écrivanalyse d'Ivan Joseph — vingt ans de quintes : cinq lignes, cinq mots par ligne, cinq signes de ponctuation.",
+  ogImage = '/og/default.png',
+  ogImageAlt = 'Écrivanalyse — Ivan Joseph',
+  ogType = 'website',
 } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImageUrl = new URL(ogImage, Astro.site);
 ---
 <!doctype html>
 <html lang="fr" data-theme="light">
@@ -19,7 +31,24 @@ const {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F6F1E7" />
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1E1A16" />
+  <meta property="og:site_name" content="Écrivanalyse" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:type" content={ogType} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImageUrl} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content={ogImageAlt} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="sitemap" href="/sitemap-index.xml" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/favicon-96.png" type="image/png" sizes="96x96" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <script is:inline>
     const t = localStorage.getItem('ea-theme');
     if (t) document.documentElement.dataset.theme = t;
