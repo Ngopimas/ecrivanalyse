@@ -24,4 +24,20 @@ const quintes = defineCollection({
   }),
 });
 
-export const collections = { quintes };
+// One JSON file per comment (src/content/comments/<quinte-id>-<n>.json).
+// The 10 SPIP-era comments come from scripts/import-comments.py; new ones are
+// committed by the moderation endpoint (functions/api/) after Ivan approves
+// them by email. JSON (not YAML) so reader-submitted text can never break parsing.
+const comments = defineCollection({
+  loader: glob({ pattern: '**/*.json', base: './src/content/comments' }),
+  schema: z.object({
+    quinte: z.string(), // entry id of the quinte (numeric SPIP article id as string)
+    title: z.string().default(''), // SPIP allowed a comment title; empty for new comments
+    author: z.string().default(''),
+    date: z.string(), // ISO 8601
+    text: z.string(), // plain text; \n = line break, \n\n = paragraph break
+    legacy_id: z.number().optional(), // SPIP id_forum for the archived ones
+  }),
+});
+
+export const collections = { quintes, comments };
