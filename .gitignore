@@ -21,3 +21,4 @@ _probe/
 # os
 .DS_Store
 Thumbs.db
+.gstack/
