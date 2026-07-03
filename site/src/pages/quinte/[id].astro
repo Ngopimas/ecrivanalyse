@@ -22,7 +22,6 @@ const { q, prev, next } = Astro.props;
       {q.soustitre && <p class="desc">{q.soustitre}</p>}
       <div class="breadcrumb">
         {q.collection && <a class="col" href={`/collection/${slug(q.collection)}`}>«&#8239;{q.collection}&#8239;»</a>}
-        {q.date && <span class="oe"> · {frDate(q.date).slice(-4)}</span>}
         {modeLabel(q.mode) && <span> · {modeLabel(q.mode)}</span>}
       </div>
 
@@ -38,7 +37,7 @@ const { q, prev, next } = Astro.props;
 
       <nav class="pager">
         {prev ? <a href={`/quinte/${prev}`}>← précédente</a> : <span></span>}
-        <a href="/">rencontre au hasard ↻</a>
+        <a href="/hasard" data-astro-reload>rencontre au hasard ↻</a>
         {next ? <a href={`/quinte/${next}`}>suivante →</a> : <span></span>}
       </nav>
     </main>
@@ -64,7 +63,9 @@ const { q, prev, next } = Astro.props;
       font-size: clamp(16px, 2.2vw, 19px); margin: 0 0 14px; }
     .quinte { font-family: var(--font-serif); font-weight: 300; font-size: clamp(21px, 3vw, 28px);
       line-height: 1.72; margin: 36px 0 44px; }
-    .quinte .ln { display: block; }
+    /* each stored line = one visual line; a word is never split or hyphenated.
+       The inline fit script scales the font so the longest line fits the column. */
+    .quinte .ln { display: block; white-space: nowrap; word-break: keep-all; hyphens: none; }
     .object { font-family: var(--font-mono); font-size: 12px; color: var(--color-muted);
       border-top: 1px solid var(--color-hair); padding-top: 20px; line-height: 1.9; }
     .object .oe { color: var(--color-ocre); }
@@ -73,4 +74,40 @@ const { q, prev, next } = Astro.props;
     .pager a { color: var(--color-ocre); text-decoration: none; }
     .pager a:hover { text-decoration: underline; }
   </style>
+
+  <script is:inline data-astro-rerun>
+    (() => {
+    const MIN = 18, MAX = 32, REF = 100;   // font-size floor / ceiling (px), measuring size
+    // Scale the quinte so its longest line stays on one line within the column;
+    // below MIN px (very long line / narrow screen) it wraps rather than overflow.
+    function fit() {
+      const q = document.querySelector('.quinte');
+      if (!q) return;
+      const lines = q.querySelectorAll('.ln');
+      if (!lines.length) return;
+      const avail = q.clientWidth;
+      if (!avail) return;
+      q.style.whiteSpace = 'nowrap';
+      q.style.fontSize = REF + 'px';                    // measure with every line overflowing, so scrollWidth is exact
+      let widest = 0;
+      lines.forEach((l) => { if (l.scrollWidth > widest) widest = l.scrollWidth; });
+      if (!widest) { q.style.fontSize = ''; return; }
+      const ideal = REF * avail / widest;
+      if (ideal >= MIN) {
+        q.style.whiteSpace = 'nowrap';
+        q.style.fontSize = Math.min(MAX, ideal).toFixed(1) + 'px';
+      } else {
+        q.style.whiteSpace = 'normal';                  // graceful floor: wrap instead of overflow
+        q.style.fontSize = MIN + 'px';
+      }
+    }
+    fit();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+    if (!window.__eaQuinteResize) {
+      window.__eaQuinteResize = true;
+      let raf = 0;
+      window.addEventListener('resize', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(fit); });
+    }
+    })();
+  </script>
 </Base>

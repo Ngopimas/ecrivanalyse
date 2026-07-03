@@ -56,6 +56,12 @@ import Base from '../layouts/Base.astro';
       --pagefind-ui-border-radius: 8px;
       --pagefind-ui-font: var(--font-sans);
     }
+    /* Pagefind sets its own --pagefind-ui-primary on .pagefind-ui, so override it there (ocre, not blue) */
+    #search :global(.pagefind-ui) { --pagefind-ui-primary: var(--color-ocre); }
     #search :global(.pagefind-ui__result-title) { font-family: var(--font-serif); font-weight: 400; }
+    #search :global(.pagefind-ui__search-input:focus),
+    #search :global(.pagefind-ui__search-input:focus-visible) {
+      outline-color: var(--color-ocre); border-color: var(--color-ocre); box-shadow: none;
+    }
   </style>
 </Base>

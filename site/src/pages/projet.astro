@@ -85,15 +85,66 @@ import Base from '../layouts/Base.astro';
       <section>
         <h2>Le Point</h2>
         <p>
-          Les séances se tiennent à son <em>à-te-lier</em> du <em>Point</em>, le bureau parisien d'Ivan Joseph:
+          Les séances se tiennent au <em>Point</em>, l'<em>à-te-lier</em> parisien
+          d'Ivan Joseph - «&#8239;nouveau clin d'œil à la psychanalyse&#8239;».
         </p>
-        <p>
-         43&#8239;rue Notre-Dame-de-Nazareth, 75011
-        </p>
-        <p>
-          «&#8239;nouveau clin d'œil à la psychanalyse en
-          forme de jeu de mot&#8239;: le Point, pour l'écrivanalyse, c'est le “divan d'Ivan”.&#8239;»
-        </p>
+
+        <div class="contact-card">
+          <div class="cc-map">
+            <svg class="cc-plan-svg" viewBox="0 0 300 220" preserveAspectRatio="xMidYMid meet" role="img"
+                 aria-label="Plan des rues autour du Point, 43 rue Notre-Dame-de-Nazareth, Paris 3e (OpenStreetMap)">
+              <clipPath id="cc-clip"><rect x="0" y="0" width="300" height="220"/></clipPath>
+              <g clip-path="url(#cc-clip)">
+                <path class="plan-street plan-street--minor" d="M172.3,-36.2 L190.1,-79.6 L191.0,-80.2 L193.3,-81.5 L234.2,-179.1 L235.7,-182.6" />
+                <path class="plan-street plan-street--minor" d="M61.0,44.8 L39.0,39.2 L35.6,38.2 L32.1,34.8" />
+                <path class="plan-street plan-street--minor" d="M230.6,78.6 L227.1,92.7" />
+                <path class="plan-street plan-street--minor" d="M228.8,67.0 L229.2,65.7 L231.0,59.8 L234.9,46.2" />
+                <path class="plan-street plan-street--minor" d="M227.1,92.7 L221.3,117.0 L221.0,118.4 L220.4,120.7 L220.1,122.1" />
+                <path class="plan-street plan-street--minor" d="M84.2,110.8 L89.0,98.3 L89.8,96.4" />
+                <path class="plan-street plan-street--minor" d="M82.2,116.0 L84.2,110.8" />
+                <path class="plan-street plan-street--minor" d="M234.9,46.2 L236.2,41.6 L237.0,38.4" />
+                <path class="plan-street plan-street--minor" d="M252.4,72.5 L255.0,64.8 L258.5,52.1 L259.8,46.9 L260.6,43.6" />
+                <path class="plan-street" d="M57.6,281.4 L58.8,278.3 L71.4,250.1 L73.7,244.7" />
+                <path class="plan-street" d="M175.5,151.1 L179.2,152.3 L202.5,160.2 L205.4,161.2 L208.8,162.3 L317.4,197.6" />
+                <path class="plan-street" d="M199.9,-213.0 L181.2,-173.6 L141.3,-88.4 L135.4,-76.1 L118.8,-39.1" />
+                <path class="plan-street" d="M122.8,266.8 L127.7,261.0 L143.1,225.9 L174.0,154.7 L175.5,151.1" />
+                <path class="plan-street" d="M73.7,244.7 L99.2,255.8 L119.4,264.6 L122.8,266.8" />
+                <path class="plan-street" d="M121.5,131.9 L115.8,130.1 L81.0,119.0 L15.2,97.8 L8.6,95.8" />
+                <path class="plan-street" d="M220.1,122.1 L218.5,126.4 L206.7,157.7 L205.4,161.2" />
+                <path class="plan-street" d="M172.3,-36.2 L186.2,-32.7 L196.9,-28.2 L235.4,-11.2" />
+                <path class="plan-street" d="M39.5,13.6 L33.6,30.4 L18.8,70.7 L10.5,91.6 L-5.0,127.5 L-22.7,170.1 L-44.3,221.4 L-53.9,244.3" />
+                <path class="plan-street" d="M174.6,239.6 L176.2,235.4 L204.5,163.6 L205.4,161.2" />
+                <path class="plan-street" d="M433.2,61.7 L382.4,51.1 L295.9,31.0 L226.3,15.8 L186.3,6.9 L153.8,-0.7" />
+                <path class="plan-street" d="M470.0,140.9 L355.5,107.7 L251.8,76.9 L85.9,27.4 L43.5,15.4 L39.5,13.6" />
+                <path class="plan-street" d="M326.4,48.8 L262.3,34.1 L219.7,24.3 L96.0,-2.9 L73.2,-10.5" />
+                <path class="plan-street" d="M235.4,-11.2 L261.4,1.5 L294.2,17.1 L296.9,16.9" />
+                <path class="plan-street" d="M118.8,-39.1 L137.3,-42.0 L154.5,-40.0 L172.3,-36.2" />
+                <path class="plan-street" d="M73.7,244.7 L107.1,167.4 L119.7,136.4 L121.5,131.9" />
+                <path class="plan-street" d="M416.0,174.6 L379.2,189.6 L331.1,207.6 L292.7,221.2 L206.1,252.1 L164.7,266.5 L127.1,279.4 L99.0,289.1 L89.1,292.7" />
+                <path class="plan-street" d="M12.0,96.7 L-1.1,129.3 L-20.4,177.1 L-40.0,223.1 L-50.4,245.6" />
+                <path class="plan-street" d="M440.8,74.9 L400.6,59.9 L370.0,53.0 L292.8,35.5 L190.9,12.6 L154.3,4.1 L86.8,-13.0 L66.6,-19.2" />
+                <path class="plan-street" d="M49.0,-12.4 L78.1,-5.2 L125.0,6.7 L232.1,31.1 L322.4,52.5 L396.9,69.6 L440.8,74.9" />
+                <path class="plan-street" d="M175.5,151.1 L171.2,149.6 L127.8,134.2 L121.5,131.9" />
+                <path id="ndn" class="plan-street plan-street--main" d="M16.2,77.1 L24.1,78.3 L91.3,92.6 L191.0,114.0 L214.3,120.5 L220.1,122.1 L252.1,128.4 L407.6,161.7" />
+                <text class="plan-label"><textPath href="#ndn" startOffset="3%"><tspan dy="-4">rue Notre-Dame-de-Nazareth</tspan></textPath></text>
+                <circle class="plan-ring" cx="150.0" cy="110.0" r="9" />
+                <circle class="plan-dot" cx="150.0" cy="110.0" r="4.2" />
+              </g>
+            </svg>
+          </div>
+          <div class="cc-info">
+            <div class="cc-head">
+              <p class="cc-title">le Point,</p>
+              <p class="cc-title">c'est le «&#8239;<em>divan d'Ivan</em>&#8239;»</p>
+              <span class="cc-rule"></span>
+              <p class="cc-addr">43&#8239;rue Notre-Dame-de-Nazareth<br />75003 Paris</p>
+              <a class="cc-carte" href="https://www.google.com/maps/search/43+rue+Notre-Dame-de-Nazareth+75003+Paris" target="_blank" rel="noopener">↗ carte</a>
+            </div>
+            <div class="cc-foot">
+              <a class="cc-mail" href="mailto:poste@ivanjoseph.fr">poste@ivanjoseph.fr</a>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section class="discover">
@@ -119,16 +170,18 @@ import Base from '../layouts/Base.astro';
 
       <nav class="foot">
         <a href="/archive">Parcourir l'archive →</a>
-        <a href="/">rencontre au hasard ↻</a>
+        <a href="/hasard" data-astro-reload>rencontre au hasard ↻</a>
       </nav>
     </main>
   </div>
 
-  <script is:inline>
+  <script is:inline data-astro-rerun>
+    (() => {
     const ev = document.getElementById('ea-video');
     if (ev) ev.addEventListener('click', () => {
       ev.outerHTML = '<div class="video video--playing"><iframe src="https://www.youtube-nocookie.com/embed/aGdme5n1ots?autoplay=1&rel=0&playsinline=1" title="Vidéo — Écrivanalyse" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>';
     });
+    })();
   </script>
 
   <style>
@@ -172,6 +225,39 @@ import Base from '../layouts/Base.astro';
     .cap { font-family: var(--font-mono); font-size: 11px; color: var(--color-muted);
       text-decoration: none; display: inline-block; }
     .cap:hover { color: var(--color-ocre); }
+
+    /* Le Point — one contact card: real OSM street plan (left) | address + contact (right).
+       The 'divan d'Ivan' wordplay is the card title. Uses tokens → inverts in dark mode. */
+    .contact-card { display: grid; grid-template-columns: 1.05fr 1fr; align-items: stretch;
+      margin: clamp(22px, 4vw, 30px) 0 0; border: 1px solid var(--color-hair);
+      border-radius: 12px; background: var(--color-paper-raised); overflow: hidden; }
+    @media (max-width: 620px) { .contact-card { grid-template-columns: 1fr; } }
+    .cc-map { display: flex; min-height: 208px; border-right: 1px solid var(--color-hair);
+      padding: clamp(10px, 1.6vw, 16px); }
+    @media (max-width: 620px) { .cc-map { border-right: 0; border-bottom: 1px solid var(--color-hair); } }
+    .cc-plan-svg { display: block; width: 100%; height: 100%; }
+    .plan-street { fill: none; stroke: var(--color-ink); stroke-width: 1.3; opacity: .3;
+      stroke-linecap: round; stroke-linejoin: round; }
+    .plan-street--minor { opacity: .15; stroke-width: 1; }
+    .plan-street--main { opacity: .6; stroke-width: 2; }
+    .plan-ring { fill: none; stroke: var(--color-ocre); stroke-width: 1.4; opacity: .5; }
+    .plan-dot { fill: var(--color-ocre); }
+    .plan-label { fill: var(--color-muted); font-family: var(--font-mono); font-size: 10px; letter-spacing: .02em; }
+
+    .cc-info { display: flex; flex-direction: column; justify-content: space-between;
+      gap: 22px; padding: clamp(22px, 3.2vw, 30px); }
+    .cc-title { font-family: var(--font-serif); font-style: italic; font-weight: 400;
+      font-size: clamp(18px, 2.3vw, 23px); line-height: 1.35; margin: 0; color: var(--color-ink); }
+    .cc-title em { font-style: normal; color: var(--color-ocre); }
+    .cc-rule { display: block; width: 28px; height: 1px; background: var(--color-hair); margin: 16px 0; }
+    .cc-addr { font-family: var(--font-mono); font-size: 13px; line-height: 1.7; color: var(--color-ink); margin: 0; }
+    .cc-carte { display: inline-block; margin-top: 12px; font-family: var(--font-mono); font-size: 11px;
+      color: var(--color-muted); text-decoration: none; border-bottom: 1px solid transparent; }
+    .cc-carte:hover { color: var(--color-ocre); border-bottom-color: var(--color-ocre); }
+    .cc-foot { border-top: 1px solid var(--color-hair); padding-top: 16px; }
+    .cc-mail { display: inline-block; font-family: var(--font-mono); font-size: 12.5px;
+      color: var(--color-ocre); text-decoration: none; border-bottom: 1px solid transparent; }
+    .cc-mail:hover { border-bottom-color: var(--color-ocre); }
 
     .hero { margin: clamp(28px, 5vw, 44px) 0; }
     .discover-row { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 48px); align-items: start; }

@@ -2,10 +2,10 @@
 // Shared top bar, rendered once from Base.astro so every page is identical.
 const path = (Astro.url.pathname.replace(/\/+$/, '') || '/');
 const links = [
-  { href: '/archive', label: "L'archive" },
-  { href: '/collections', label: 'Collections' },
-  { href: '/projet', label: 'Le projet' },
-  { href: '/recherche', label: 'Rechercher' },
+  { href: '/archive', label: "L'archive", reload: false },
+  { href: '/collections', label: 'Collections', reload: false },
+  { href: '/projet', label: 'Le projet', reload: false },
+  { href: '/recherche', label: 'Rechercher', reload: true },
 ];
 const active = (href: string) => path === href || path.startsWith(href + '/');
 ---
@@ -14,7 +14,7 @@ const active = (href: string) => path === href || path.startsWith(href + '/');
     <a class="brand" href="/">Écrivanalyse</a>
     <nav>
       {links.map((l) => (
-        <a href={l.href} class:list={['navlink', { active: active(l.href) }]}>{l.label}</a>
+        <a href={l.href} class:list={['navlink', { active: active(l.href) }]} {...(l.reload ? { 'data-astro-reload': true } : {})}>{l.label}</a>
       ))}
       <button class="iconbtn" onclick="toggleTheme()" title="Jour / Nuit" aria-label="Jour / Nuit">☾</button>
     </nav>

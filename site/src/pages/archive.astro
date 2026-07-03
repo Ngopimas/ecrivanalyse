@@ -23,7 +23,7 @@ const nEcri = all.filter((q) => q.data.mode === 'ecrivanalyse').length;
   <div class="wrap">
     <main>
       <h1>L'archive</h1>
-      <p class="lede">{total} quintes, {years[years.length - 1]} - {years[0]}.</p>
+      <p class="lede">{total} quintes de cinq lignes, cinq mots, cinq ponctuations, {years[years.length - 1]} - {years[0]}.</p>
 
       <div class="facets" role="group" aria-label="Filtrer par mode">
         <button class="facet on" data-f="all">tout · {total}</button>
@@ -52,21 +52,23 @@ const nEcri = all.filter((q) => q.data.mode === 'ecrivanalyse').length;
     </main>
   </div>
 
-  <script is:inline>
-    const btns = document.querySelectorAll('.facet');
-    btns.forEach((b) => b.addEventListener('click', () => {
-      btns.forEach((x) => x.classList.remove('on'));
-      b.classList.add('on');
-      const f = b.getAttribute('data-f');
-      document.querySelectorAll('.yr li').forEach((li) => {
-        const show = f === 'all' || li.getAttribute('data-mode') === f;
-        li.style.display = show ? '' : 'none';
-      });
-      document.querySelectorAll('.yr').forEach((s) => {
-        const any = [...s.querySelectorAll('li')].some((li) => li.style.display !== 'none');
-        s.style.display = any ? '' : 'none';
-      });
-    }));
+  <script is:inline data-astro-rerun>
+    (() => {
+      const btns = document.querySelectorAll('.facet');
+      btns.forEach((b) => b.addEventListener('click', () => {
+        btns.forEach((x) => x.classList.remove('on'));
+        b.classList.add('on');
+        const f = b.getAttribute('data-f');
+        document.querySelectorAll('.yr li').forEach((li) => {
+          const show = f === 'all' || li.getAttribute('data-mode') === f;
+          li.style.display = show ? '' : 'none';
+        });
+        document.querySelectorAll('.yr').forEach((s) => {
+          const any = [...s.querySelectorAll('li')].some((li) => li.style.display !== 'none');
+          s.style.display = any ? '' : 'none';
+        });
+      }));
+    })();
   </script>
 
   <style>

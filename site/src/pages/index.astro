@@ -40,8 +40,46 @@ const sample = all
     </footer>
   </div>
 
-  <script is:inline define:vars={{ sample }}>
+  <script type="application/json" id="ea-sample" set:html={JSON.stringify(sample)}></script>
+  <script is:inline data-astro-rerun>
+    (() => {
+    const el = document.getElementById('ea-sample');
+    const sample = el ? JSON.parse(el.textContent) : [];
+    const MIN = 20, MAX = 38, REF = 100;   // font-size floor / ceiling (px), measuring size
     let last = -1;
+
+    // Usable width = the stage's content box (its clientWidth minus its padding).
+    function availWidth() {
+      const stage = document.getElementById('stage');
+      if (!stage) return 0;
+      const cs = getComputedStyle(stage);
+      return stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    }
+    // Scale the quinte so its longest line fills the width on a single line —
+    // grows to use the space on wide screens. If that would fall below MIN px
+    // (tiny screen / very long line), let it wrap rather than overflow off-screen.
+    function fitCurrent() {
+      const poem = document.getElementById('q-poem');
+      if (!poem) return;
+      const lines = poem.querySelectorAll('.ln');
+      if (!lines.length) return;
+      const avail = availWidth();
+      if (!avail) return;
+      poem.style.whiteSpace = 'nowrap';
+      poem.style.fontSize = REF + 'px';                 // measure with every line overflowing, so scrollWidth is exact
+      let widest = 0;
+      lines.forEach((l) => { if (l.scrollWidth > widest) widest = l.scrollWidth; });
+      if (!widest) { poem.style.fontSize = ''; return; }
+      const ideal = REF * avail / widest;
+      if (ideal >= MIN) {
+        poem.style.whiteSpace = 'nowrap';
+        poem.style.fontSize = Math.min(MAX, ideal).toFixed(1) + 'px';
+      } else {
+        poem.style.whiteSpace = 'normal';               // graceful floor: wrap instead of overflow
+        poem.style.fontSize = MIN + 'px';
+      }
+    }
+
     window.drawQuinte = function () {
       if (!sample.length) return;
       let i;
@@ -59,16 +97,28 @@ const sample = all
       metaEl.style.animationDelay = (0.5 + q.l.length * 0.75 + 0.3).toFixed(2) + 's';
       metaEl.innerHTML = (q.who ? '<span class="oe">' + q.who + '</span><br>' : '')
         + (q.obj ? q.obj + '<br>' : '') + q.d + (q.coll ? ' · « ' + q.coll + ' »' : '');
+      fitCurrent();                                     // size the lines before the reveal runs
       const s = document.getElementById('stage');
       s.classList.remove('run'); void s.offsetWidth; s.classList.add('run');
     };
     drawQuinte();
+    // Re-fit once the serif is loaded (fallback metrics differ) and on resize.
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitCurrent);
+    if (!window.__eaFitResize) {
+      window.__eaFitResize = true;
+      let raf = 0;
+      window.addEventListener('resize', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(fitCurrent); });
+    }
+    })();
   </script>
 
   <style is:global>
     /* The quinte lines + meta are injected via innerHTML, so they don't get
        Astro's scoped attributes. Style them globally, by id. */
-    #q-poem .ln { display: block; clip-path: inset(0 100% 0 0); opacity: .14; }
+    /* each stored line = one visual line; a word is never split or hyphenated.
+       JS (fitCurrent) scales the font so the longest line fills the width. */
+    #q-poem .ln { display: block; white-space: nowrap; word-break: keep-all; hyphens: none;
+      clip-path: inset(0 100% 0 0); opacity: .14; }
     #stage.run #q-poem .ln { animation: eaInk .8s cubic-bezier(.4, .1, .2, 1) forwards; }
     @keyframes eaInk { from { clip-path: inset(0 100% 0 0); opacity: .14; } to { clip-path: inset(0 0 0 0); opacity: 1; } }
     #q-meta .oe { color: var(--color-ocre); }
@@ -102,8 +152,8 @@ const sample = all
       margin-bottom: 4px; }
     .desc { font-family: var(--font-serif); font-style: italic; color: var(--color-muted);
       font-size: clamp(14px, 1.9vw, 17px); margin-bottom: clamp(18px, 4vw, 32px); max-width: 34ch; }
-    .poem { font-family: var(--font-serif); font-style: italic; font-weight: 300; text-decoration: none;
-      font-size: clamp(22px, 3.6vw, 35px); line-height: 1.6; letter-spacing: -.01em; max-width: 24ch; }
+    .poem { display: block; font-family: var(--font-serif); font-style: italic; font-weight: 300;
+      text-decoration: none; font-size: clamp(22px, 3.6vw, 35px); line-height: 1.6; letter-spacing: -.01em; }
     .poem .ln { display: block; clip-path: inset(0 100% 0 0); opacity: .14; }
     .run .poem .ln { animation: ink .8s cubic-bezier(.4, .1, .2, 1) forwards; }
     @keyframes ink { from { clip-path: inset(0 100% 0 0); opacity: .14; } to { clip-path: inset(0 0 0 0); opacity: 1; } }

@@ -24,7 +24,9 @@
     --color-hair: #38322B;
     --color-ocre: #CE7659;
   }
-  html { color-scheme: light; }
+  /* reserve the scrollbar gutter so centered content (incl. the header) doesn't
+     shift horizontally between short pages and scrolling ones */
+  html { color-scheme: light; scrollbar-gutter: stable; }
   body {
     background: var(--color-paper);
     color: var(--color-ink);
@@ -42,4 +44,12 @@
   .wrap { width: 100%; }
   ::selection { background: color-mix(in srgb, var(--color-ocre) 22%, transparent); }
   a { color: inherit; }
+}
+
+/* Subtle page cross-fade for View Transitions (respects reduced-motion) */
+::view-transition-old(root),
+::view-transition-new(root) { animation-duration: 0.22s; animation-timing-function: ease; }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation: none !important; }
 }

@@ -4,6 +4,7 @@ import '@fontsource-variable/instrument-sans';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props { title?: string; description?: string; }
 const {
@@ -23,6 +24,7 @@ const {
     const t = localStorage.getItem('ea-theme');
     if (t) document.documentElement.dataset.theme = t;
   </script>
+  <ClientRouter />
 </head>
 <body class="min-h-screen">
   <Header />
@@ -34,6 +36,12 @@ const {
       r.dataset.theme = n;
       localStorage.setItem('ea-theme', n);
     };
+    // Re-apply the saved theme after each view transition (the incoming page
+    // ships with the default light theme in its <html>).
+    document.addEventListener('astro:after-swap', () => {
+      const t = localStorage.getItem('ea-theme');
+      if (t) document.documentElement.dataset.theme = t;
+    });
   </script>
 </body>
 </html>
