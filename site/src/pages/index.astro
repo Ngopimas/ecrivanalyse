@@ -67,13 +67,14 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
 <Base>
   <div class="ea-page">
     <main class="scene" id="scene" data-total={total} data-base={BASE} data-newest={newest ? newest.id : undefined}>
-      <!-- Every title in the corpus. aria-hidden + tabindex=-1: 3 000 links are a
-           texture for pointer users; /archive is the accessible archive. -->
+      <!-- Every title in the corpus, as pure texture (spans, not links: the
+           interactive windows are seconds long and a click means « skip »).
+           /archive is the browsable, accessible list. -->
       <div class="wall" id="wall" aria-hidden="true">
         {bands.map((band, b) => (
           <span class="wg" style={`--d:${bandDelay(b)}s`}>
             {band.map((w) => (
-              <a class="wt" href={u(`/quinte/${w.id}`)} tabindex="-1" data-id={w.s ? w.id : undefined}>{w.t}</a>
+              <span class="wt" data-id={w.s ? w.id : undefined}>{w.t}</span>
             ))}
           </span>
         ))}
@@ -278,7 +279,7 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
     // screens (few candidates visible) fall back to the nearest ones.
     function pickTarget() {
       if (target0) {
-        const el = wallEl.querySelector('a[data-id="' + target0 + '"]');
+        const el = wallEl.querySelector('[data-id="' + target0 + '"]');
         const item = byId[target0];
         target0 = 0;
         if (item) {
@@ -290,7 +291,7 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
           return { el: null, item };
         }
       }
-      const els = [...wallEl.querySelectorAll('a[data-id]')];
+      const els = [...wallEl.querySelectorAll('[data-id]')];
       if (!els.length) return { el: null, item: randomSample() };
       const sr = scene.getBoundingClientRect();
       const cx = sr.left + sr.width / 2, cy = sr.top + sr.height / 2;
@@ -456,7 +457,7 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
       if (!el) return;
       const sr = scene.getBoundingClientRect();
       if (onScreen(el.getBoundingClientRect(), sr)) return;
-      const cands = [...wallEl.querySelectorAll('a.wt')]
+      const cands = [...wallEl.querySelectorAll('.wt')]
         .filter((c) => c !== el && onScreen(c.getBoundingClientRect(), sr));
       const best = cands[Math.floor(Math.random() * cands.length)];
       if (!best) return;
@@ -479,8 +480,8 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
       }
       const per = Math.ceil(anchors.length / bandEls.length);
       bandEls.forEach((b, bi) => b.append(...anchors.slice(bi * per, (bi + 1) * per)));
-      seatVisible(wallEl.querySelector('a[data-id="' + NEWEST + '"]'));
-      if (S.current) seatVisible(wallEl.querySelector('a[href$="/quinte/' + S.current.id + '"]'));
+      seatVisible(wallEl.querySelector('[data-id="' + NEWEST + '"]'));
+      if (S.current) seatVisible(wallEl.querySelector('[data-id="' + S.current.id + '"]'));
     }
 
     // Jump to the finished composition — the skip for every phase.
@@ -563,13 +564,13 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
     // focal point. Runs at boot, before the wall inks in - no visible reflow.
     function seatTarget() {
       if (!target0) return;
-      const el = wallEl.querySelector('a[data-id="' + target0 + '"]');
+      const el = wallEl.querySelector('[data-id="' + target0 + '"]');
       if (!el) return;
       const sr = scene.getBoundingClientRect();
       if (onScreen(el.getBoundingClientRect(), sr)) return;
       const cx = sr.left + sr.width / 2, cy = sr.top + sr.height * 0.43;
       let best = null, bd = Infinity;
-      wallEl.querySelectorAll('a.wt').forEach((c) => {
+      wallEl.querySelectorAll('.wt').forEach((c) => {
         if (c === el) return;
         const r = c.getBoundingClientRect();
         if (!onScreen(r, sr)) return;
@@ -596,7 +597,7 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
       }
       seatTarget();
       // the newest quinte is always findable on the wall, targeted or not
-      if (!target0) seatVisible(wallEl.querySelector('a[data-id="' + NEWEST + '"]'));
+      if (!target0) seatVisible(wallEl.querySelector('[data-id="' + NEWEST + '"]'));
       S.state = 'wall';
       scene.dataset.state = 'wall';
       if (seen) scene.classList.add('fast');
@@ -685,7 +686,6 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
       mask-image: radial-gradient(112% 92% at 50% 43%, #000 42%, transparent 88%);
       -webkit-mask-image: radial-gradient(112% 92% at 50% 43%, #000 42%, transparent 88%);
     }
-    #scene[data-state="wall"] #wall { pointer-events: auto; }
     #wall .wg { opacity: 0; }
     #scene.ink .wg { animation: eaWg 1s ease-out both; animation-delay: var(--d); }
     #scene.fast .wg { animation-duration: .5s; animation-delay: calc(var(--d) * .35); }
@@ -699,7 +699,7 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
     /* uneven ink — the galley is hand-set, not a texture fill */
     #wall .wt:nth-child(2n) { color: color-mix(in srgb, var(--color-ink) 29%, transparent); }
     #wall .wt:nth-child(5n) { color: color-mix(in srgb, var(--color-ink) 40%, transparent); }
-    #wall .wt:hover, #wall .wt.lit { color: var(--color-ocre); }
+    #wall .wt.lit { color: var(--color-ocre); }
     /* the chosen title grows slightly toward the eye during the spot beat
        (transform only: no reflow in a 3 000-title galley) */
     #wall .wt.lit { transform: scale(1.3); transition: color .25s, transform .5s cubic-bezier(.2, .65, .25, 1); }

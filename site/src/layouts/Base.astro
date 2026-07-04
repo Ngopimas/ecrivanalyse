@@ -130,9 +130,9 @@ const ogImageUrl = new URL(u(ogImage), Astro.site);
       if (!(src instanceof Element)) return;
       const a = src.closest('a[href]');
       if (!a) return;
-      const t = a.querySelector('[data-vt-title]') || (a.matches('[data-vt-title], .wt') ? a : null);
+      const t = a.querySelector('[data-vt-title]') || (a.matches('[data-vt-title]') ? a : null);
       if (!t) return;
-      document.querySelectorAll('h1, [data-vt-title], #q-title, .wt.lit').forEach((el) => {
+      document.querySelectorAll('h1, [data-vt-title], #q-title').forEach((el) => {
         if (getComputedStyle(el).viewTransitionName === 'qtitle') el.style.viewTransitionName = 'none';
       });
       t.style.viewTransitionName = 'qtitle';
