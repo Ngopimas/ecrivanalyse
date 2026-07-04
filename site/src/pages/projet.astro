@@ -228,6 +228,9 @@ import { u } from '../lib/format';
     .cap { font-family: var(--font-mono); font-size: 11px; color: var(--color-muted);
       text-decoration: none; display: inline-block; }
     .cap:hover { color: var(--color-ocre); }
+    /* after the quote, the link is its source line: seated under the quote's
+       text column (border 2px + padding 20px), with a little more air */
+    blockquote + .cap { margin: 6px 0 0 22px; }
 
     /* Le Point — one contact card: real OSM street plan (left) | address + contact (right).
        The 'divan d'Ivan' wordplay is the card title. Uses tokens → inverts in dark mode. */
