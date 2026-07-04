@@ -21,7 +21,10 @@ reconstruction moderne.
   la quinte) ;
 - **97 textes** : les proses de *La petite fille à côté*, *La danseuse de vélo* et
   le feuilleton *Fluides ou Le singulier pluriel* ;
-- 13 pages de plomberie SPIP, écartées (leur substance vit sur `/projet`).
+- 11 pages documentaires, republiées sur `/ecrivanalyse` (la présentation de la
+  pratique par Ivan Joseph, en cinq chapitres) et `/editions` (ÉOK, les livres,
+  le recueil *Faire une quinte de tout*) ; seules les 2 pages de contact restent
+  écartées (le contact vit sur `/projet`).
 
 ## Structure du dépôt
 

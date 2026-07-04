@@ -1,8 +1,9 @@
 ---
-import { readFileSync } from 'node:fs';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import { u, slug, BASE } from '../lib/format';
+import quints from '../../../ecrivanalyse-backup/data/quintesses.json';
+import legacy from '../data/legacy-pages.json';
 // The 404 borrows the quintesse status vocabulary (open and playful, DESIGN.md):
 // a missing page is a quintesse whose fate is unknown.
 //
@@ -10,8 +11,6 @@ import { u, slug, BASE } from '../lib/format';
 // spip.php?articleN / rubriqueN. Article ids were kept identical, so the
 // inline script forwards them (quinte, else texte); rubriques map to the
 // collection slugs embedded below.
-const quints = JSON.parse(readFileSync(
-  new URL('../../../ecrivanalyse-backup/data/quintesses.json', import.meta.url), 'utf8'));
 const known = new Set([
   ...(await getCollection('quintes')).map((q) => slug(q.data.collection)),
   ...(await getCollection('textes')).map((t) => slug(t.data.collection)),
@@ -22,6 +21,11 @@ for (const q of quints) {
   const s = slug(q.collection);
   if (known.has(s)) rubriqueMap[q.rubrique_id] = s;
 }
+// the documentary pages have no /quinte or /texte page: send their old ids
+// to their sections on /ecrivanalyse and /editions
+const articleMap: Record<string, string> = { 14: '/editions' };
+for (const id of ['123', '124', '125', '127', '797']) articleMap[id] = '/editions#' + slug(legacy[id].title);
+for (const id of ['129', '130', '131', '132', '134']) articleMap[id] = '/ecrivanalyse#' + slug(legacy[id].title);
 ---
 <Base title="Page introuvable - Écrivanalyse">
   <div class="wrap">
@@ -40,7 +44,7 @@ for (const q of quints) {
     </main>
   </div>
 
-  <script type="application/json" id="ea-legacy" data-base={BASE} set:html={JSON.stringify(rubriqueMap)}></script>
+  <script type="application/json" id="ea-legacy" data-base={BASE} set:html={JSON.stringify({ r: rubriqueMap, a: articleMap })}></script>
   <script is:inline>
     (function () {
       // old SPIP addresses: spip.php?article154, ?rubrique54, ?auteur19,
@@ -48,11 +52,15 @@ for (const q of quints) {
       var el = document.getElementById('ea-legacy');
       if (!el) return;
       var base = el.dataset.base || '';
+      var data = { r: {}, a: {} };
+      try { data = JSON.parse(el.textContent); } catch (e) {}
       var q = location.pathname + location.search;
       var m = /article=?(\d+)/.exec(q);
       if (m) {
         var id = m[1];
-        // same ids as the old site: try the quinte page, then the texte
+        // documentary pages first, else same ids as the old site:
+        // try the quinte page, then the texte
+        if (data.a[id]) { location.replace(base + data.a[id]); return; }
         fetch(base + '/quinte/' + id + '/', { method: 'HEAD' }).then(function (r) {
           if (r.ok) { location.replace(base + '/quinte/' + id); return; }
           return fetch(base + '/texte/' + id + '/', { method: 'HEAD' }).then(function (r2) {
@@ -63,9 +71,7 @@ for (const q of quints) {
       }
       m = /rubrique(\d+)/.exec(q);
       if (m) {
-        var map = {};
-        try { map = JSON.parse(el.textContent); } catch (e) {}
-        if (map[m[1]]) location.replace(base + '/collection/' + map[m[1]]);
+        if (data.r[m[1]]) location.replace(base + '/collection/' + data.r[m[1]]);
         return;
       }
       if (/auteur\d+/.test(q)) { location.replace(base + '/projet'); return; }

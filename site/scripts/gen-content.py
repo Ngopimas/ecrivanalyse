@@ -40,7 +40,7 @@ IMAGES = {
           "Mise au Point par M. D. · Poseur : I. J."),
 }
 
-# rubriques that are site plumbing, not œuvre — their substance lives in /projet
+# rubriques that are site plumbing, not œuvre — kept out of the corpus
 PLUMBING = {
     "ÉOK",
     "Qu’est-ce que l’écrivanalyse ?",
@@ -48,6 +48,13 @@ PLUMBING = {
     "a.- Des Éditions Omar Kaczmar d’hier...",
     "b.- ... aux Éditions Œuvres Komplètes d’aujourd’hui",
 }
+
+# ...but Ivan's own documentary pages among them feed /ecrivanalyse (his
+# five-chapter presentation of the practice) and /editions (ÉOK, the books,
+# the recueil « Faire une quinte de tout » the ghost pages point to).
+# Extracted to src/data/legacy-pages.json. Only the contact forms stay out.
+DOCS = {14, 123, 124, 125, 127, 129, 130, 131, 132, 134, 797}
+DATA_OUT = os.path.join(ROOT, "site", "src", "data", "legacy-pages.json")
 
 ROLE_RE = re.compile(
     r"(P\(au\)seuse|P\(au\)seur|Pauseuse|Pauseur|Analisante|Analisant)\s*:", re.I)
@@ -219,12 +226,21 @@ def main():
                   "quintesse_num", "status", "collection", "recueil", "date", "author"):
             q[k] = q[k] or ""
 
-    files_q, files_t = {}, {}
+    files_q, files_t, docs = {}, {}, {}
     stats = {"quinte": 0, "hybride": 0, "ghost": 0, "texte": 0, "plumbing": 0, "vide": 0}
 
     for q in quints:
         if q["collection"].replace("\xa0", " ") in PLUMBING:
             stats["plumbing"] += 1
+            if q["id"] in DOCS:
+                bl = blocks(os.path.join(RAW, f"article{q['id']}.html"))
+                docs[str(q["id"])] = {
+                    "title": q["title"],
+                    "soustitre": q["soustitre"],
+                    "collection": q["collection"],
+                    "date": q["date"],
+                    "text": "\n\n".join("\n".join(lines) for _, lines in bl),
+                }
             continue
         raw = os.path.join(RAW, f"article{q['id']}.html")
         bl = blocks(raw)
@@ -289,8 +305,13 @@ def main():
             if old != content:
                 open(p, "w").write(content)
 
+    os.makedirs(os.path.dirname(DATA_OUT), exist_ok=True)
+    with open(DATA_OUT, "w") as fh:
+        json.dump(docs, fh, ensure_ascii=False, indent=1)
+        fh.write("\n")
+
     print({k: v for k, v in stats.items()})
-    print(f"quintes: {len(files_q)}  textes: {len(files_t)}")
+    print(f"quintes: {len(files_q)}  textes: {len(files_t)}  pages doc: {len(docs)}")
     return 0
 
 

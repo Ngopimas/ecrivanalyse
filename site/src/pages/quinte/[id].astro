@@ -42,11 +42,14 @@ const searchExtra = [q.title, q.soustitre, ...(q.lines ?? []), prosePlain(q.pros
 // year · quintesse number, exposed to Pagefind — the search results' mono column
 const rMeta = [q.date ? String(q.date).slice(0, 4) : null, q.quintesse_num].filter(Boolean).join(' · ');
 
-// the ghost note, when the quinte itself was never put online
+// the ghost note, when the quinte itself was never put online. The recueil
+// « Faire une quinte de tout » has its presentation on /editions - link it.
 const ghost = q.lines.length === 0;
 const ghostNote = ghost
   ? `La quinte n'a pas été mise en ligne${q.recueil ? ` : elle se lit dans le recueil « ${q.recueil} »` : ''}.`
   : '';
+const recueilHref = ghost && q.recueil && slug(q.recueil) === 'faire-une-quinte-de-tout'
+  ? u('/editions#faire-une-quinte-de-tout') : '';
 
 // Hybrid pages (154): the quinte sits INSIDE the prose, where the original
 // placed it (the <quinte> marker set by gen-content.py; defaults to the end),
@@ -82,7 +85,11 @@ const inProse = Boolean(q.prose);
           {q.lines.map((l, i) => <><span class="ln" style={`--i:${i}`}>{l}</span>{' '}</>)}
         </div>
       ) : (
-        <p class="ghost" transition:name="quinte" data-pagefind-meta={rMeta ? `r:${rMeta}` : undefined}>{ghostNote}</p>
+        <p class="ghost" transition:name="quinte" data-pagefind-meta={rMeta ? `r:${rMeta}` : undefined}>
+          {recueilHref
+            ? <>La quinte n'a pas été mise en ligne&#8239;: elle se lit dans le recueil <a href={recueilHref}>«&#8239;{q.recueil}&#8239;»</a>.</>
+            : ghostNote}
+        </p>
       )}
 
       {proseAfter && <div class="prose after" set:html={proseHtml(proseAfter)} />}
@@ -189,6 +196,8 @@ const inProse = Boolean(q.prose);
     /* the quinte was never put online: say so, in the reading voice */
     .ghost { font-family: var(--font-serif); font-style: italic; font-size: clamp(17px, 2.4vw, 20px);
       line-height: 1.7; color: var(--color-muted); margin: 44px 0 52px; }
+    .ghost a { color: var(--color-ocre); text-decoration: none; }
+    .ghost a:hover { text-decoration: underline; text-underline-offset: 3px; }
     .quinte { font-family: var(--font-serif); font-weight: 300; font-size: clamp(21px, 3vw, 28px);
       line-height: 1.72; margin: 36px 0 44px; }
     /* entrance for direct arrivals only (shared link, refresh): the lines ink in
