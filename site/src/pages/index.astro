@@ -52,13 +52,13 @@ const wall = all
   .map((v) => ({ v, k: rnd() }))
   .sort((a, b) => a.k - b.k)
   .map(({ v }) => v);
-// the newest quinte sits at the visual center of the wall, so the
-// returning-visitor dive can always reach it (the camera needs its title
-// inside the viewport)
+// The newest quinte sits in the first rows of the galley: the wall is one
+// viewport tall (the rest is clipped), so only an early seat is visible on
+// every screen - the first-load dive needs its title on screen to fly from.
 const ni = newest ? wall.findIndex((v) => v.id === newest.id) : -1;
 if (ni >= 0) {
-  const mid = Math.floor(wall.length / 2);
-  [wall[ni], wall[mid]] = [wall[mid], wall[ni]];
+  const seat = Math.min(64, wall.length - 1);
+  [wall[ni], wall[seat]] = [wall[seat], wall[ni]];
 }
 const BANDS = 16;
 const perBand = Math.ceil(wall.length / BANDS);
@@ -266,7 +266,18 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
         const el = wallEl.querySelector('a[data-id="' + target0 + '"]');
         const item = byId[target0];
         target0 = 0;
-        if (el && item) { S.last = item; return { el, item }; }
+        if (item) {
+          S.last = item;
+          if (el) {
+            // only fly from the wall title if it is actually on screen;
+            // otherwise land on the newest quinte without the flight
+            const sr = scene.getBoundingClientRect();
+            const r = el.getBoundingClientRect();
+            if (r.width > 0 && r.top > sr.top + 50 && r.bottom < sr.bottom - 70
+              && r.left > sr.left + 24 && r.right < sr.right - 24) return { el, item };
+          }
+          return { el: null, item };
+        }
       }
       const els = [...wallEl.querySelectorAll('a[data-id]')];
       if (!els.length) return { el: null, item: randomSample() };
@@ -477,6 +488,38 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
     }
     function wake() { document.body.classList.remove('ea-still'); }
 
+    // Is the wall title fully inside the scene (same margins as pickTarget)?
+    function onScreen(r, sr) {
+      return r.width > 0 && r.top > sr.top + 50 && r.bottom < sr.bottom - 70
+        && r.left > sr.left + 24 && r.right < sr.right - 24;
+    }
+
+    // The newest quinte's wall seat is chosen at build time, but the galley
+    // wraps differently on every viewport and bleeds past the edges: if its
+    // title ended up offscreen, trade places with the title nearest the
+    // focal point. Runs at boot, before the wall inks in - no visible reflow.
+    function seatTarget() {
+      if (!target0) return;
+      const el = wallEl.querySelector('a[data-id="' + target0 + '"]');
+      if (!el) return;
+      const sr = scene.getBoundingClientRect();
+      if (onScreen(el.getBoundingClientRect(), sr)) return;
+      const cx = sr.left + sr.width / 2, cy = sr.top + sr.height * 0.43;
+      let best = null, bd = Infinity;
+      wallEl.querySelectorAll('a.wt').forEach((c) => {
+        if (c === el) return;
+        const r = c.getBoundingClientRect();
+        if (!onScreen(r, sr)) return;
+        const d = Math.hypot(r.left + r.width / 2 - cx, r.top + r.height / 2 - cy);
+        if (d < bd) { bd = d; best = c; }
+      });
+      if (!best) return;
+      const ph = document.createElement('span');
+      best.replaceWith(ph);
+      el.replaceWith(best);
+      ph.replaceWith(el);
+    }
+
     function boot() {
       if (reduced) {
         wallEl.style.display = 'none';
@@ -488,6 +531,7 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
         armStill();
         return;
       }
+      seatTarget();
       S.state = 'wall';
       scene.dataset.state = 'wall';
       if (seen) scene.classList.add('fast');
