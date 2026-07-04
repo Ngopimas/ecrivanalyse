@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { u } from '../lib/format';
 ---
 <Base title="Le projet - Écrivanalyse" description="L'écrivanalyse d'Ivan Joseph : la quinte, la quintesse, le p(au)seur et l'analisant.">
   <div class="wrap">
@@ -12,7 +13,7 @@ import Base from '../layouts/Base.astro';
       </p>
 
       <figure class="hero">
-        <img src="/media/ivan-de-dos.png" alt="Ivan Joseph dans une rue de Paris" />
+        <img src={u('/media/ivan-de-dos.png')} alt="Ivan Joseph dans une rue de Paris" />
         <figcaption>Ivan Joseph, au fil des rencontres.</figcaption>
       </figure>
 
@@ -47,7 +48,7 @@ import Base from '../layouts/Base.astro';
           <span>à se nommer à point…</span>
           <span>se lover où l'on sème…</span>
         </div>
-        <a class="cap" href="/quinte/2097">«&#8239;Le je à ce feu&#8239;», Quintesse XIX →</a>
+        <a class="cap" href={u('/quinte/2097')}>«&#8239;Le je à ce feu&#8239;», Quintesse XIX →</a>
       </section>
 
       <section class="split" id="quintesse">
@@ -61,7 +62,7 @@ import Base from '../layouts/Base.astro';
           </p>
         </div>
         <figure>
-          <img src="/media/quintesse-en-cours.jpg" alt="Une quintesse en cours d'écriture" loading="lazy" decoding="async" />
+          <img src={u('/media/quintesse-en-cours.jpg')} alt="Une quintesse en cours d'écriture" loading="lazy" decoding="async" />
           <figcaption>Une quintesse en cours.</figcaption>
         </figure>
       </section>
@@ -70,12 +71,12 @@ import Base from '../layouts/Base.astro';
         <h2>Deux façons de faire</h2>
         <div class="two">
           <figure>
-            <img src="/media/pince-a-linge.png" alt="Quintesses suspendues" loading="lazy" decoding="async" />
+            <img src={u('/media/pince-a-linge.png')} alt="Quintesses suspendues" loading="lazy" decoding="async" />
             <figcaption><strong>Les séances de p(au)se</strong> - avec un <em>p(au)seur</em> ou une
               <em>p(au)seuse</em>, souvent une personne croisée par hasard, qui pose le temps d'une quinte.</figcaption>
           </figure>
           <figure>
-            <img src="/media/annick-yourte.jpg" alt="Annick Lebédyk" loading="lazy" decoding="async" />
+            <img src={u('/media/annick-yourte.jpg')} alt="Annick Lebédyk" loading="lazy" decoding="async" />
             <figcaption><strong>L'écrivanalyse suivie</strong> - avec un·e <em>analisant·e</em> régulier·e,
               au fil des séances. C'est le cas du recueil «&#8239;Se donner à sa main&#8239;», composé avec Annick Lebédyk.</figcaption>
           </figure>
@@ -169,8 +170,8 @@ import Base from '../layouts/Base.astro';
       </section>
 
       <nav class="foot">
-        <a href="/archive">Parcourir l'archive →</a>
-        <a href="/hasard" data-astro-reload>rencontre au hasard ↻</a>
+        <a href={u('/archive')}>Parcourir l'archive →</a>
+        <a href={u('/hasard')} data-astro-reload>rencontre au hasard ↻</a>
       </nav>
     </main>
   </div>

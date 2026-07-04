@@ -1,6 +1,8 @@
 ---
+import { u, BASE } from '../lib/format';
 // Shared top bar, rendered once from Base.astro so every page is identical.
-const path = (Astro.url.pathname.replace(/\/+$/, '') || '/');
+// Compare base-relative paths so `active` works at the root and under a subpath.
+const path = (Astro.url.pathname.slice(BASE.length).replace(/\/+$/, '') || '/');
 const links = [
   { href: '/archive', label: "L'archive", reload: false },
   { href: '/collections', label: 'Collections', reload: false },
@@ -11,10 +13,10 @@ const active = (href: string) => path === href || path.startsWith(href + '/');
 ---
 <header class="site-header">
   <div class="bar">
-    <a class="brand" href="/">Écrivanalyse</a>
+    <a class="brand" href={u('/')}>Écrivanalyse</a>
     <nav>
       {links.map((l) => (
-        <a href={l.href} class:list={['navlink', { active: active(l.href) }]} {...(l.reload ? { 'data-astro-reload': true } : {})}>{l.label}</a>
+        <a href={u(l.href)} class:list={['navlink', { active: active(l.href) }]} {...(l.reload ? { 'data-astro-reload': true } : {})}>{l.label}</a>
       ))}
       <button class="iconbtn" onclick="toggleTheme()" title="Jour / Nuit" aria-label="Jour / Nuit"><span class="tomoon">☾</span><span class="tosun">☀︎</span></button>
     </nav>

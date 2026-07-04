@@ -1,3 +1,12 @@
+/**
+ * Base-aware URL. The site lives at the domain root (ecrivanalyse.net) but
+ * also under a subpath on GitHub Pages (ngopimas.github.io/ecrivanalyse/):
+ * every hand-written root-relative URL must pass through u(). BASE is '' at
+ * the root, '/ecrivanalyse' under the subpath (BASE_PATH in astro.config).
+ */
+export const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+export const u = (path: string): string => BASE + path;
+
 const MONTHS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet',
   'août', 'septembre', 'octobre', 'novembre', 'décembre'];
 

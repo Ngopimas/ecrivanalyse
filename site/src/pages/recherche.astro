@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { BASE } from '../lib/format';
 // Custom renderer on the Pagefind JS API (the default PagefindUI is dropped):
 // results are set in the archive's design language — whole row clickable,
 // serif title (with the qtitle morph), italic excerpt, mono year·numéro column.
@@ -17,7 +18,7 @@ import Base from '../layouts/Base.astro';
       </form>
 
       <p class="count" id="count" aria-live="polite"></p>
-      <div id="hits"></div>
+      <div id="hits" data-base={BASE}></div>
       <button class="more" id="more" type="button" hidden>voir plus</button>
 
       <noscript><p class="lede">La recherche nécessite JavaScript.</p></noscript>
@@ -30,9 +31,16 @@ import Base from '../layouts/Base.astro';
     const count = document.getElementById('count');
     const more = document.getElementById('more');
     if (input) {
+      const base = hits.dataset.base || '';
       // one Pagefind instance across view transitions (a second init would
       // spawn duplicate workers)
-      window.__pf ??= await import('/pagefind/pagefind.js').then((p) => (p.init(), p));
+      window.__pf ??= await import(`${base}/pagefind/pagefind.js`).then(async (p) => {
+        p.init();
+        // result URLs are recorded root-relative; under a subpath deploy
+        // (GitHub Pages) they need the base prefixed back on
+        if (base) await p.options({ baseUrl: base + '/' });
+        return p;
+      });
       const pf = window.__pf;
       const PAGE = 20;
       const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -66,7 +74,7 @@ import Base from '../layouts/Base.astro';
         results = res.results; shown = 0; hits.innerHTML = '';
         const quoted = `«${NNBSP}${esc(q)}${NNBSP}»`;
         if (!results.length) {
-          count.innerHTML = `rien pour ${quoted} - <a href="/hasard" data-astro-reload>tenter une rencontre au hasard&nbsp;↻</a>`;
+          count.innerHTML = `rien pour ${quoted} - <a href="${base}/hasard" data-astro-reload>tenter une rencontre au hasard&nbsp;↻</a>`;
           more.hidden = true;
           return;
         }

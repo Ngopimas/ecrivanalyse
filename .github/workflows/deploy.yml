@@ -29,8 +29,14 @@ jobs:
           cache-dependency-path: site/package-lock.json
       - run: npm ci
         working-directory: site
+      # BASE_PATH/SITE_URL: the site lives under /ecrivanalyse/ on GitHub Pages.
+      # When the custom domain is attached, delete these two env lines (and set
+      # the domain in the Pages settings) - the defaults take over.
       - run: npm run build
         working-directory: site
+        env:
+          BASE_PATH: /ecrivanalyse/
+          SITE_URL: https://ngopimas.github.io
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site/dist

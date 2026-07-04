@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { BASE } from '../lib/format';
 
 // Every quinte whose text is readable online: the ghost séance records
 // (lines: []) have pages too, but a chance encounter must land on a quinte.
@@ -14,18 +15,20 @@ const ids = (await getCollection('quintes'))
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
     <title>Une quinte au hasard…</title>
-    <script type="application/json" id="ea-ids" set:html={JSON.stringify(ids)}></script>
+    <script type="application/json" id="ea-ids" data-base={BASE} set:html={JSON.stringify(ids)}></script>
     <script is:inline>
       (function () {
+        var el = document.getElementById('ea-ids');
+        var base = el.dataset.base || '';
         try {
-          var ids = JSON.parse(document.getElementById('ea-ids').textContent);
+          var ids = JSON.parse(el.textContent);
           if (ids && ids.length) {
             // replace() so /hasard never lands in history — Back returns where you were.
-            location.replace('/quinte/' + ids[Math.floor(Math.random() * ids.length)]);
+            location.replace(base + '/quinte/' + ids[Math.floor(Math.random() * ids.length)]);
             return;
           }
         } catch (e) {}
-        location.replace('/archive');
+        location.replace(base + '/archive');
       })();
     </script>
     <style>
@@ -37,6 +40,6 @@ const ids = (await getCollection('quintes'))
   </head>
   <body>
     <p>une quinte au hasard…</p>
-    <noscript><a href="/archive">Parcourir l'archive</a></noscript>
+    <noscript><a href={BASE + '/archive'}>Parcourir l'archive</a></noscript>
   </body>
 </html>

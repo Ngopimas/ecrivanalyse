@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import { frDate, participant, quintesseObject, modeLabel, slug, proseHtml, prosePlain } from '../../lib/format';
+import { frDate, participant, quintesseObject, modeLabel, slug, proseHtml, prosePlain, u } from '../../lib/format';
 
 export async function getStaticPaths() {
   // lines can be empty: a "ghost" séance record whose quinte was never
@@ -62,7 +62,7 @@ const ghostNote = ghost
       <!-- data-pagefind-ignore: the collection is indexed via .pf-extra; leaving
            the breadcrumb indexable made every excerpt start with its label -->
       <div class="breadcrumb" data-pagefind-ignore>
-        {q.collection && <a class="col" href={`/collection/${slug(q.collection)}`}>«&#8239;{q.collection}&#8239;»</a>}
+        {q.collection && <a class="col" href={u(`/collection/${slug(q.collection)}`)}>«&#8239;{q.collection}&#8239;»</a>}
         {modeLabel(q.mode) && <span> · {modeLabel(q.mode)}</span>}
       </div>
 
@@ -84,7 +84,7 @@ const ghostNote = ghost
         <div class="byline">{q.author} · {frDate(q.date)}</div>
         <div class="obj-actions">
           <button class="share" type="button" data-title={q.title}>partager</button>
-          <a class="gloss" href="/projet#quintesse">qu'est-ce qu'une quintesse&#8239;?</a>
+          <a class="gloss" href={u('/projet#quintesse')}>qu'est-ce qu'une quintesse&#8239;?</a>
         </div>
       </div>
 
@@ -104,7 +104,7 @@ const ghostNote = ghost
       <section class="repondre">
         <h2>répondre</h2>
         <p class="merci" id="merci">Merci. Votre message a été envoyé&nbsp;: il sera publié après lecture.</p>
-        <form method="post" action="/api/comment">
+        <form method="post" action={u('/api/comment')}>
           <input type="hidden" name="quinte" value={qid} />
           <input type="hidden" name="title" value={q.title} />
           <p class="hp" aria-hidden="true">
@@ -122,9 +122,9 @@ const ghostNote = ghost
       </section>
 
       <nav class="pager">
-        {prev ? <a rel="prev" href={`/quinte/${prev}`}>← précédente</a> : <span></span>}
-        <a class="hasard" href="/hasard" data-astro-reload>rencontre au hasard ↻</a>
-        {next ? <a rel="next" href={`/quinte/${next}`}>suivante →</a> : <span></span>}
+        {prev ? <a rel="prev" href={u(`/quinte/${prev}`)}>← précédente</a> : <span></span>}
+        <a class="hasard" href={u('/hasard')} data-astro-reload>rencontre au hasard ↻</a>
+        {next ? <a rel="next" href={u(`/quinte/${next}`)}>suivante →</a> : <span></span>}
       </nav>
 
       <div class="pf-extra" aria-hidden="true">{searchExtra}</div>

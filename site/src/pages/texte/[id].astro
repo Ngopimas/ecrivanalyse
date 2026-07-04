@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import { frDate, slug, proseHtml, prosePlain } from '../../lib/format';
+import { frDate, slug, proseHtml, prosePlain, u } from '../../lib/format';
 
 // The non-quinte œuvre: prose narratives, verse texts, Fluides chapters.
 // Reading page — same design language as the quinte page, but the body is
@@ -52,7 +52,7 @@ const rMeta = [t.date ? String(t.date).slice(0, 4) : null, 'texte'].filter(Boole
       <h1 transition:name="qtitle">{t.title}</h1>
       {t.soustitre && <p class="desc">{t.soustitre}</p>}
       <div class="breadcrumb" data-pagefind-ignore>
-        {t.collection && <a class="col" href={`/collection/${slug(t.collection)}`}>«&#8239;{t.collection}&#8239;»</a>}
+        {t.collection && <a class="col" href={u(`/collection/${slug(t.collection)}`)}>«&#8239;{t.collection}&#8239;»</a>}
         <span> · texte</span>
       </div>
 
@@ -81,7 +81,7 @@ const rMeta = [t.date ? String(t.date).slice(0, 4) : null, 'texte'].filter(Boole
       <section class="repondre">
         <h2>répondre</h2>
         <p class="merci" id="merci">Merci. Votre message a été envoyé&nbsp;: il sera publié après lecture.</p>
-        <form method="post" action="/api/comment">
+        <form method="post" action={u('/api/comment')}>
           <input type="hidden" name="quinte" value={tid} />
           <input type="hidden" name="kind" value="texte" />
           <input type="hidden" name="title" value={t.title} />
@@ -100,9 +100,9 @@ const rMeta = [t.date ? String(t.date).slice(0, 4) : null, 'texte'].filter(Boole
       </section>
 
       <nav class="pager">
-        {prev ? <a rel="prev" href={`/texte/${prev}`}>← précédent</a> : <span></span>}
-        {t.collection && <a class="serie" href={`/collection/${slug(t.collection)}`}>toute la série</a>}
-        {next ? <a rel="next" href={`/texte/${next}`}>suivant →</a> : <span></span>}
+        {prev ? <a rel="prev" href={u(`/texte/${prev}`)}>← précédent</a> : <span></span>}
+        {t.collection && <a class="serie" href={u(`/collection/${slug(t.collection)}`)}>toute la série</a>}
+        {next ? <a rel="next" href={u(`/texte/${next}`)}>suivant →</a> : <span></span>}
       </nav>
 
       <div class="pf-extra" aria-hidden="true">{searchExtra}</div>

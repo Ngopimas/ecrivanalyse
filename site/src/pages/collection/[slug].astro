@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import { slug, roleLabel, modeLabel, year } from '../../lib/format';
+import { slug, roleLabel, modeLabel, year, u } from '../../lib/format';
 
 export async function getStaticPaths() {
   // quintes (incl. the ghost séance records) and textes, one merged list per série
@@ -37,11 +37,11 @@ const countLabel = [nQ ? `${nQ} quinte${nQ > 1 ? 's' : ''}` : '', nT ? `${nT} te
   <div class="wrap">
     <main>
       <h1 transition:name="qtitle">«&#8239;{name}&#8239;»</h1>
-      <div class="breadcrumb"><a href="/collections">← Collections</a>{modeLabel(mode) && <span> · {modeLabel(mode)}</span>} · {countLabel}</div>
+      <div class="breadcrumb"><a href={u('/collections')}>← Collections</a>{modeLabel(mode) && <span> · {modeLabel(mode)}</span>} · {countLabel}</div>
       <ul>
         {items.map((q) => (
           <li>
-            <a href={`/${q.kind}/${q.id}`}>
+            <a href={u(`/${q.kind}/${q.id}`)}>
               <span class="t" data-vt-title>{q.data.title}</span>
               <span class="r">{year(q.data.date)}{q.kind === 'texte' ? ' · texte' : ''}{q.data.quintesse_num ? ` · ${q.data.quintesse_num}` : ''}</span>
             </a>

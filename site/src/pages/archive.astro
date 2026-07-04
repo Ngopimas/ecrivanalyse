@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { year, roleLabel } from '../lib/format';
+import { year, roleLabel, u } from '../lib/format';
 
 // quintes (incl. the ghost séance records, which have a page but no lines
 // online) and the textes, one chronology
@@ -50,7 +50,7 @@ const nEcri = all.filter((q) => q.kind === 'quinte' && q.data.mode === 'ecrivana
           <ul>
             {byYear.get(y)!.map((q) => (
               <li data-mode={q.kind === 'texte' ? 'texte' : (q.data.mode || 'none')}>
-                <a href={`/${q.kind}/${q.id}`}>
+                <a href={u(`/${q.kind}/${q.id}`)}>
                   <span class="entry">
                     <span class="t" data-vt-title>{q.data.title}</span>
                     {q.data.soustitre && <span class="d">{q.data.soustitre}</span>}

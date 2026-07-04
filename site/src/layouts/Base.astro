@@ -13,6 +13,7 @@ import spectralItal from '@fontsource/spectral/files/spectral-latin-400-italic.w
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import { ClientRouter } from 'astro:transitions';
+import { u } from '../lib/format';
 
 interface Props {
   title?: string;
@@ -30,7 +31,7 @@ const {
   ogType = 'website',
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const ogImageUrl = new URL(ogImage, Astro.site);
+const ogImageUrl = new URL(u(ogImage), Astro.site);
 ---
 <!doctype html>
 <html lang="fr" data-theme="light">
@@ -53,10 +54,10 @@ const ogImageUrl = new URL(ogImage, Astro.site);
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content={ogImageAlt} />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="sitemap" href="/sitemap-index.xml" />
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="icon" href="/favicon-96.png" type="image/png" sizes="96x96" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="sitemap" href={u('/sitemap-index.xml')} />
+  <link rel="icon" href={u('/favicon.svg')} type="image/svg+xml" />
+  <link rel="icon" href={u('/favicon-96.png')} type="image/png" sizes="96x96" />
+  <link rel="apple-touch-icon" href={u('/apple-touch-icon.png')} />
   <link rel="preload" as="font" type="font/woff2" href={spectralWght} crossorigin />
   <link rel="preload" as="font" type="font/woff2" href={spectralItal} crossorigin />
   <script is:inline>

@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { u } from '../lib/format';
 // The 404 borrows the quintesse status vocabulary (open and playful, DESIGN.md):
 // a missing page is a quintesse whose fate is unknown.
 ---
@@ -13,9 +14,9 @@ import Base from '../layouts/Base.astro';
         Les quintes, elles, sont toujours là.
       </p>
       <nav class="paths" aria-label="Continuer">
-        <a class="rand" href="/hasard" data-astro-reload>rencontre au hasard&nbsp;↻</a>
-        <a href="/archive">parcourir l'archive</a>
-        <a href="/recherche" data-astro-reload>chercher un mot</a>
+        <a class="rand" href={u('/hasard')} data-astro-reload>rencontre au hasard&nbsp;↻</a>
+        <a href={u('/archive')}>parcourir l'archive</a>
+        <a href={u('/recherche')} data-astro-reload>chercher un mot</a>
       </nav>
     </main>
   </div>
