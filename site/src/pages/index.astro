@@ -133,14 +133,14 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
     let seen = false;
     try { seen = !!localStorage.getItem('ea-visited'); } catch {}
 
-    // A returning visitor for whom a quinte was published since the last visit
-    // lands on it (once — after that, the hasard stays a hasard). First-ever
-    // visits keep the serendipity: which quinte you meet first is chance.
+    // The first visit, and every visit where a quinte was published since the
+    // last one, lands on the most recent quinte (once per visit — after that,
+    // the hasard stays a hasard).
     const NEWEST = Number(scene.dataset.newest) || 0;
     let target0 = 0;
     try {
       const last = Number(localStorage.getItem('ea-latest') || 0);
-      if (NEWEST && last && NEWEST > last) target0 = NEWEST;
+      if (NEWEST && NEWEST > last) target0 = NEWEST;
       if (NEWEST) localStorage.setItem('ea-latest', String(NEWEST));
     } catch {}
 
@@ -350,7 +350,11 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
         S.prep = populate(S.current, false);
         const tr = titleEl.getBoundingClientRect();
         const cs = getComputedStyle(titleEl);
-        const s0 = (parseFloat(getComputedStyle(pick.el).fontSize) / parseFloat(cs.fontSize)) || 0.5;
+        // the wall title is scaled up while lit (spot beat): the clone must
+        // start at its VISUAL size or the swap reads as a size jump
+        const wcs = getComputedStyle(pick.el);
+        const lit = wcs.transform && wcs.transform !== 'none' ? new DOMMatrix(wcs.transform).a : 1;
+        const s0 = ((parseFloat(wcs.fontSize) / parseFloat(cs.fontSize)) || 0.5) * (lit || 1);
         if (tr.height && tr.width) {
           const wr2 = pick.el.getBoundingClientRect();
           const fly = document.createElement('div');
@@ -642,8 +646,11 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
     }
     #q-poem .ln { display: block; white-space: nowrap; word-break: keep-all; hyphens: none; }
     /* a word is inked by the pen: clip opens left→right (negative insets keep
-       italic overhangs and swashes unclipped), then the wet ink dries */
-    #q-poem .w { display: inline-block; clip-path: inset(-30% 103% -30% -8%); color: var(--ea-wet); }
+       italic overhangs and swashes unclipped), then the wet ink dries.
+       Hidden state: the right inset must overshoot PAST the -8% left extension
+       (108%, not 103%), or left-overhanging glyphs leak a sliver of wet ink -
+       stray white dots in dark mode while the nib writes. */
+    #q-poem .w { display: inline-block; clip-path: inset(-30% 108% -30% -8%); color: var(--ea-wet); }
     #stage.write .w {
       animation:
         eaW var(--wt) cubic-bezier(.5, .03, .36, 1) var(--wd) both,

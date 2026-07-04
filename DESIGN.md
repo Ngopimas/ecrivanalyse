@@ -50,8 +50,9 @@ The 5/5/5 dispositif is the quinte's signature, but the design must not cage it:
   in ocre and grows slightly while the mass recedes behind a translucent paper veil,
   ~560 ms), then dives into it. Return visits get a shorter wall beat (localStorage);
   `prefers-reduced-motion` gets a full static composition. The most recent quinte is
-  always in the dive sample, seated at the wall's visual center: a returning visitor for
-  whom it is new lands on it first (localStorage `ea-latest`), then the hasard resumes.
+  always in the dive sample, seated at the wall's visual center: the first visit, and
+  every visit where a quinte was published since the last one, lands on it
+  (localStorage `ea-latest`), then the hasard resumes.
 - **Quinte page** (`/quinte/[id]`) — intimate reading: title, description, the quinte,
   then the **quintesse** it was written on (number + status + participant + mode + collection + date).
   Two variants: **hybrid** (the original page set prose around the quinte, e.g. 154
