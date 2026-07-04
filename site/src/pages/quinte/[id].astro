@@ -47,6 +47,13 @@ const ghost = q.lines.length === 0;
 const ghostNote = ghost
   ? `La quinte n'a pas été mise en ligne${q.recueil ? ` : elle se lit dans le recueil « ${q.recueil} »` : ''}.`
   : '';
+
+// Hybrid pages (154): the quinte sits INSIDE the prose, where the original
+// placed it (the <quinte> marker set by gen-content.py; defaults to the end),
+// and at reading size - on the original page it was part of the text flow,
+// not a display block. The fitted treatment is for standalone quintes.
+const [proseBefore, proseAfter = ''] = (q.prose ?? '').split(/\n*<quinte>\n*/);
+const inProse = Boolean(q.prose);
 ---
 <Base
   title={`« ${q.title} » - Écrivanalyse`}
@@ -66,10 +73,10 @@ const ghostNote = ghost
         {modeLabel(q.mode) && <span> · {modeLabel(q.mode)}</span>}
       </div>
 
-      {q.prose && <div class="prose" set:html={proseHtml(q.prose)} />}
+      {proseBefore && <div class="prose" set:html={proseHtml(proseBefore)} />}
 
       {!ghost ? (
-        <div class="quinte enter" transition:name="quinte" data-pagefind-meta={rMeta ? `r:${rMeta}` : undefined}>
+        <div class:list={['quinte', 'enter', { inprose: inProse }]} transition:name="quinte" data-pagefind-meta={rMeta ? `r:${rMeta}` : undefined}>
           <!-- the {' '} keeps Pagefind from jamming line ends together ("bleue,à")
                in excerpts; between block spans it never renders -->
           {q.lines.map((l, i) => <><span class="ln" style={`--i:${i}`}>{l}</span>{' '}</>)}
@@ -77,6 +84,8 @@ const ghostNote = ghost
       ) : (
         <p class="ghost" transition:name="quinte" data-pagefind-meta={rMeta ? `r:${rMeta}` : undefined}>{ghostNote}</p>
       )}
+
+      {proseAfter && <div class="prose after" set:html={proseHtml(proseAfter)} />}
 
       <div class="object">
         {participant(q) && <div class="who oe">{participant(q)}</div>}
@@ -163,6 +172,12 @@ const ghostNote = ghost
     .prose { font-family: var(--font-serif); font-weight: 400; font-size: clamp(16px, 2.2vw, 18px);
       line-height: 1.7; margin: 36px 0 0; }
     .prose :global(p) { margin: 0 0 1em; }
+    .prose.after { margin-top: 0; }
+    /* inside prose, the quinte keeps the reading voice: same size and weight,
+       part of the text flow (the fitted display treatment is for standalone
+       quintes - the inline fit script skips .inprose) */
+    .quinte.inprose { font-size: clamp(16px, 2.2vw, 18px); font-weight: 400;
+      line-height: 1.7; margin: 0 0 44px; }
     /* the quinte was never put online: say so, in the reading voice */
     .ghost { font-family: var(--font-serif); font-style: italic; font-size: clamp(17px, 2.4vw, 20px);
       line-height: 1.7; color: var(--color-muted); margin: 44px 0 52px; }
@@ -281,7 +296,7 @@ const ghostNote = ghost
     if (window.__eaNavigated) document.querySelector('.quinte')?.classList.remove('enter');
     function fit() {
       const q = document.querySelector('.quinte');
-      if (!q) return;
+      if (!q || q.classList.contains('inprose')) return;  // reading-size, inside prose
       const lines = q.querySelectorAll('.ln');
       if (!lines.length) return;
       const avail = q.clientWidth;

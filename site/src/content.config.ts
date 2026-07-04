@@ -25,7 +25,9 @@ const quintes = defineCollection({
     date: z.string().default(''),
     author: z.string().default('Ivan Joseph'),
     // prose the original page set around the quinte (e.g. 154): paragraphs
-    // separated by \n\n, line breaks \n, italics/bold as light <i>/<b>
+    // separated by \n\n, line breaks \n, italics/bold as light <i>/<b>.
+    // A <quinte> paragraph marks where the quinte sits in the flow
+    // (without it, the quinte renders after the prose).
     prose: z.string().default(''),
   }),
 });

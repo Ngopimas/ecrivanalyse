@@ -231,10 +231,21 @@ def main():
             return bool(col_key) and k.startswith(col_key) and \
                 re.fullmatch(r"(partie)?[ivxlcdm0-9]{0,10}", k[len(col_key):]) is not None
 
-        paras = ["\n".join(lines) for kind, lines in bl
-                 if not is_series_header(lines)
-                 and not (is_quinte and (kind == "run" or norm(" ".join(lines)) == quinte_key))]
+        # keep document order; where the quinte itself sat, leave a <quinte>
+        # marker so the page can seat it inside the prose (154: the quinte
+        # completes the story's last sentence - it is not a separate block)
+        paras = []
+        for kind, lines in bl:
+            if is_series_header(lines):
+                continue
+            if is_quinte and (kind == "run" or norm(" ".join(lines)) == quinte_key):
+                if "<quinte>" not in paras:
+                    paras.append("<quinte>")
+                continue
+            paras.append("\n".join(lines))
         text = "\n\n".join(p for p in paras if p)
+        if text == "<quinte>":  # no prose at all: nothing to keep
+            text = ""
 
         if is_quinte:
             files_q[q["id"]] = quinte_yaml(q, text)
