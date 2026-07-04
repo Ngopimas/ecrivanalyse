@@ -1,5 +1,11 @@
 # Réponses (comments) — how it works & how to deploy
 
+> **Statut (juillet 2026) : pas encore en service.** Le site est hébergé sur
+> GitHub Pages, qui ne peut pas exécuter `functions/api/`. Les deux endpoints
+> (code Cloudflare Pages Functions, inchangé) doivent être hébergés sur un
+> Worker Cloudflare, et l'`action` des formulaires pointée vers lui. Le flux
+> décrit ci-dessous reste exact ; la checklist Cloudflare vaut pour le Worker.
+
 Comments (« réponses ») are plain JSON files in `src/content/comments/`, one per
 comment, rendered statically on each quinte page. Nothing dynamic is served.
 

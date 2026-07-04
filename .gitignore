@@ -11,8 +11,10 @@ dist/
 # generated Pagefind index (rebuilt by `npm run build`)
 site/public/pagefind/
 
-# python virtualenv
+# python
 .venv/
+__pycache__/
+*.pyc
 
 # secrets / local env (never commit; keep a .env.example instead)
 .env

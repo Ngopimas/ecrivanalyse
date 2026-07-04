@@ -1,5 +1,8 @@
 # Écrivanalyse.net — Full Backup Plan (public crawl)
 
+> **Statut : exécuté (juillet 2026).** La sauvegarde est complète ; ce document
+> reste comme trace de la méthode de capture. Les données sont dans `data/`.
+
 **Goal:** Capture everything on https://ecrivanalyse.net/ before the site is deleted —
 articles, sections, authors, dates, names, comments, and all media — as durable,
 structured, re-usable data.

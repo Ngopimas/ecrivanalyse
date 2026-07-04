@@ -42,7 +42,7 @@ The 5/5/5 dispositif is the quinte's signature, but the design must not cage it:
 - Some quintes bend the form; the layout must hold them without breaking.
 
 ## Pages
-- **Landing** — direction C2 « le mur, puis l'encre » : the whole corpus inks in as a wall
+- **Landing** — « le mur, puis l'encre » : the whole corpus inks in as a wall
   of titles (with a live count of the quintes), the camera dives into one title, and that
   quinte *writes itself* word by word — reveal led by a nib, a breath at each punctuation
   sign, ink drying — then stillness (the chrome fades until the visitor moves).
@@ -91,8 +91,8 @@ exits are designed, not just entrances; zero autonomous motion once the writing 
 Honor `prefers-reduced-motion` with a complete static composition.
 
 ## Content model & storage (Astro)
-Store **one Markdown file per quinte** (`src/content/quintes/[id].md`): the five lines in the
-body; frontmatter = `title, description, lines, mode, participant_role, participant_name,
+Store **one YAML file per quinte** (`src/content/quintes/<id>.yaml`) with
+`title, soustitre, lines, mode, participant_role, participant_name,
 quintesse_num, status, collection, recueil, date, author, is_5x5`. `status` holds the
 **full original phrase** ("achetée par l'analisante", "suspendue pour la p(au)seuse"),
 free text — not an enum. The YAML files are edited directly (no CMS; Keystatic was

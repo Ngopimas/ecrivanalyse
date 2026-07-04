@@ -6,10 +6,13 @@ type-forward personal showcase for the écrivanalyste **Ivan Joseph**. The corpu
 made in two modes: *séances de p(au)se* with pauseurs/pauseuses (strangers) and ongoing
 *écrivanalyses* with a regular *analisant(e)*. Full lexicon is in DESIGN.md.
 
-- Full public backup lives in `ecrivanalyse-backup/` (structured JSON in `data/`).
-  Crawler: `scrape.py` (venv `.venv`). See `PLAN.md`.
-- Design phase artifacts: `DESIGN.md` (system of record), `prototype-landing.html`
-  (working landing prototype), mockups in `~/.gstack/projects/ecrivanalyse/designs/`.
+- Full public backup lives in `ecrivanalyse-backup/` (structured JSON in `data/`;
+  crawl method documented in `ecrivanalyse-backup/PLAN.md`). Crawler: `scrape.py` (venv `.venv`).
+- Content pipeline: `enrich.py` (backup -> `data/quintesses.json`), then
+  `site/scripts/gen-content.py` (-> `site/src/content/quintes` + `textes`).
+- `DESIGN.md` is the design system of record.
+- Deploy: GitHub Pages via `.github/workflows/deploy.yml` on every push to main
+  (BASE_PATH/SITE_URL env there until the custom domain is attached).
 
 ## Design System
 Always read `DESIGN.md` before making any visual or UI decision. Fonts, colors,
