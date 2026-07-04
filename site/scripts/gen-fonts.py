@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Generate font assets from the Fontsource Fraunces variable woff2s.
+"""Generate font assets from the Fontsource Spectral woff2s (static family).
 
 Outputs (all committed):
-  src/assets/og/fraunces-regular.ttf  static instance for the OG-image renderer
-  src/assets/og/fraunces-italic.ttf   idem, italic (titles)
-  public/favicon.svg                  Fraunces italic "é" traced to a path
+  src/assets/og/spectral-regular.ttf  for the OG-image renderer (quinte lines)
+  src/assets/og/spectral-italic.ttf   idem, italic (titles)
+  public/favicon.svg                  Spectral italic "é" traced to a path
                                       (favicons can't load webfonts), light/dark
                                       via prefers-color-scheme
 
@@ -19,10 +19,9 @@ from fontTools.pens.boundsPen import BoundsPen
 from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.pens.transformPen import TransformPen
 from fontTools.ttLib import TTFont
-from fontTools.varLib.instancer import instantiateVariableFont
 
 SITE = Path(__file__).resolve().parent.parent
-FILES = SITE / "node_modules" / "@fontsource-variable" / "fraunces" / "files"
+FILES = SITE / "node_modules" / "@fontsource" / "spectral" / "files"
 OG = SITE / "src" / "assets" / "og"
 
 # Paper / ink palette from DESIGN.md
@@ -30,10 +29,8 @@ LIGHT_BG, LIGHT_INK = "#F6F1E7", "#17130F"
 DARK_BG, DARK_INK = "#1E1A16", "#EDE6D8"
 
 
-def instance(src: Path, axes: dict) -> TTFont:
+def load(src: Path) -> TTFont:
     font = TTFont(src)
-    present = {a.axisTag for a in font["fvar"].axes}
-    instantiateVariableFont(font, {k: v for k, v in axes.items() if k in present}, inplace=True)
     font.flavor = None  # decompress woff2 -> plain ttf
     return font
 
@@ -41,17 +38,12 @@ def instance(src: Path, axes: dict) -> TTFont:
 def main() -> None:
     OG.mkdir(parents=True, exist_ok=True)
 
-    # Text sizes in the OG card: body ~text opsz, a touch under 400 like the site.
-    regular = instance(FILES / "fraunces-latin-wght-normal.woff2",
-                       {"wght": 380, "opsz": 40, "SOFT": 0, "WONK": 0})
-    regular.save(OG / "fraunces-regular.ttf")
-    italic = instance(FILES / "fraunces-latin-wght-italic.woff2",
-                      {"wght": 400, "opsz": 20, "SOFT": 0, "WONK": 0})
-    italic.save(OG / "fraunces-italic.ttf")
+    # Spectral is a static family — no instancing, just decompress.
+    load(FILES / "spectral-latin-400-normal.woff2").save(OG / "spectral-regular.ttf")
+    load(FILES / "spectral-latin-400-italic.woff2").save(OG / "spectral-italic.ttf")
 
-    # Favicon glyph: display cut, semibold so it holds at 16 px.
-    fav = instance(FILES / "fraunces-latin-wght-italic.woff2",
-                   {"wght": 600, "opsz": 144, "SOFT": 0, "WONK": 0})
+    # Favicon glyph: semibold italic so it holds at 16 px.
+    fav = load(FILES / "spectral-latin-600-italic.woff2")
     glyph_name = fav.getBestCmap()[ord("é")]
     glyphs = fav.getGlyphSet()
     glyph = glyphs[glyph_name]
@@ -81,7 +73,7 @@ def main() -> None:
 </svg>
 """
     (SITE / "public" / "favicon.svg").write_text(svg)
-    for f in (OG / "fraunces-regular.ttf", OG / "fraunces-italic.ttf", SITE / "public" / "favicon.svg"):
+    for f in (OG / "spectral-regular.ttf", OG / "spectral-italic.ttf", SITE / "public" / "favicon.svg"):
         print(f"{f.relative_to(SITE)}  {f.stat().st_size / 1024:.1f}K")
 
 

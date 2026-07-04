@@ -22,7 +22,7 @@ const cols = [...map.entries()].map(([s, v]) => ({ slug: s, ...v })).sort((a, b)
         {cols.map((c) => (
           <li>
             <a href={`/collection/${c.slug}`}>
-              <span class="t">«&#8239;{c.name}&#8239;»</span>
+              <span class="t" data-vt-title>«&#8239;{c.name}&#8239;»</span>
               <span class="r">{modeLabel(c.mode)} · {c.n}</span>
             </a>
           </li>
@@ -45,7 +45,9 @@ const cols = [...map.entries()].map(([s, v]) => ({ slug: s, ...v })).sort((a, b)
     li a { display: flex; justify-content: space-between; gap: 20px; align-items: baseline; text-decoration: none;
       padding: 11px 2px; border-bottom: 1px solid color-mix(in srgb, var(--color-hair) 60%, transparent); }
     li a:hover { color: var(--color-ocre); }
-    .t { font-family: var(--font-serif); font-size: 18px; }
+    .t { font-family: var(--font-serif); font-size: 18px; display: inline-block;
+      transition: transform .35s cubic-bezier(.2, .65, .25, 1); }
+    li a:hover .t { transform: translateX(3px); }
     .r { font-family: var(--font-mono); font-size: 10.5px; color: var(--color-muted); white-space: nowrap; }
   </style>
 </Base>

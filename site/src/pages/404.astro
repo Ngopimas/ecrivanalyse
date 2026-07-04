@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+// The 404 borrows the quintesse status vocabulary (open and playful, DESIGN.md):
+// a missing page is a quintesse whose fate is unknown.
+---
+<Base title="Page introuvable - Écrivanalyse">
+  <div class="wrap">
+    <main>
+      <div class="kicker">page introuvable</div>
+      <h1>Cette page s'est dérobée.</h1>
+      <p class="body">
+        Peut-être troquée, suspendue, offerte — ou détruite pour de bon.
+        Les quintes, elles, sont toujours là.
+      </p>
+      <nav class="paths" aria-label="Continuer">
+        <a class="rand" href="/hasard" data-astro-reload>rencontre au hasard&nbsp;↻</a>
+        <a href="/archive">parcourir l'archive</a>
+        <a href="/recherche" data-astro-reload>chercher un mot</a>
+      </nav>
+    </main>
+  </div>
+
+  <style>
+    .wrap { max-width: 760px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 32px) 80px;
+      flex: 1; display: flex; }
+    main { margin: auto; text-align: center; padding-bottom: 8vh; }
+    .kicker { font-family: var(--font-mono); font-size: 11px; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--color-muted); margin-bottom: 22px; }
+    h1 { font-family: var(--font-serif); font-weight: 400; font-style: italic;
+      font-size: clamp(30px, 6vw, 48px); letter-spacing: -.012em; margin: 0 0 16px; }
+    .body { font-family: var(--font-serif); font-size: clamp(15px, 2.2vw, 17.5px);
+      color: var(--color-muted); max-width: 44ch; margin: 0 auto 44px; line-height: 1.65; }
+    .paths { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+    .paths a { font-family: var(--font-mono); font-size: 13px; color: var(--color-muted);
+      text-decoration: none; padding: 4px 2px; }
+    .paths a:hover { color: var(--color-ocre); }
+    .paths .rand { color: var(--color-ocre); border: 1px solid var(--color-ocre);
+      border-radius: 999px; padding: 10px 20px; letter-spacing: .02em;
+      transition: background .2s, color .2s; }
+    .paths .rand:hover { background: var(--color-ocre); color: var(--color-paper); }
+  </style>
+</Base>

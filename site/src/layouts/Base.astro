@@ -1,7 +1,15 @@
 ---
-import '@fontsource-variable/fraunces';
+// Spectral (Production Type, Paris) — static family; import the true italics
+// too, or every italic (the quintes!) would be a synthesized slant
+import '@fontsource/spectral/300.css';
+import '@fontsource/spectral/400.css';
+import '@fontsource/spectral/500.css';
+import '@fontsource/spectral/300-italic.css';
+import '@fontsource/spectral/400-italic.css';
 import '@fontsource-variable/instrument-sans';
 import '@fontsource-variable/jetbrains-mono';
+import spectralWght from '@fontsource/spectral/files/spectral-latin-400-normal.woff2?url';
+import spectralItal from '@fontsource/spectral/files/spectral-latin-400-italic.woff2?url';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import { ClientRouter } from 'astro:transitions';
@@ -28,7 +36,7 @@ const ogImageUrl = new URL(ogImage, Astro.site);
 <html lang="fr" data-theme="light">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonical} />
@@ -49,15 +57,19 @@ const ogImageUrl = new URL(ogImage, Astro.site);
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="/favicon-96.png" type="image/png" sizes="96x96" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preload" as="font" type="font/woff2" href={spectralWght} crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href={spectralItal} crossorigin />
   <script is:inline>
+    document.documentElement.classList.add('js');
     const t = localStorage.getItem('ea-theme');
     if (t) document.documentElement.dataset.theme = t;
   </script>
   <ClientRouter />
 </head>
 <body class="min-h-screen">
+  <a class="skip" href="#contenu">Aller au contenu</a>
   <Header />
-  <div class="site-body"><slot /></div>
+  <div class="site-body" id="contenu"><slot /></div>
   <script is:inline>
     window.toggleTheme = function () {
       const r = document.documentElement;
@@ -70,6 +82,25 @@ const ogImageUrl = new URL(ogImage, Astro.site);
     document.addEventListener('astro:after-swap', () => {
       const t = localStorage.getItem('ea-theme');
       if (t) document.documentElement.dataset.theme = t;
+    });
+    // Entrance animations are for direct arrivals only; router navigations
+    // rely on the shared-element morphs instead. Pages check this flag.
+    document.addEventListener('astro:before-swap', () => { window.__eaNavigated = true; });
+    // « qtitle » — the title-continuity morph. A clicked list/wall title is
+    // named just-in-time and pairs with the destination page's h1, so the
+    // title travels from the mass to its page (and back, on browser Back).
+    // One name per page: strip it from whatever currently holds it first.
+    document.addEventListener('astro:before-preparation', (e) => {
+      const src = e.sourceElement;
+      if (!(src instanceof Element)) return;
+      const a = src.closest('a[href]');
+      if (!a) return;
+      const t = a.querySelector('[data-vt-title]') || (a.matches('[data-vt-title], .wt') ? a : null);
+      if (!t) return;
+      document.querySelectorAll('h1, [data-vt-title], #q-title, .wt.lit').forEach((el) => {
+        if (getComputedStyle(el).viewTransitionName === 'qtitle') el.style.viewTransitionName = 'none';
+      });
+      t.style.viewTransitionName = 'qtitle';
     });
   </script>
 </body>

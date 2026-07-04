@@ -1,67 +1,129 @@
 ---
 import Base from '../layouts/Base.astro';
+// Custom renderer on the Pagefind JS API (the default PagefindUI is dropped):
+// results are set in the archive's design language — whole row clickable,
+// serif title (with the qtitle morph), italic excerpt, mono year·numéro column.
 ---
 <Base title="Rechercher - Écrivanalyse" description="Chercher un mot, un vers, un nom dans les quintes.">
-  <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
   <div class="wrap">
     <main>
       <h1>Rechercher</h1>
-      <p class="lede">Un mot, un vers, un nom - dans l'ensemble des quintes.</p>
-      <div id="search"></div>
+      <p class="lede">Un mot, un vers, un nom — dans l'ensemble des quintes.</p>
+
+      <form class="box" role="search" onsubmit="return false">
+        <label class="vh" for="q">Rechercher dans les quintes</label>
+        <input id="q" type="search" placeholder="un mot, un vers, un nom…"
+          autocomplete="off" autocapitalize="off" spellcheck="false" />
+      </form>
+
+      <p class="count" id="count" aria-live="polite"></p>
+      <div id="hits"></div>
+      <button class="more" id="more" type="button" hidden>voir plus</button>
+
       <noscript><p class="lede">La recherche nécessite JavaScript.</p></noscript>
     </main>
   </div>
 
-  <script is:inline src="/pagefind/pagefind-ui.js"></script>
-  <script is:inline>
-    window.addEventListener('DOMContentLoaded', function () {
-      if (window.PagefindUI) {
-        new window.PagefindUI({
-          element: '#search',
-          showSubResults: false,
-          showImages: false,
-          pageSize: 12,
-          translations: {
-            placeholder: 'un mot, un vers, un nom…',
-            clear_search: 'Effacer',
-            load_more: 'Voir plus',
-            search_label: 'Rechercher dans les quintes',
-            zero_results: 'Rien pour « [SEARCH_TERM] »',
-            many_results: '[COUNT] quintes pour « [SEARCH_TERM] »',
-            one_result: '[COUNT] quinte pour « [SEARCH_TERM] »',
-          },
-        });
+  <script is:inline type="module" data-astro-rerun>
+    const input = document.getElementById('q');
+    const hits = document.getElementById('hits');
+    const count = document.getElementById('count');
+    const more = document.getElementById('more');
+    if (input) {
+      // one Pagefind instance across view transitions (a second init would
+      // spawn duplicate workers)
+      window.__pf ??= await import('/pagefind/pagefind.js').then((p) => (p.init(), p));
+      const pf = window.__pf;
+      const PAGE = 20;
+      const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const NNBSP = ' ';
+      const fmt = (n) => n.toLocaleString('fr-FR');
+      let results = [], shown = 0;
+
+      async function renderMore() {
+        const batch = results.slice(shown, shown + PAGE);
+        const datas = await Promise.all(batch.map((r) => r.data()));
+        hits.insertAdjacentHTML('beforeend', datas.map((d) => `
+          <a class="hit" href="${esc(d.url)}">
+            <span class="entry">
+              <span class="t" data-vt-title>${esc(d.meta.title || '')}</span>
+              <span class="x">${d.excerpt}</span>
+            </span>
+            ${d.meta.r ? `<span class="r">${esc(d.meta.r)}</span>` : ''}
+          </a>`).join(''));
+        shown += batch.length;
+        more.hidden = shown >= results.length;
       }
-    });
+
+      async function run(q) {
+        q = q.trim();
+        const url = new URL(location);
+        if (q) url.searchParams.set('q', q); else url.searchParams.delete('q');
+        history.replaceState(null, '', url);
+        if (!q) { results = []; shown = 0; hits.innerHTML = ''; count.innerHTML = ''; more.hidden = true; return; }
+        const res = await pf.debouncedSearch(q, {}, 220);
+        if (res === null) return;              // superseded by a newer keystroke
+        results = res.results; shown = 0; hits.innerHTML = '';
+        const quoted = `«${NNBSP}${esc(q)}${NNBSP}»`;
+        if (!results.length) {
+          count.innerHTML = `rien pour ${quoted} — <a href="/hasard" data-astro-reload>tenter une rencontre au hasard&nbsp;↻</a>`;
+          more.hidden = true;
+          return;
+        }
+        count.innerHTML = `${fmt(results.length)} quinte${results.length > 1 ? 's' : ''} pour ${quoted}`;
+        await renderMore();
+      }
+
+      input.oninput = () => run(input.value);
+      more.onclick = renderMore;
+
+      // ?q= deep link: a search can be shared like any page
+      const q0 = new URL(location).searchParams.get('q');
+      if (q0) { input.value = q0; run(q0); }
+      // focus the field where a keyboard is likely (no popped keyboard on touch)
+      if (matchMedia('(pointer: fine)').matches) input.focus();
+    }
   </script>
 
   <style>
     .wrap { max-width: 760px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 32px) 90px; }
-    header { display: flex; justify-content: space-between; align-items: center; padding: clamp(20px, 4vw, 34px) 0; }
-    .brand { font-family: var(--font-serif); font-size: 19px; text-decoration: none; }
-    header nav { display: flex; gap: 20px; align-items: center; font-size: 13.5px; color: var(--color-muted); }
-    header nav a { text-decoration: none; } header nav a:hover { color: var(--color-ocre); }
-    .iconbtn { background: none; border: none; cursor: pointer; color: var(--color-muted); font-size: 15px; }
     h1 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(28px, 5vw, 42px);
       letter-spacing: -.01em; margin: clamp(18px, 4vw, 32px) 0 12px; }
     .lede { color: var(--color-muted); font-size: 15px; margin: 0 0 28px; }
+    .vh { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden;
+      clip: rect(0 0 0 0); white-space: nowrap; }
+    #q { width: 100%; appearance: none; -webkit-appearance: none;
+      font-family: var(--font-serif); font-size: 18px; color: var(--color-ink);
+      background: var(--color-paper-raised); border: 1px solid var(--color-hair);
+      border-radius: 2px; padding: 13px 16px; }
+    #q::placeholder { color: var(--color-muted); font-style: italic; }
+    #q:focus-visible { outline: 1px solid var(--color-ocre); outline-offset: -1px; }
+    #q::-webkit-search-cancel-button { -webkit-appearance: none; }
+    .count { font-family: var(--font-mono); font-size: 11px; letter-spacing: .05em;
+      color: var(--color-muted); margin: 20px 0 6px; min-height: 1.2em; }
+    .more { font-family: var(--font-mono); font-size: 12px; cursor: pointer;
+      color: var(--color-muted); background: none; border: 1px solid var(--color-hair);
+      border-radius: 999px; padding: 8px 18px; margin-top: 24px; }
+    .more:hover { border-color: var(--color-ocre); color: var(--color-ocre); }
+  </style>
 
-    #search {
-      --pagefind-ui-primary: var(--color-ocre);
-      --pagefind-ui-text: var(--color-ink);
-      --pagefind-ui-background: var(--color-paper);
-      --pagefind-ui-border: var(--color-hair);
-      --pagefind-ui-tag: var(--color-paper-raised);
-      --pagefind-ui-border-width: 1px;
-      --pagefind-ui-border-radius: 8px;
-      --pagefind-ui-font: var(--font-sans);
-    }
-    /* Pagefind sets its own --pagefind-ui-primary on .pagefind-ui, so override it there (ocre, not blue) */
-    #search :global(.pagefind-ui) { --pagefind-ui-primary: var(--color-ocre); }
-    #search :global(.pagefind-ui__result-title) { font-family: var(--font-serif); font-weight: 400; }
-    #search :global(.pagefind-ui__search-input:focus),
-    #search :global(.pagefind-ui__search-input:focus-visible) {
-      outline-color: var(--color-ocre); border-color: var(--color-ocre); box-shadow: none;
-    }
+  <style is:global>
+    /* result rows are JS-generated (no Astro scope attr) — mirror of the archive entries */
+    #hits .hit { display: flex; justify-content: space-between; gap: 24px; align-items: baseline;
+      text-decoration: none; padding: 12px 2px;
+      border-bottom: 1px solid color-mix(in srgb, var(--color-hair) 55%, transparent); }
+    #hits .entry { display: flex; flex-direction: column; gap: 4px; min-width: 0;
+      transition: transform .35s cubic-bezier(.2, .65, .25, 1); }
+    #hits .hit:hover .entry { transform: translateX(3px); }
+    #hits .t { font-family: var(--font-serif); font-size: 17px; }
+    #hits .hit:hover .t { color: var(--color-ocre); }
+    #hits .x { font-family: var(--font-serif); font-style: italic; font-size: 13.5px;
+      color: var(--color-muted); line-height: 1.5; }
+    #hits .x mark { background: color-mix(in srgb, var(--color-ocre) 16%, transparent);
+      color: inherit; padding: 0 1px; border-radius: 2px; }
+    #hits .r { font-family: var(--font-mono); font-size: 10.5px; color: var(--color-muted);
+      white-space: nowrap; }
+    .count a { color: var(--color-ocre); text-decoration: none; }
+    .count a:hover { text-decoration: underline; text-underline-offset: 3px; }
   </style>
 </Base>

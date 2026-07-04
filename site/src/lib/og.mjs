@@ -1,4 +1,4 @@
-// Open Graph card renderer — the quinte set in Fraunces on paper, 1200×630.
+// Open Graph card renderer — the quinte set in Spectral on paper, 1200×630.
 // Pure module (no Astro imports) so scripts/preview-og.mjs can use it too.
 // Fonts are the static instances produced by scripts/gen-fonts.py; opentype.js
 // measures line advances so the longest line exactly fits the column width
@@ -10,8 +10,8 @@ import opentype from 'opentype.js';
 import { Resvg } from '@resvg/resvg-js';
 
 const DIR = join(process.cwd(), 'src/assets/og');
-const REGULAR_PATH = join(DIR, 'fraunces-regular.ttf');
-const ITALIC_PATH = join(DIR, 'fraunces-italic.ttf');
+const REGULAR_PATH = join(DIR, 'spectral-regular.ttf');
+const ITALIC_PATH = join(DIR, 'spectral-italic.ttf');
 
 const toAB = (buf) => buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
 const regular = opentype.parse(toAB(readFileSync(REGULAR_PATH)));
@@ -33,7 +33,7 @@ function fitSize(font, lines, max, min) {
 
 function render(svg) {
   const r = new Resvg(svg, {
-    font: { fontFiles: [REGULAR_PATH, ITALIC_PATH], loadSystemFonts: false, defaultFontFamily: 'Fraunces' },
+    font: { fontFiles: [REGULAR_PATH, ITALIC_PATH], loadSystemFonts: false, defaultFontFamily: 'Spectral' },
   });
   return r.render().asPng();
 }
@@ -53,21 +53,21 @@ export function quinteCard({ title, lines, date }) {
   const lineHeight = size * 1.62;
   const first = 306 - (lineHeight * (lines.length - 1)) / 2 + size * 0.35;
   const body = lines.map((l, i) =>
-    `<text x="${MARGIN}" y="${(first + i * lineHeight).toFixed(1)}" font-family="Fraunces" font-size="${size.toFixed(1)}" fill="${INK}">${esc(l)}</text>`
+    `<text x="${MARGIN}" y="${(first + i * lineHeight).toFixed(1)}" font-family="Spectral" font-size="${size.toFixed(1)}" fill="${INK}">${esc(l)}</text>`
   ).join('\n  ');
 
   const year = (date || '').slice(0, 4);
   const footer = `« ${title} »${year ? ` · ${year}` : ''}`;
   const footerSize = fitSize(italic, [footer], 27, 16);
 
-  return render(frame(`<text x="${MARGIN}" y="104" font-family="Fraunces" font-style="italic" font-size="27" fill="${OCRE}">écrivanalyse</text>
+  return render(frame(`<text x="${MARGIN}" y="104" font-family="Spectral" font-style="italic" font-size="27" fill="${OCRE}">écrivanalyse</text>
   ${body}
-  <text x="${MARGIN}" y="${H - 72}" font-family="Fraunces" font-style="italic" font-size="${footerSize.toFixed(1)}" fill="${MUTED}">${esc(footer)}</text>`));
+  <text x="${MARGIN}" y="${H - 72}" font-family="Spectral" font-style="italic" font-size="${footerSize.toFixed(1)}" fill="${MUTED}">${esc(footer)}</text>`));
 }
 
 export function defaultCard() {
   const tagline = 'cinq lignes, cinq mots par ligne, cinq signes de ponctuation.';
-  return render(frame(`<text x="${MARGIN}" y="316" font-family="Fraunces" font-style="italic" font-size="96" fill="${INK}">écrivanalyse</text>
-  <text x="${MARGIN}" y="384" font-family="Fraunces" font-size="30" fill="${MUTED}">${esc(tagline)}</text>
-  <text x="${MARGIN}" y="${H - 72}" font-family="Fraunces" font-style="italic" font-size="27" fill="${OCRE}">Ivan Joseph</text>`));
+  return render(frame(`<text x="${MARGIN}" y="316" font-family="Spectral" font-style="italic" font-size="96" fill="${INK}">écrivanalyse</text>
+  <text x="${MARGIN}" y="384" font-family="Spectral" font-size="30" fill="${MUTED}">${esc(tagline)}</text>
+  <text x="${MARGIN}" y="${H - 72}" font-family="Spectral" font-style="italic" font-size="27" fill="${OCRE}">Ivan Joseph</text>`));
 }

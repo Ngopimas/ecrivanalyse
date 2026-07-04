@@ -3,15 +3,22 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import { frDate, participant, quintesseObject } from '../lib/format';
 
-// Spread ~60 real quintes across the archive for the landing's random draw.
-// Not limited to exact 5×5 - the form allows liberty.
+// « Le mur, puis l'encre » (DESIGN.md, direction C2): the whole corpus inks in
+// as a wall of titles, the camera dives into one, and that quinte writes itself.
+// Same filter as the /quinte pages, so every wall title links to a page that exists.
 const all = (await getCollection('quintes'))
-  .filter((q) => q.data.lines.length >= 2 && q.data.lines.length <= 8)
+  .filter((q) => q.data.lines.length > 0)
   .sort((a, b) => (a.data.id ?? 0) - (b.data.id ?? 0));
-const step = Math.max(1, Math.floor(all.length / 60));
-const sample = all
+const total = all.length;
+const totalFr = total.toLocaleString('fr-FR').replace(/[  ]/g, ' ');
+
+// ~90 quintes spread across the corpus carry full data inline: they are the
+// candidates the dive can land on (2–8 lines, so the writing always sits well).
+const pool = all.filter((q) => q.data.lines.length >= 2 && q.data.lines.length <= 8);
+const step = Math.max(1, Math.floor(pool.length / 90));
+const sample = pool
   .filter((_, i) => i % step === 0)
-  .slice(0, 60)
+  .slice(0, 90)
   .map((q) => ({
     id: q.id,
     t: q.data.title,
@@ -22,161 +29,591 @@ const sample = all
     d: frDate(q.data.date),
     coll: q.data.collection || '',
   }));
+const sampleIds = new Set(sample.map((s) => s.id));
+
+// The wall: every title, deterministically shuffled (stable builds). Titles are
+// grouped into contiguous bands so the ink-in animates 16 nodes, not 3 000.
+function mulberry32(seed: number) {
+  return () => {
+    seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const rnd = mulberry32(2006);
+const wall = all
+  .map((q) => ({ id: q.id, t: q.data.title, s: sampleIds.has(q.id) }))
+  .map((v) => ({ v, k: rnd() }))
+  .sort((a, b) => a.k - b.k)
+  .map(({ v }) => v);
+const BANDS = 16;
+const perBand = Math.ceil(wall.length / BANDS);
+const bands = Array.from({ length: BANDS }, (_, b) => wall.slice(b * perBand, (b + 1) * perBand));
+// bands ink in shuffled order → the galley fills in patches, not a top-down sweep
+const bandOrder = Array.from({ length: BANDS }, (_, i) => i)
+  .map((v) => ({ v, k: rnd() }))
+  .sort((a, b) => a.k - b.k)
+  .map(({ v }) => v);
+const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(2);
 ---
 <Base>
-  <div class="page">
-    <main class="run" id="stage">
-      <div class="kicker">une quinte · cinq lignes, cinq mots, cinq ponctuations</div>
-      <svg class="flourish" viewBox="0 0 200 56" aria-hidden="true"><path d="M4 38 C 40 6, 72 8, 84 30 S 122 56, 150 28 C 168 10, 190 16, 196 32"></path></svg>
-      <div class="title" id="q-title"></div>
-      <div class="desc" id="q-desc"></div>
-      <a class="poem" id="q-poem" href="#"></a>
-      <div class="meta" id="q-meta"></div>
+  <div class="ea-page">
+    <main class="scene" id="scene" data-total={total}>
+      <!-- Every title in the corpus. aria-hidden + tabindex=-1: 3 000 links are a
+           texture for pointer users; /archive is the accessible archive. -->
+      <div class="wall" id="wall" aria-hidden="true">
+        {bands.map((band, b) => (
+          <span class="wg" style={`--d:${bandDelay(b)}s`}>
+            {band.map((w) => (
+              <a class="wt" href={`/quinte/${w.id}`} tabindex="-1" data-id={w.s ? w.id : undefined}>{w.t}</a>
+            ))}
+          </span>
+        ))}
+      </div>
+
+      <div class="stage" id="stage">
+        <div class="kicker">une quinte · cinq lignes, cinq mots, cinq ponctuations</div>
+        <h1 class="title" id="q-title"></h1>
+        <div class="desc" id="q-desc"></div>
+        <a class="poem" id="q-poem" href="#"></a>
+        <div class="meta" id="q-meta"></div>
+      </div>
+
+      <div class="nib" id="nib" aria-hidden="true"></div>
     </main>
 
     <footer>
-      <button class="rand" onclick="drawQuinte()">rencontre au hasard&nbsp; ↻</button>
-      <a class="tag" href="/archive">les quintes d'Ivan Joseph · depuis 2006</a>
+      <button class="rand" id="rand" type="button">rencontre au hasard&nbsp;↻</button>
+      <a class="tag" href="/archive"><span id="count">{totalFr}</span>&nbsp;quintes · Ivan Joseph · depuis 2006</a>
     </footer>
   </div>
+
+  <noscript>
+    <style>
+      #wall .wg { opacity: 1 !important; }
+      #stage, #nib, #rand { display: none !important; }
+    </style>
+  </noscript>
 
   <script type="application/json" id="ea-sample" set:html={JSON.stringify(sample)}></script>
   <script is:inline data-astro-rerun>
     (() => {
-    const el = document.getElementById('ea-sample');
-    const sample = el ? JSON.parse(el.textContent) : [];
-    const MIN = 20, MAX = 38, REF = 100;   // font-size floor / ceiling (px), measuring size
-    let last = -1;
+    const scene = document.getElementById('scene');
+    if (!scene) return;
+    const wallEl = document.getElementById('wall');
+    const stage = document.getElementById('stage');
+    const poem = document.getElementById('q-poem');
+    const titleEl = document.getElementById('q-title');
+    const descEl = document.getElementById('q-desc');
+    const metaEl = document.getElementById('q-meta');
+    const nib = document.getElementById('nib');
+    const sample = JSON.parse(document.getElementById('ea-sample').textContent);
+    const byId = Object.fromEntries(sample.map((s) => [String(s.id), s]));
+    const TOTAL = Number(scene.dataset.total) || sample.length;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let seen = false;
+    try { seen = !!localStorage.getItem('ea-visited'); } catch {}
 
-    // Usable width = the stage's content box (its clientWidth minus its padding).
-    function availWidth() {
-      const stage = document.getElementById('stage');
-      if (!stage) return 0;
-      const cs = getComputedStyle(stage);
-      return stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    const S = { state: 'boot', current: null, last: null, timers: [], anims: [], wallEnd: '' };
+    const later = (fn, ms) => { const id = setTimeout(fn, ms); S.timers.push(id); return id; };
+    const anim = (el, kf, opts) => { const a = el.animate(kf, opts); S.anims.push(a); return a; };
+    function cancelAll() {
+      S.timers.forEach(clearTimeout); S.timers = [];
+      S.anims.forEach((a) => a.cancel()); S.anims = [];
     }
-    // Scale the quinte so its longest line fills the width on a single line —
-    // grows to use the space on wide screens. If that would fall below MIN px
-    // (tiny screen / very long line), let it wrap rather than overflow off-screen.
-    function fitCurrent() {
-      const poem = document.getElementById('q-poem');
-      if (!poem) return;
+
+    const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    // French micro-typography: narrow no-break space before high punctuation and
+    // inside guillemets (the corpus files carry plain spaces).
+    const fr = (s) => s.replace(/ ([;:!?»])/g, ' $1').replace(/« /g, '« ');
+
+    // ---------- the quinte (populate + fit + write) ----------
+
+    function fitPoem() {
       const lines = poem.querySelectorAll('.ln');
       if (!lines.length) return;
-      const avail = availWidth();
+      const cs = getComputedStyle(stage);
+      const avail = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
       if (!avail) return;
+      const REF = 100, MIN = 20;
+      // cap by height too, so long quintes never push the meta off-screen
+      const MAX = Math.max(30, Math.min(88, (scene.clientHeight * 0.52) / (lines.length * 1.5)));
       poem.style.whiteSpace = 'nowrap';
-      poem.style.fontSize = REF + 'px';                 // measure with every line overflowing, so scrollWidth is exact
+      poem.style.fontSize = REF + 'px';
       let widest = 0;
-      lines.forEach((l) => { if (l.scrollWidth > widest) widest = l.scrollWidth; });
+      lines.forEach((l) => { widest = Math.max(widest, l.scrollWidth); });
       if (!widest) { poem.style.fontSize = ''; return; }
       const ideal = REF * avail / widest;
       if (ideal >= MIN) {
         poem.style.whiteSpace = 'nowrap';
         poem.style.fontSize = Math.min(MAX, ideal).toFixed(1) + 'px';
       } else {
-        poem.style.whiteSpace = 'normal';               // graceful floor: wrap instead of overflow
+        poem.style.whiteSpace = 'normal';   // graceful floor: wrap instead of overflow
         poem.style.fontSize = MIN + 'px';
       }
     }
 
-    window.drawQuinte = function () {
-      if (!sample.length) return;
-      let i;
-      do { i = Math.floor(Math.random() * sample.length); } while (i === last && sample.length > 1);
-      last = i;
-      const q = sample[i];
-      document.getElementById('q-title').textContent = '« ' + q.t + ' »';
-      document.getElementById('q-desc').textContent = q.desc;
-      const poem = document.getElementById('q-poem');
+    // Build the word-by-word schedule: duration grows with word length (jittered),
+    // the pen breathes at punctuation, a beat between lines. Returns total seconds.
+    function populate(q, instant) {
+      titleEl.textContent = '« ' + fr(q.t) + ' »';
+      titleEl.style.viewTransitionName = 'qtitle';   // pairs with the quinte page h1
+      descEl.textContent = fr(q.desc);
       poem.href = '/quinte/' + q.id;
-      poem.innerHTML = q.l
-        .map((line, n) => '<span class="ln" style="animation-delay:' + (0.5 + n * 0.75).toFixed(2) + 's">' + line + '</span>')
-        .join('');
-      const metaEl = document.getElementById('q-meta');
-      metaEl.style.animationDelay = (0.5 + q.l.length * 0.75 + 0.3).toFixed(2) + 's';
-      metaEl.innerHTML = (q.who ? '<span class="oe">' + q.who + '</span><br>' : '')
-        + (q.obj ? q.obj + '<br>' : '') + q.d + (q.coll ? ' · « ' + q.coll + ' »' : '');
-      fitCurrent();                                     // size the lines before the reveal runs
-      const s = document.getElementById('stage');
-      s.classList.remove('run'); void s.offsetWidth; s.classList.add('run');
-    };
-    drawQuinte();
-    // Re-fit once the serif is loaded (fallback metrics differ) and on resize.
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitCurrent);
-    if (!window.__eaFitResize) {
-      window.__eaFitResize = true;
-      let raf = 0;
-      window.addEventListener('resize', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(fitCurrent); });
+      poem.style.viewTransitionName = 'quinte';
+      let t = 0.3;                    // let the title settle before the pen starts
+      const sched = [];
+      poem.innerHTML = q.l.map((line) => {
+        const words = fr(line).split(' ').filter(Boolean);
+        const html = words.map((w) => {
+          const dur = Math.min(0.26, 0.055 + 0.018 * w.length) * (0.85 + Math.random() * 0.3);
+          const d = t;
+          t += dur + 0.035;
+          if (/…$/.test(w)) t += 0.34;
+          else if (/[,;:.!?»]$/.test(w)) t += 0.17;
+          sched.push({ d, dur });
+          return '<span class="w" style="--wd:' + d.toFixed(2) + 's;--wt:' + dur.toFixed(2) + 's">' + esc(w) + '</span>';
+        }).join(' ');
+        t += 0.22;   // a line break is at least a comma's breath
+        return '<span class="ln">' + html + '</span>';
+      }).join('');
+      metaEl.innerHTML = (q.who ? '<span class="oe">' + esc(fr(q.who)) + '</span><br>' : '')
+        + (q.obj ? esc(fr(q.obj)) + '<br>' : '')
+        + esc(q.d) + (q.coll ? ' · « ' + esc(q.coll) + ' »' : '');
+      metaEl.style.transitionDelay = instant ? '0s' : (t + 0.35).toFixed(2) + 's';
+      fitPoem();
+      return { total: t, sched };
     }
+
+    // The nib: one small ocre dot tracing each word left→right on the schedule.
+    function startNib(sched) {
+      try {
+        const words = [...poem.querySelectorAll('.w')];
+        if (!words.length || words.length !== sched.length) return;
+        const sr = scene.getBoundingClientRect();
+        const lastW = sched[sched.length - 1];
+        const T = lastW.d + lastW.dur + 0.35;
+        const frames = [];
+        words.forEach((el, i) => {
+          const r = el.getBoundingClientRect();
+          const y = r.bottom - sr.top - r.height * 0.18;
+          const at = (s) => Math.min(s / T, 1);
+          frames.push({ offset: at(sched[i].d), transform: 'translate(' + (r.left - sr.left) + 'px,' + y + 'px)', opacity: 1 });
+          frames.push({ offset: at(sched[i].d + sched[i].dur), transform: 'translate(' + (r.right - sr.left) + 'px,' + y + 'px)', opacity: 1 });
+        });
+        frames.push({ offset: 1, transform: frames[frames.length - 1].transform, opacity: 0 });
+        anim(nib, frames, { duration: T * 1000, easing: 'linear' });
+      } catch {}
+    }
+
+    function randomSample() {
+      let q, guard = 20;
+      do { q = sample[Math.floor(Math.random() * sample.length)]; } while (q === S.last && sample.length > 1 && guard--);
+      S.last = q;
+      return q;
+    }
+
+    // ---------- the wall (targets + dive + pull-back) ----------
+
+    function unlit() { wallEl.querySelectorAll('.lit').forEach((el) => el.classList.remove('lit')); }
+
+    // Prefer a dive target whose wall title sits inside the viewport; on small
+    // screens (few candidates visible) fall back to the nearest ones.
+    function pickTarget() {
+      const els = [...wallEl.querySelectorAll('a[data-id]')];
+      if (!els.length) return { el: null, item: randomSample() };
+      const sr = scene.getBoundingClientRect();
+      const cx = sr.left + sr.width / 2, cy = sr.top + sr.height / 2;
+      let pool = els.filter((el) => {
+        const r = el.getBoundingClientRect();
+        return r.width > 0 && r.top > sr.top + 50 && r.bottom < sr.bottom - 70
+          && r.left > sr.left + 24 && r.right < sr.right - 24;
+      });
+      if (!pool.length) {
+        pool = els
+          .map((el) => { const r = el.getBoundingClientRect(); return { el, d: Math.hypot(r.left + r.width / 2 - cx, r.top + r.height / 2 - cy) }; })
+          .sort((a, b) => a.d - b.d).slice(0, 10).map((x) => x.el);
+      }
+      let el, item, guard = 24;
+      do { el = pool[Math.floor(Math.random() * pool.length)]; item = byId[el.dataset.id]; }
+      while ((!item || item === S.last) && guard--);
+      S.last = item;
+      return { el, item: item || sample[0] };
+    }
+
+    function dive(fast) {
+      S.state = 'dive';
+      S.prep = null;
+      unlit();
+      const pick = pickTarget();
+      S.current = pick.item;
+      const sr = scene.getBoundingClientRect();
+      let dx = 0, dy = 0;
+      if (pick.el) {
+        pick.el.classList.add('lit');
+        const r = pick.el.getBoundingClientRect();
+        // origin in the wall's own space — the wall bleeds past the scene, so
+        // scene-relative offsets would misplace the zoom by the bleed width
+        const wr = wallEl.getBoundingClientRect();
+        wallEl.style.transformOrigin =
+          (r.left + r.width / 2 - wr.left) + 'px ' + (r.top + r.height / 2 - wr.top) + 'px';
+        dx = sr.left + sr.width / 2 - (r.left + r.width / 2);
+        dy = sr.top + sr.height * 0.42 - (r.top + r.height / 2);
+      } else {
+        wallEl.style.transformOrigin = '50% 45%';
+      }
+      S.wallEnd = 'translate(' + dx + 'px,' + dy + 'px) scale(6)';
+      const dur = fast ? 900 : 1150;
+      // one continuous curve for the camera. The wall's raster is made at scale 1,
+      // so it goes soft as it grows — fade it before the softness reads (gone ~72%).
+      anim(wallEl, [{ transform: 'translate(0,0) scale(1)' }, { transform: S.wallEnd }],
+        { duration: dur, easing: 'cubic-bezier(.55,.06,.18,1)', fill: 'forwards' });
+      anim(wallEl, [{ opacity: 1 }, { opacity: 0 }],
+        { duration: dur * 0.42, delay: dur * 0.30, easing: 'ease-out', fill: 'forwards' });
+      // The one thing the eye tracks stays sharp: the REAL title (full-res raster)
+      // flies from the wall title's place — scaled DOWN then up to identity, which
+      // only ever minifies the raster. The blurred mass recedes behind a crisp voice.
+      if (pick.el && S.current) {
+        // lay the whole stage out NOW (poem included) — the title's landing rect
+        // is only final once the lines below it take their space
+        S.prep = populate(S.current, false);
+        const tr = titleEl.getBoundingClientRect();
+        const cs = getComputedStyle(titleEl);
+        const s0 = (parseFloat(getComputedStyle(pick.el).fontSize) / parseFloat(cs.fontSize)) || 0.5;
+        if (tr.height && tr.width) {
+          const wr2 = pick.el.getBoundingClientRect();
+          const fly = document.createElement('div');
+          fly.className = 'fly';
+          fly.textContent = titleEl.textContent;
+          fly.setAttribute('aria-hidden', 'true');
+          fly.style.font = cs.font;
+          fly.style.letterSpacing = cs.letterSpacing;
+          fly.style.left = (tr.left - sr.left + tr.width / 2) + 'px';
+          fly.style.top = (tr.top - sr.top + tr.height / 2) + 'px';
+          scene.appendChild(fly);
+          S.fly = fly; S.hid = pick.el;
+          pick.el.style.visibility = 'hidden';     // the sharp clone replaces it
+          titleEl.style.opacity = '0';             // revealed when the clone lands
+          const fdx = (wr2.left + wr2.width / 2) - (tr.left + tr.width / 2);
+          const fdy = (wr2.top + wr2.height / 2) - (tr.top + tr.height / 2);
+          anim(fly, [
+            { transform: 'translate(calc(-50% + ' + fdx + 'px), calc(-50% + ' + fdy + 'px)) scale(' + s0 + ')', color: 'var(--color-ocre)' },
+            { transform: 'translate(-50%, -50%) scale(1)', color: 'var(--color-ink)' },
+          ], { duration: dur, easing: 'cubic-bezier(.55,.06,.18,1)', fill: 'both' });
+          later(clearFly, dur + 60);
+        }
+      }
+      later(beginWriting, dur * 0.55);
+    }
+
+    // undo the flying-title scaffolding (skip, rencontre, or normal landing)
+    function clearFly() {
+      if (S.fly) { S.fly.remove(); S.fly = null; }
+      if (S.hid) { S.hid.style.visibility = ''; S.hid = null; }
+      titleEl.style.opacity = '';
+    }
+
+    function beginWriting() {
+      if (!S.current) return;
+      S.state = 'write';
+      scene.dataset.state = 'write';
+      const { total, sched } = S.prep || populate(S.current, false);
+      S.prep = null;
+      scene.classList.add('stage-in');
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        fitPoem();                    // fonts may have settled since populate()
+        stage.classList.add('write');
+        startNib(sched);
+      }));
+      later(onWritten, (total + 1.4) * 1000);
+    }
+
+    function onWritten() {
+      S.state = 'written';
+      try { localStorage.setItem('ea-visited', '1'); } catch {}
+      armStill();
+    }
+
+    // Jump to the finished composition — the skip for every phase.
+    function finishNow() {
+      if (S.state === 'written') return;
+      cancelAll();
+      clearFly();
+      scene.classList.add('inkdone');
+      if (!S.current) S.current = randomSample();
+      unlit();
+      populate(S.current, true);
+      scene.dataset.state = 'write';
+      scene.classList.add('stage-in', 'inked');
+      stage.classList.add('write');
+      onWritten();
+    }
+
+    // « rencontre au hasard » — pull back to the wall, dive into another.
+    function rencontre() {
+      cancelAll();
+      clearFly();
+      wake();
+      const hadWall = S.state === 'wall';
+      scene.classList.remove('inked');
+      scene.classList.add('inkdone');
+      stage.classList.remove('write');
+      scene.classList.remove('stage-in');
+      if (reduced) {
+        S.current = randomSample();
+        populate(S.current, true);
+        scene.classList.add('stage-in', 'inked');
+        S.state = 'written';
+        armStill();
+        return;
+      }
+      S.state = 'wall';
+      scene.dataset.state = 'wall';
+      if (!hadWall) {
+        anim(wallEl, [{ transform: S.wallEnd || 'scale(6)', opacity: 0 }, { transform: 'translate(0,0) scale(1)', opacity: 1 }],
+          { duration: 620, easing: 'cubic-bezier(.2,.65,.25,1)', fill: 'forwards' });
+        later(() => dive(true), 980);
+      } else {
+        later(() => dive(true), 60);
+      }
+    }
+
+    // ---------- counter, stillness, boot ----------
+
+    function countUp(dur) {
+      const el = document.getElementById('count');
+      if (!el) return;
+      const fmt = (n) => n.toLocaleString('fr-FR').replace(/[  ]/g, ' ');
+      const t0 = performance.now();
+      (function tick(now) {
+        const p = Math.min(1, (now - t0) / dur);
+        el.textContent = fmt(Math.round(TOTAL * (1 - Math.pow(1 - p, 3))));
+        if (p < 1 && document.contains(el)) requestAnimationFrame(tick);
+      })(t0);
+    }
+
+    function armStill() {
+      clearTimeout(window.__eaStillT);
+      window.__eaStillT = setTimeout(() => {
+        if (document.getElementById('scene') && S.state === 'written') document.body.classList.add('ea-still');
+      }, 1800);
+    }
+    function wake() { document.body.classList.remove('ea-still'); }
+
+    function boot() {
+      if (reduced) {
+        wallEl.style.display = 'none';
+        S.current = randomSample();
+        populate(S.current, true);
+        scene.dataset.state = 'write';
+        scene.classList.add('stage-in', 'inked');
+        S.state = 'written';
+        armStill();
+        return;
+      }
+      S.state = 'wall';
+      scene.dataset.state = 'wall';
+      if (seen) scene.classList.add('fast');
+      scene.classList.add('ink');
+      later(() => scene.classList.add('inkdone'), seen ? 900 : 2300);
+      countUp(seen ? 600 : 1300);
+      later(() => dive(false), seen ? 750 : 2150);
+    }
+
+    // ---------- wiring (assignment / replace patterns: safe across view transitions) ----------
+
+    document.getElementById('rand').onclick = rencontre;
+    scene.onclick = (e) => {
+      if (e.target.closest('a, button')) return;
+      finishNow();
+    };
+
+    if (window.__eaKey) document.removeEventListener('keydown', window.__eaKey);
+    window.__eaKey = (e) => {
+      if (!document.getElementById('scene')) return;
+      wake(); if (S.state === 'written') armStill();
+      if ((e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') && S.state !== 'written'
+        && !e.target.closest('a, button, input, textarea')) {
+        e.preventDefault();
+        finishNow();
+      }
+    };
+    document.addEventListener('keydown', window.__eaKey);
+
+    if (window.__eaMove) document.removeEventListener('pointermove', window.__eaMove);
+    window.__eaMove = () => {
+      if (!document.getElementById('scene')) return;
+      wake(); if (S.state === 'written') armStill();
+    };
+    document.addEventListener('pointermove', window.__eaMove, { passive: true });
+
+    if (window.__eaResize) window.removeEventListener('resize', window.__eaResize);
+    let raf = 0;
+    window.__eaResize = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(fitPoem); };
+    window.addEventListener('resize', window.__eaResize);
+
+    if (!window.__eaSwapClean) {
+      window.__eaSwapClean = true;
+      document.addEventListener('astro:before-swap', () => {
+        document.body.classList.remove('ea-still');
+        clearTimeout(window.__eaStillT);
+      });
+    }
+
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitPoem);
+    boot();
     })();
   </script>
 
   <style is:global>
-    /* The quinte lines + meta are injected via innerHTML, so they don't get
-       Astro's scoped attributes. Style them globally, by id. */
-    /* each stored line = one visual line; a word is never split or hyphenated.
-       JS (fitCurrent) scales the font so the longest line fills the width. */
-    #q-poem .ln { display: block; white-space: nowrap; word-break: keep-all; hyphens: none;
-      clip-path: inset(0 100% 0 0); opacity: .14; }
-    #stage.run #q-poem .ln { animation: eaInk .8s cubic-bezier(.4, .1, .2, 1) forwards; }
-    @keyframes eaInk { from { clip-path: inset(0 100% 0 0); opacity: .14; } to { clip-path: inset(0 0 0 0); opacity: 1; } }
-    #q-meta .oe { color: var(--color-ocre); }
-    @media (prefers-reduced-motion: reduce) {
-      #q-poem .ln { clip-path: none !important; opacity: 1 !important; animation: none !important; }
+    /* Landing choreography. Global on purpose: the quinte's words and meta are
+       injected via innerHTML (no Astro scope attrs), and stillness dims the
+       shared header. Everything is keyed under .ea-page / #scene ids. */
+
+    :root { --ea-wet: #040200; }
+    :root[data-theme="dark"] { --ea-wet: #FFFCF2; }
+
+    .ea-page { display: flex; flex-direction: column; flex: 1; position: relative; }
+    /* paper grain — static SVG turbulence, one paint, no motion */
+    .ea-page::before {
+      content: ''; position: fixed; inset: 0; z-index: 40; pointer-events: none;
+      opacity: .05; mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
     }
-  </style>
+    :root[data-theme="dark"] .ea-page::before { opacity: .06; mix-blend-mode: screen; }
 
-  <style>
-    .page { display: flex; flex-direction: column; flex: 1; }
-    header { display: flex; justify-content: space-between; align-items: center;
-      padding: clamp(20px, 4vw, 34px) clamp(20px, 5vw, 52px); }
-    .brand { font-family: var(--font-serif); font-size: 20px; letter-spacing: .02em; text-decoration: none; }
-    nav { display: flex; gap: 22px; align-items: center; font-size: 13.5px; color: var(--color-muted); }
-    nav a { text-decoration: none; }
-    nav a:hover { color: var(--color-ocre); }
-    .iconbtn { background: none; border: none; cursor: pointer; color: var(--color-muted);
-      font-size: 15px; font-family: var(--font-sans); }
-    .iconbtn:hover { color: var(--color-ocre); }
+    #scene { position: relative; flex: 1; display: flex; overflow: hidden; }
 
-    main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center; padding: 0 clamp(20px, 6vw, 40px); }
-    .kicker { font-family: var(--font-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
-      color: var(--color-muted); margin-bottom: clamp(12px, 3vw, 20px); }
-    .flourish { width: 150px; height: auto; color: var(--color-ocre); margin-bottom: 6px; opacity: .9; }
-    .flourish path { fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round;
-      stroke-dasharray: 1; stroke-dashoffset: 1; pathLength: 1; }
-    .run .flourish path { animation: draw 1.1s ease-out forwards; }
-    @keyframes draw { to { stroke-dashoffset: 0; } }
-    .title { font-family: var(--font-serif); font-weight: 400; font-size: clamp(19px, 2.6vw, 25px);
-      margin-bottom: 4px; }
-    .desc { font-family: var(--font-serif); font-style: italic; color: var(--color-muted);
-      font-size: clamp(14px, 1.9vw, 17px); margin-bottom: clamp(18px, 4vw, 32px); max-width: 34ch; }
-    .poem { display: block; font-family: var(--font-serif); font-style: italic; font-weight: 300;
-      text-decoration: none; font-size: clamp(22px, 3.6vw, 35px); line-height: 1.6; letter-spacing: -.01em; }
-    .poem .ln { display: block; clip-path: inset(0 100% 0 0); opacity: .14; }
-    .run .poem .ln { animation: ink .8s cubic-bezier(.4, .1, .2, 1) forwards; }
-    @keyframes ink { from { clip-path: inset(0 100% 0 0); opacity: .14; } to { clip-path: inset(0 0 0 0); opacity: 1; } }
-    .meta { font-family: var(--font-mono); font-size: 12px; color: var(--color-muted); line-height: 1.9;
-      margin-top: clamp(24px, 5vw, 42px); opacity: 0; }
-    .run .meta { animation: fade .8s ease-out forwards; }
-    @keyframes fade { to { opacity: 1; } }
-    .meta .oe { color: var(--color-ocre); }
+    /* ---- the wall ---- */
+    /* Bleeds past both sides: titles cut mid-word at the screen edge, as if the
+       galley continues beyond it (#scene overflow:hidden — no x-scroll).
+       The bleed must exceed the widest title (~230px desktop / ~160px mobile):
+       a title that doesn't fit wraps whole, so a smaller bleed leaves lines
+       ending short of the screen edge. The mask %s are relative to the widened
+       box, so the fade lands offscreen: hard clip at the sides, soft corners. */
+    #wall {
+      position: absolute; inset: -12px clamp(-280px, -17vw, -170px);
+      padding: clamp(10px, 2.5vw, 28px) 0;
+      font-family: var(--font-serif); font-size: clamp(10.5px, 1.1vw, 13.5px);
+      line-height: 2.05; user-select: none; pointer-events: none;
+      mask-image: radial-gradient(112% 92% at 50% 43%, #000 42%, transparent 88%);
+      -webkit-mask-image: radial-gradient(112% 92% at 50% 43%, #000 42%, transparent 88%);
+    }
+    #scene[data-state="wall"] #wall { pointer-events: auto; }
+    #wall .wg { opacity: 0; }
+    #scene.ink .wg { animation: eaWg 1s ease-out both; animation-delay: var(--d); }
+    #scene.fast .wg { animation-duration: .5s; animation-delay: calc(var(--d) * .35); }
+    #scene.inkdone .wg { animation: none; opacity: 1; }
+    @keyframes eaWg { from { opacity: 0; } to { opacity: 1; } }
+    #wall .wt {
+      display: inline-block; margin: 0 .7em .05em 0; white-space: nowrap;
+      text-decoration: none; color: color-mix(in srgb, var(--color-ink) 34%, transparent);
+      transition: color .25s;
+    }
+    /* uneven ink — the galley is hand-set, not a texture fill */
+    #wall .wt:nth-child(2n) { color: color-mix(in srgb, var(--color-ink) 29%, transparent); }
+    #wall .wt:nth-child(5n) { color: color-mix(in srgb, var(--color-ink) 40%, transparent); }
+    #wall .wt:hover, #wall .wt.lit { color: var(--color-ocre); }
+    /* small screens: one band spans the whole viewport, so the patch-stagger reads
+       as emptiness — compress it into a single gentle ink-in, and densify the galley */
+    @media (max-width: 720px) {
+      #wall { font-size: 9px; line-height: 1.95; }
+      #wall .wt { margin-right: .55em; }
+      #scene.ink .wg { animation-delay: calc(var(--d) * .25); animation-duration: .7s; }
+    }
 
-    footer { display: flex; flex-direction: column; align-items: center; gap: 14px;
-      padding: 0 20px clamp(28px, 6vw, 54px); }
-    .rand { font-family: var(--font-mono); font-size: 13px; color: var(--color-ocre); background: none;
+    /* ---- the stage ---- */
+    /* no scale-settle here: the flying title must land EXACTLY on #q-title, so
+       the stage reveals with opacity alone */
+    #stage {
+      position: relative; z-index: 1; margin: auto; width: 100%; max-width: 1200px;
+      text-align: center; padding: 0 clamp(20px, 6vw, 44px) 20px;
+      opacity: 0; pointer-events: none;
+      transition: opacity .75s ease;
+    }
+    #scene.stage-in #stage { opacity: 1; pointer-events: auto; }
+    /* the sharp travelling title (see dive()) */
+    #scene .fly { position: absolute; z-index: 2; white-space: nowrap;
+      pointer-events: none; will-change: transform; }
+    #stage .kicker {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--color-muted); margin-bottom: clamp(14px, 3vw, 24px);
+    }
+    #q-title {
+      font-family: var(--font-serif); font-weight: 400;
+      font-size: clamp(19px, 2.6vw, 26px); margin: 0 0 4px;
+    }
+    #q-desc {
+      font-family: var(--font-serif); font-style: italic; color: var(--color-muted);
+      font-size: clamp(14px, 1.9vw, 17px); margin: 0 auto clamp(20px, 4vw, 36px); max-width: 40ch;
+    }
+    #q-poem {
+      display: block; font-family: var(--font-serif); font-style: italic; font-weight: 300;
+      text-decoration: none; line-height: 1.55; letter-spacing: -.012em;
+    }
+    #q-poem .ln { display: block; white-space: nowrap; word-break: keep-all; hyphens: none; }
+    /* a word is inked by the pen: clip opens left→right (negative insets keep
+       italic overhangs and swashes unclipped), then the wet ink dries */
+    #q-poem .w { display: inline-block; clip-path: inset(-30% 103% -30% -8%); color: var(--ea-wet); }
+    #stage.write .w {
+      animation:
+        eaW var(--wt) cubic-bezier(.5, .03, .36, 1) var(--wd) both,
+        eaDry 2.4s ease-out calc(var(--wd) + var(--wt)) both;
+    }
+    @keyframes eaW { to { clip-path: inset(-30% -8% -30% -8%); } }
+    @keyframes eaDry { from { color: var(--ea-wet); } to { color: var(--color-ink); } }
+    #q-meta {
+      font-family: var(--font-mono); font-size: 12px; color: var(--color-muted);
+      line-height: 1.9; margin-top: clamp(24px, 5vw, 44px);
+      opacity: 0; transition: opacity 1s ease;
+    }
+    #stage.write #q-meta { opacity: 1; }
+    #q-meta .oe { color: var(--color-ocre); }
+
+    #nib {
+      position: absolute; left: 0; top: 0; width: 5px; height: 5px; margin: -3px 0 0 -2px;
+      border-radius: 50%; background: var(--color-ocre); opacity: 0; z-index: 2; pointer-events: none;
+    }
+
+    /* skip / instant state: the finished composition, nothing pending */
+    #scene.inked #wall { opacity: 0 !important; pointer-events: none !important; }
+    #scene.inked .w { animation: none !important; clip-path: none !important; color: var(--color-ink) !important; }
+    #scene.inked #q-meta { transition: none; opacity: 1; }
+    #scene.inked #nib { display: none; }
+
+    /* ---- footer ---- */
+    .ea-page footer {
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+      padding: 10px 20px calc(clamp(26px, 5vw, 48px) + env(safe-area-inset-bottom, 0px));
+      transition: opacity 1.4s ease;
+    }
+    .ea-page .rand {
+      font-family: var(--font-mono); font-size: 13px; color: var(--color-ocre); background: none;
       border: 1px solid var(--color-ocre); border-radius: 999px; padding: 10px 20px; cursor: pointer;
-      letter-spacing: .02em; transition: background .2s, color .2s; }
-    .rand:hover { background: var(--color-ocre); color: var(--color-paper); }
-    .tag { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
-      color: var(--color-muted); text-decoration: none; }
-    .tag:hover { color: var(--color-ocre); }
+      letter-spacing: .02em; transition: background .2s, color .2s;
+    }
+    .ea-page .rand:hover { background: var(--color-ocre); color: var(--color-paper); }
+    .ea-page .rand:focus-visible { outline: 2px solid var(--color-ocre); outline-offset: 3px; }
+    .ea-page .tag {
+      font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--color-muted); text-decoration: none;
+    }
+    .ea-page .tag:hover { color: var(--color-ocre); }
+    .ea-page .tag #count { font-variant-numeric: tabular-nums; }
+
+    /* ---- stillness: once the writing ends, the chrome recedes ---- */
+    .site-header { transition: opacity 1.4s ease; }
+    body.ea-still .site-header { opacity: .08; }
+    body.ea-still .ea-page footer { opacity: .22; }
 
     @media (prefers-reduced-motion: reduce) {
-      .poem .ln { clip-path: none !important; opacity: 1 !important; animation: none !important; }
-      .flourish path { stroke-dashoffset: 0 !important; animation: none !important; }
-      .meta { opacity: 1 !important; animation: none !important; }
+      #wall .wg { animation: none !important; opacity: 1 !important; }
+      #q-poem .w { animation: none !important; clip-path: none !important; color: var(--color-ink) !important; }
+      #q-meta { transition: none !important; opacity: 1 !important; }
+      #nib { display: none !important; }
+      #stage { transition: none !important; transform: none !important; }
+      .site-header, .ea-page footer { transition: none !important; }
     }
   </style>
 </Base>

@@ -23,7 +23,7 @@ const nEcri = all.filter((q) => q.data.mode === 'ecrivanalyse').length;
   <div class="wrap">
     <main>
       <h1>L'archive</h1>
-      <p class="lede">{total} quintes de cinq lignes, cinq mots, cinq ponctuations, {years[years.length - 1]} - {years[0]}.</p>
+      <p class="lede">{total} quintes de cinq lignes, cinq mots, cinq ponctuations — archivées de {years[years.length - 1]} à {years[0]}.</p>
 
       <div class="facets" role="group" aria-label="Filtrer par mode">
         <button class="facet on" data-f="all">tout · {total}</button>
@@ -31,15 +31,19 @@ const nEcri = all.filter((q) => q.data.mode === 'ecrivanalyse').length;
         <button class="facet" data-f="ecrivanalyse">écrivanalyse · {nEcri}</button>
       </div>
 
+      <nav class="years" aria-label="Aller à une année">
+        {years.map((y) => <a href={`#y-${y}`}>{y}</a>)}
+      </nav>
+
       {years.map((y) => (
-        <section class="yr">
+        <section class="yr" id={`y-${y}`} style={`--h:${byYear.get(y)!.length * 70 + 60}px`}>
           <h2>{y}</h2>
           <ul>
             {byYear.get(y)!.map((q) => (
               <li data-mode={q.data.mode || 'none'}>
                 <a href={`/quinte/${q.id}`}>
                   <span class="entry">
-                    <span class="t">{q.data.title}</span>
+                    <span class="t" data-vt-title>{q.data.title}</span>
                     {q.data.soustitre && <span class="d">{q.data.soustitre}</span>}
                   </span>
                   <span class="r">{roleLabel(q.data.participant_role)}{q.data.quintesse_num ? ` · ${q.data.quintesse_num}` : ''}</span>
@@ -54,6 +58,23 @@ const nEcri = all.filter((q) => q.data.mode === 'ecrivanalyse').length;
 
   <script is:inline data-astro-rerun>
     (() => {
+      // Year jumps: with content-visibility, unrendered sections sit at their
+      // estimated height, so a one-shot anchor jump lands off-target. Re-run
+      // scrollIntoView for a few frames while the real layout settles.
+      document.querySelectorAll('.years a').forEach((a) => a.addEventListener('click', (e) => {
+        const el = document.querySelector(a.getAttribute('href'));
+        if (!el) return;
+        e.preventDefault();
+        history.replaceState(null, '', a.getAttribute('href'));
+        document.querySelectorAll('.years a').forEach((x) => x.classList.toggle('on', x === a));
+        a.parentElement.scrollTo({ left: a.offsetLeft - 24, behavior: 'smooth' });
+        let n = 0;
+        (function settle() {
+          el.scrollIntoView();
+          if (++n < 6) requestAnimationFrame(settle);
+        })();
+      }));
+
       const btns = document.querySelectorAll('.facet');
       btns.forEach((b) => b.addEventListener('click', () => {
         btns.forEach((x) => x.classList.remove('on'));
@@ -82,14 +103,30 @@ const nEcri = all.filter((q) => q.data.mode === 'ecrivanalyse').length;
     .facet:hover { border-color: var(--color-ocre); color: var(--color-ocre); }
     .facet.on { border-color: var(--color-ocre); color: var(--color-ocre); background: color-mix(in srgb, var(--color-ocre) 8%, transparent); }
 
-    .yr { margin-bottom: 34px; }
+    /* sticky year rail: ~3 000 entries make one very long page; this is the map */
+    .years { position: sticky; top: 0; z-index: 5; display: flex;
+      gap: clamp(10px, 1.4vw, 12px); justify-content: space-between;
+      overflow-x: auto; scrollbar-width: none; background: var(--color-paper);
+      font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .02em;
+      padding: 12px 2px 10px; margin: 0 0 30px; border-bottom: 1px solid var(--color-hair); }
+    .years::-webkit-scrollbar { display: none; }
+    .years a { color: var(--color-muted); text-decoration: none; padding: 8px 0; margin: -8px 0; }
+    .years a:hover, .years a.on { color: var(--color-ocre); }
+
+    /* offscreen years skip layout & paint — the page holds 3 000+ rows.
+       --h estimates the section's real height (rows × ~70px) so anchor jumps
+       land close; the rail's settle loop corrects the rest. */
+    .yr { margin-bottom: 34px; content-visibility: auto;
+      contain-intrinsic-size: auto var(--h, 900px); scroll-margin-top: 46px; }
     .yr h2 { font-family: var(--font-mono); font-size: 12px; letter-spacing: .14em; color: var(--color-ocre);
       border-bottom: 1px solid var(--color-hair); padding-bottom: 8px; margin: 0 0 4px; }
     .yr ul { list-style: none; margin: 0; padding: 0; }
     .yr li a { display: flex; justify-content: space-between; gap: 24px; align-items: baseline;
       text-decoration: none; padding: 11px 2px; border-bottom: 1px solid color-mix(in srgb, var(--color-hair) 55%, transparent); }
     .yr li a:hover .t { color: var(--color-ocre); }
-    .yr .entry { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .yr .entry { display: flex; flex-direction: column; gap: 3px; min-width: 0;
+      transition: transform .35s cubic-bezier(.2, .65, .25, 1); }
+    .yr li a:hover .entry { transform: translateX(3px); }
     .yr .t { font-family: var(--font-serif); font-size: 17px; }
     .yr .d { font-family: var(--font-serif); font-style: italic; font-size: 13.5px;
       color: var(--color-muted); line-height: 1.35; }

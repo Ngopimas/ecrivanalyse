@@ -13,6 +13,8 @@ const withCMS = process.env.CMS === '1';
 
 export default defineConfig({
   site: 'https://ecrivanalyse.net',
+  // hover-prefetch: pages are tiny static HTML, so a hovered link is already loaded by click
+  prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
   integrations: [...(withCMS ? [react(), keystatic()] : []), sitemap()],
   vite: {
     plugins: [tailwindcss()],

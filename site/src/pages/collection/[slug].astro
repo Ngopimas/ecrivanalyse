@@ -23,13 +23,13 @@ const { name, mode, items } = Astro.props;
 <Base title={`« ${name} » - Écrivanalyse`}>
   <div class="wrap">
     <main>
-      <h1>«&#8239;{name}&#8239;»</h1>
+      <h1 transition:name="qtitle">«&#8239;{name}&#8239;»</h1>
       <div class="breadcrumb"><a href="/collections">← Collections</a>{modeLabel(mode) && <span> · {modeLabel(mode)}</span>} · {items.length} quintes</div>
       <ul>
         {items.map((q) => (
           <li>
             <a href={`/quinte/${q.id}`}>
-              <span class="t">{q.data.title}</span>
+              <span class="t" data-vt-title>{q.data.title}</span>
               <span class="r">{year(q.data.date)}{q.data.quintesse_num ? ` · ${q.data.quintesse_num}` : ''}</span>
             </a>
           </li>
@@ -53,7 +53,9 @@ const { name, mode, items } = Astro.props;
     li a { display: flex; justify-content: space-between; gap: 20px; align-items: baseline; text-decoration: none;
       padding: 10px 2px; border-bottom: 1px solid color-mix(in srgb, var(--color-hair) 60%, transparent); }
     li a:hover { color: var(--color-ocre); }
-    .t { font-family: var(--font-serif); font-size: 18px; }
+    .t { font-family: var(--font-serif); font-size: 18px; display: inline-block;
+      transition: transform .35s cubic-bezier(.2, .65, .25, 1); }
+    li a:hover .t { transform: translateX(3px); }
     .r { font-family: var(--font-mono); font-size: 10.5px; color: var(--color-muted); white-space: nowrap; }
   </style>
 </Base>

@@ -34,6 +34,9 @@ const { q, qid, comments, prev, next } = Astro.props;
 const deElide = (s: unknown) => (s ?? '').toString().replace(/[’']/g, '$& ');
 const searchExtra = [q.title, q.soustitre, ...(q.lines ?? []), participant(q), q.collection,
   ...comments.map((c) => c.text)].filter(Boolean).map(deElide).join('  ');
+
+// year · quintesse number, exposed to Pagefind — the search results' mono column
+const rMeta = [q.date ? String(q.date).slice(0, 4) : null, q.quintesse_num].filter(Boolean).join(' · ');
 ---
 <Base
   title={`« ${q.title} » - Écrivanalyse`}
@@ -44,22 +47,29 @@ const searchExtra = [q.title, q.soustitre, ...(q.lines ?? []), participant(q), q
 >
   <div class="wrap">
     <main data-pagefind-body>
-      <h1>{q.title}</h1>
+      <h1 transition:name="qtitle">{q.title}</h1>
       {q.soustitre && <p class="desc">{q.soustitre}</p>}
-      <div class="breadcrumb">
+      <!-- data-pagefind-ignore: the collection is indexed via .pf-extra; leaving
+           the breadcrumb indexable made every excerpt start with its label -->
+      <div class="breadcrumb" data-pagefind-ignore>
         {q.collection && <a class="col" href={`/collection/${slug(q.collection)}`}>«&#8239;{q.collection}&#8239;»</a>}
         {modeLabel(q.mode) && <span> · {modeLabel(q.mode)}</span>}
       </div>
 
-      <div class="quinte">
-        {q.lines.map((l) => <span class="ln">{l}</span>)}
+      <div class="quinte enter" transition:name="quinte" data-pagefind-meta={rMeta ? `r:${rMeta}` : undefined}>
+        <!-- the {' '} keeps Pagefind from jamming line ends together ("bleue,à")
+             in excerpts; between block spans it never renders -->
+        {q.lines.map((l, i) => <><span class="ln" style={`--i:${i}`}>{l}</span>{' '}</>)}
       </div>
 
       <div class="object">
         {participant(q) && <div class="who oe">{participant(q)}</div>}
         {quintesseObject(q) && <div class="obj">{quintesseObject(q)}</div>}
         <div class="byline">{q.author} · {frDate(q.date)}</div>
-        <button class="share" type="button" data-title={q.title}>partager</button>
+        <div class="obj-actions">
+          <button class="share" type="button" data-title={q.title}>partager</button>
+          <a class="gloss" href="/projet#quintesse">qu'est-ce qu'une quintesse&#8239;?</a>
+        </div>
       </div>
 
       {comments.length > 0 && (
@@ -96,9 +106,9 @@ const searchExtra = [q.title, q.soustitre, ...(q.lines ?? []), participant(q), q
       </section>
 
       <nav class="pager">
-        {prev ? <a href={`/quinte/${prev}`}>← précédente</a> : <span></span>}
-        <a href="/hasard" data-astro-reload>rencontre au hasard ↻</a>
-        {next ? <a href={`/quinte/${next}`}>suivante →</a> : <span></span>}
+        {prev ? <a rel="prev" href={`/quinte/${prev}`}>← précédente</a> : <span></span>}
+        <a class="hasard" href="/hasard" data-astro-reload>rencontre au hasard ↻</a>
+        {next ? <a rel="next" href={`/quinte/${next}`}>suivante →</a> : <span></span>}
       </nav>
 
       <div class="pf-extra" aria-hidden="true">{searchExtra}</div>
@@ -135,6 +145,24 @@ const searchExtra = [q.title, q.soustitre, ...(q.lines ?? []), participant(q), q
       font-size: clamp(16px, 2.2vw, 19px); margin: 0 0 14px; }
     .quinte { font-family: var(--font-serif); font-weight: 300; font-size: clamp(21px, 3vw, 28px);
       line-height: 1.72; margin: 36px 0 44px; }
+    /* entrance for direct arrivals only (shared link, refresh): the lines ink in
+       one by one. Router navigations get the title/body morph instead — the
+       rerun script strips .enter when window.__eaNavigated is set. Gated on
+       html.js so no-JS visitors always see the text. */
+    :global(html.js) .quinte.enter .ln {
+      opacity: 0;
+      animation: eaLnIn .55s cubic-bezier(.22, .08, .26, 1) both;
+      animation-delay: calc(.1s + var(--i, 0) * .09s);
+    }
+    :global(html.js) .quinte.enter ~ .object {
+      opacity: 0;
+      animation: eaLnIn .9s ease-out .8s both;
+    }
+    @keyframes eaLnIn { to { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) {
+      :global(html.js) .quinte.enter .ln,
+      :global(html.js) .quinte.enter ~ .object { animation: none; opacity: 1; }
+    }
     /* each stored line = one visual line; a word is never split or hyphenated.
        The inline fit script scales the font so the longest line fits the column. */
     .quinte .ln { display: block; white-space: nowrap; word-break: keep-all; hyphens: none; }
@@ -145,10 +173,17 @@ const searchExtra = [q.title, q.soustitre, ...(q.lines ?? []), participant(q), q
     .object { font-family: var(--font-mono); font-size: 12px; color: var(--color-muted);
       border-top: 1px solid var(--color-hair); padding-top: 20px; line-height: 1.9; }
     .object .oe { color: var(--color-ocre); }
+    .obj-actions { display: flex; gap: 22px; align-items: baseline; }
     .share { font-family: var(--font-mono); font-size: 12px; letter-spacing: .05em;
-      background: none; border: none; padding: 0; margin-top: 6px; cursor: pointer;
+      background: none; border: none; cursor: pointer;
+      /* padding + negative margins: a finger-sized hit box, same visual position */
+      padding: 12px 2px 12px 0; margin: -6px 0 -12px;
       color: var(--color-muted); text-decoration: underline; text-underline-offset: 3px; }
     .share:hover { color: var(--color-ocre); }
+    .gloss { font-family: var(--font-serif); font-style: italic; font-size: 13.5px;
+      color: var(--color-muted); text-decoration: none;
+      padding: 12px 2px; margin: -6px 0 -12px; }
+    .gloss:hover { color: var(--color-ocre); text-decoration: underline; text-underline-offset: 3px; }
     .reponses, .repondre { border-top: 1px solid var(--color-hair); margin-top: 44px; padding-top: 18px; }
     .reponses h2, .repondre h2 { font-family: var(--font-mono); font-weight: 400; font-size: 11px;
       letter-spacing: .08em; color: var(--color-muted); margin: 0 0 24px; }
@@ -180,10 +215,38 @@ const searchExtra = [q.title, q.soustitre, ...(q.lines ?? []), participant(q), q
     .merci:target { display: block; }
     .merci:target ~ form { display: none; }
 
+    /* printed, a quinte page becomes a quintesse again: just the text on paper,
+       a museum label as colophon */
+    @media print {
+      :global(.site-header), .breadcrumb, .reponses, .repondre, .pager,
+      .obj-actions, .pf-extra { display: none !important; }
+      :global(body) { background: #fff !important; color: #111 !important; }
+      .wrap { max-width: none; padding: 0; }
+      h1 { margin-top: 22mm; color: #111; }
+      .desc { color: #555; }
+      .quinte { font-size: 17pt !important; white-space: normal !important;
+        margin: 16mm 0 20mm; color: #111; }
+      .quinte .ln { opacity: 1 !important; animation: none !important;
+        white-space: normal !important; }
+      @page { margin: 22mm 24mm; }
+      .object { opacity: 1 !important; animation: none !important;
+        border-top-color: #ddd; color: #555; }
+      .object .oe { color: #8a3a24; }
+      .byline::after { content: " · ecrivanalyse.net"; }
+    }
+
     .pager { display: flex; justify-content: space-between; margin-top: 48px;
       font-family: var(--font-serif); font-style: italic; font-size: 15px; }
-    .pager a { color: var(--color-ocre); text-decoration: none; }
+    .pager a { color: var(--color-ocre); text-decoration: none; padding: 10px 2px; margin: -10px 0; }
     .pager a:hover { text-decoration: underline; }
+    /* narrow screens: prev/next share a row, hasard sits centered below.
+       Positional selectors so the empty placeholder spans keep their side. */
+    @media (max-width: 560px) {
+      .pager { flex-wrap: wrap; row-gap: 10px; }
+      .pager > :first-child { order: 1; }
+      .pager > :last-child { order: 2; }
+      .pager .hasard { order: 3; flex-basis: 100%; text-align: center; }
+    }
   </style>
 
   <script is:inline data-astro-rerun>
@@ -191,6 +254,8 @@ const searchExtra = [q.title, q.soustitre, ...(q.lines ?? []), participant(q), q
     const MIN = 18, MAX = 32, REF = 100;   // font-size floor / ceiling (px), measuring size
     // Scale the quinte so its longest line stays on one line within the column;
     // below MIN px (very long line / narrow screen) it wraps rather than overflow.
+    // in-site navigation: the morph is the entrance — drop the line stagger
+    if (window.__eaNavigated) document.querySelector('.quinte')?.classList.remove('enter');
     function fit() {
       const q = document.querySelector('.quinte');
       if (!q) return;
@@ -240,6 +305,46 @@ const searchExtra = [q.title, q.soustitre, ...(q.lines ?? []), participant(q), q
         setTimeout(() => { b.textContent = 'partager'; }, 2000);
       }
     };
+    })();
+  </script>
+
+  <script is:inline data-astro-rerun>
+    (() => {
+    // Leaf through the archive: ← / → keys, horizontal swipe on touch.
+    // Handlers live on document behind window.__ea* guards (view transitions
+    // re-run this script; remove-then-add keeps exactly one binding), and
+    // navigation clicks the real pager link so the ClientRouter animates it.
+    const go = (dir) => document.querySelector('.pager a[rel="' + dir + '"]')?.click();
+
+    if (window.__eaQKey) document.removeEventListener('keydown', window.__eaQKey);
+    window.__eaQKey = (e) => {
+      if (!document.querySelector('.pager')) return;
+      if (e.altKey || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      if (e.target.closest?.('input, textarea, select')) return;
+      if (e.key === 'ArrowLeft') go('prev');
+      else if (e.key === 'ArrowRight') go('next');
+    };
+    document.addEventListener('keydown', window.__eaQKey);
+
+    let x0 = 0, y0 = 0, t0 = 0;
+    if (window.__eaQTs) document.removeEventListener('touchstart', window.__eaQTs);
+    window.__eaQTs = (e) => {
+      const t = e.touches[0];
+      x0 = t.clientX; y0 = t.clientY; t0 = Date.now();
+    };
+    document.addEventListener('touchstart', window.__eaQTs, { passive: true });
+
+    if (window.__eaQTe) document.removeEventListener('touchend', window.__eaQTe);
+    window.__eaQTe = (e) => {
+      if (!document.querySelector('.pager')) return;
+      if (e.target.closest?.('input, textarea, a, button')) return;
+      const t = e.changedTouches[0];
+      const dx = t.clientX - x0, dy = t.clientY - y0;
+      // quick, decisive, and clearly horizontal — scrolls and long-presses don't qualify
+      if (Date.now() - t0 < 600 && Math.abs(dx) > 70 && Math.abs(dx) > 2.2 * Math.abs(dy))
+        go(dx < 0 ? 'next' : 'prev');
+    };
+    document.addEventListener('touchend', window.__eaQTe, { passive: true });
     })();
   </script>
 </Base>

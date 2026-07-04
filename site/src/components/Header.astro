@@ -5,7 +5,7 @@ const links = [
   { href: '/archive', label: "L'archive", reload: false },
   { href: '/collections', label: 'Collections', reload: false },
   { href: '/projet', label: 'Le projet', reload: false },
-  { href: '/recherche', label: 'Rechercher', reload: true },
+  { href: '/recherche', label: 'Rechercher', reload: false },
 ];
 const active = (href: string) => path === href || path.startsWith(href + '/');
 ---
@@ -16,7 +16,7 @@ const active = (href: string) => path === href || path.startsWith(href + '/');
       {links.map((l) => (
         <a href={l.href} class:list={['navlink', { active: active(l.href) }]} {...(l.reload ? { 'data-astro-reload': true } : {})}>{l.label}</a>
       ))}
-      <button class="iconbtn" onclick="toggleTheme()" title="Jour / Nuit" aria-label="Jour / Nuit">☾</button>
+      <button class="iconbtn" onclick="toggleTheme()" title="Jour / Nuit" aria-label="Jour / Nuit"><span class="tomoon">☾</span><span class="tosun">☀︎</span></button>
     </nav>
   </div>
 </header>
@@ -34,11 +34,18 @@ const active = (href: string) => path === href || path.startsWith(href + '/');
   }
   nav { display: flex; gap: clamp(14px, 2.2vw, 24px); align-items: center;
     font-size: 13.5px; color: var(--color-muted); }
-  .navlink { text-decoration: none; color: var(--color-muted); white-space: nowrap; }
+  /* padding + equal negative margin: comfortable touch targets, zero layout shift */
+  .navlink { text-decoration: none; color: var(--color-muted); white-space: nowrap;
+    padding: 12px 4px; margin: -12px -4px; }
   .navlink:hover { color: var(--color-ocre); }
   .navlink.active { color: var(--color-ink); }
   .iconbtn { background: none; border: none; cursor: pointer; color: var(--color-muted);
-    font-size: 15px; font-family: var(--font-sans); line-height: 1; }
+    font-size: 15px; font-family: var(--font-sans); line-height: 1;
+    padding: 12px 10px; margin: -12px -10px; }
+  /* the glyph names the destination: ☾ invites the night, ☀︎ the day */
+  .iconbtn .tosun { display: none; }
+  :global(:root[data-theme="dark"]) .iconbtn .tosun { display: inline; }
+  :global(:root[data-theme="dark"]) .iconbtn .tomoon { display: none; }
   .iconbtn:hover { color: var(--color-ocre); }
 
   @media (max-width: 560px) {

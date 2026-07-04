@@ -10,7 +10,7 @@
   --color-ocre: #B0472C;
   --color-inkblue: #26324D;
 
-  --font-serif: "Fraunces Variable", Georgia, serif;
+  --font-serif: "Spectral", Georgia, serif;
   --font-sans: "Instrument Sans Variable", system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
 }
@@ -44,12 +44,35 @@
   .wrap { width: 100%; }
   ::selection { background: color-mix(in srgb, var(--color-ocre) 22%, transparent); }
   a { color: inherit; }
+  /* one focus language everywhere — ocre, offset, visible only for keyboard */
+  a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
+    outline: 2px solid var(--color-ocre); outline-offset: 3px; border-radius: 2px;
+  }
+  /* skip link: hidden until keyboard-focused */
+  .skip { position: fixed; top: 10px; left: 10px; z-index: 100;
+    transform: translateY(-200%); background: var(--color-paper-raised);
+    color: var(--color-ink); font-family: var(--font-mono); font-size: 12px;
+    padding: 10px 16px; border: 1px solid var(--color-hair); border-radius: 2px;
+    text-decoration: none; transition: transform .2s ease; }
+  .skip:focus { transform: none; }
 }
 
 /* Subtle page cross-fade for View Transitions (respects reduced-motion) */
 ::view-transition-old(root),
 ::view-transition-new(root) { animation-duration: 0.22s; animation-timing-function: ease; }
+/* the travelling title (list/wall → its page): one curve, slightly longer than
+   the root fade so the title is the last thing to settle */
+::view-transition-group(qtitle) {
+  animation-duration: 0.38s;
+  animation-timing-function: cubic-bezier(.3, .1, .18, 1);
+}
+::view-transition-old(qtitle), ::view-transition-new(qtitle) { animation-duration: 0.38s; }
+::view-transition-group(quinte) {
+  animation-duration: 0.34s;
+  animation-timing-function: cubic-bezier(.3, .1, .18, 1);
+}
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(root),
-  ::view-transition-new(root) { animation: none !important; }
+  ::view-transition-old(root), ::view-transition-new(root),
+  ::view-transition-group(qtitle), ::view-transition-old(qtitle), ::view-transition-new(qtitle),
+  ::view-transition-group(quinte) { animation: none !important; }
 }
