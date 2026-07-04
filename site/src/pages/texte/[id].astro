@@ -44,6 +44,7 @@ const rMeta = [t.date ? String(t.date).slice(0, 4) : null, 'texte'].filter(Boole
 <Base
   title={`« ${t.title} » - Écrivanalyse`}
   description={t.soustitre || prosePlain(t.text).slice(0, 160)}
+  ogImage={`/og/${tid}.png`}
   ogImageAlt={`Le texte « ${t.title} »`}
   ogType="article"
 >
@@ -106,6 +107,7 @@ const rMeta = [t.date ? String(t.date).slice(0, 4) : null, 'texte'].filter(Boole
       </nav>
 
       <div class="pf-extra" aria-hidden="true">{searchExtra}</div>
+      <span class="pf-extra" data-pagefind-filter="type" aria-hidden="true">texte</span>
     </main>
   </div>
 

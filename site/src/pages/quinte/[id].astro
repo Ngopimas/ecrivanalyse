@@ -87,6 +87,13 @@ const inProse = Boolean(q.prose);
 
       {proseAfter && <div class="prose after" set:html={proseHtml(proseAfter)} />}
 
+      {q.image && (
+        <figure class="photo">
+          <img src={u(q.image)} alt={q.image_caption || `Photographie de « ${q.title} »`} loading="lazy" decoding="async" />
+          {q.image_caption && <figcaption>{q.image_caption}</figcaption>}
+        </figure>
+      )}
+
       <div class="object">
         {participant(q) && <div class="who oe">{participant(q)}</div>}
         {quintesseObject(q) && <div class="obj">{quintesseObject(q)}</div>}
@@ -137,6 +144,7 @@ const inProse = Boolean(q.prose);
       </nav>
 
       <div class="pf-extra" aria-hidden="true">{searchExtra}</div>
+      <span class="pf-extra" data-pagefind-filter="type" aria-hidden="true">quinte</span>
     </main>
   </div>
 
@@ -208,6 +216,12 @@ const inProse = Boolean(q.prose);
        display:none, so Pagefind still indexes its text. */
     .pf-extra { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
       overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+    /* the photograph a page carried (190): shown at its captured size, a print
+       pinned beside the quinte, not a hero image */
+    .photo { margin: 0 0 44px; }
+    .photo img { max-width: min(100%, 260px); height: auto; border: 1px solid var(--color-hair); }
+    .photo figcaption { font-family: var(--font-mono); font-size: 11px; letter-spacing: .04em;
+      color: var(--color-muted); margin-top: 10px; }
     .object { font-family: var(--font-mono); font-size: 12px; color: var(--color-muted);
       border-top: 1px solid var(--color-hair); padding-top: 20px; line-height: 1.9; }
     .object .oe { color: var(--color-ocre); }

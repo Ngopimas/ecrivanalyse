@@ -29,6 +29,9 @@ const quintes = defineCollection({
     // A <quinte> paragraph marks where the quinte sits in the flow
     // (without it, the quinte renders after the prose).
     prose: z.string().default(''),
+    // the photograph some pages carried (190 is the only one in the corpus)
+    image: z.string().default(''),
+    image_caption: z.string().default(''),
   }),
 });
 

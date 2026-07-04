@@ -84,6 +84,28 @@ const nEcri = all.filter((q) => q.kind === 'quinte' && q.data.mode === 'ecrivana
         })();
       }));
 
+      // the rail follows the reading: as a year's section crosses the upper
+      // band of the viewport, its link lights up and slides into view
+      const rail = document.querySelector('.years');
+      if (rail && 'IntersectionObserver' in window) {
+        const byYear = new Map([...rail.querySelectorAll('a')]
+          .map((a) => [a.getAttribute('href').slice(1), a]));
+        let current = '';
+        const io = new IntersectionObserver((entries) => {
+          const tops = entries.filter((e) => e.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+          if (!tops.length) return;
+          const y = tops[0].target.id;
+          if (y === current) return;
+          current = y;
+          const a = byYear.get(y);
+          if (!a) return;
+          byYear.forEach((x) => x.classList.toggle('on', x === a));
+          rail.scrollTo({ left: a.offsetLeft - 24, behavior: 'smooth' });
+        }, { rootMargin: '-46px 0px -70% 0px' });
+        document.querySelectorAll('.yr').forEach((s) => io.observe(s));
+      }
+
       const btns = document.querySelectorAll('.facet');
       btns.forEach((b) => b.addEventListener('click', () => {
         btns.forEach((x) => x.classList.remove('on'));

@@ -65,6 +65,37 @@ export function quinteCard({ title, lines, date }) {
   <text x="${MARGIN}" y="${H - 72}" font-family="Spectral" font-style="italic" font-size="${footerSize.toFixed(1)}" fill="${MUTED}">${esc(footer)}</text>`));
 }
 
+/** Card for a texte: the title in ink, an italic excerpt, "texte · year". */
+export function texteCard({ title, excerpt, date }) {
+  const titleSize = fitSize(regular, [title], 62, 30);
+  const size = 29, lh = size * 1.7;
+  const words = String(excerpt || '').split(/\s+/).filter(Boolean);
+  const lines = [];
+  let cur = '';
+  let truncated = false;
+  for (const w of words) {
+    const t = cur ? cur + ' ' + w : w;
+    if (italic.getAdvanceWidth(t, size) > BUDGET && cur) {
+      if (lines.length === 2) { truncated = true; break; }
+      lines.push(cur);
+      cur = w;
+    } else cur = t;
+  }
+  if (!truncated && cur) lines.push(cur);
+  else if (truncated && lines.length) lines[lines.length - 1] += '…';
+  const body = lines.map((l, i) =>
+    `<text x="${MARGIN}" y="${(330 + i * lh).toFixed(1)}" font-family="Spectral" font-style="italic" font-size="${size}" fill="${MUTED}">${esc(l)}</text>`
+  ).join('\n  ');
+
+  const year = (date || '').slice(0, 4);
+  const footer = `texte${year ? ` · ${year}` : ''}`;
+
+  return render(frame(`<text x="${MARGIN}" y="104" font-family="Spectral" font-style="italic" font-size="27" fill="${OCRE}">écrivanalyse</text>
+  <text x="${MARGIN}" y="248" font-family="Spectral" font-size="${titleSize.toFixed(1)}" fill="${INK}">${esc(title)}</text>
+  ${body}
+  <text x="${MARGIN}" y="${H - 72}" font-family="Spectral" font-style="italic" font-size="27" fill="${MUTED}">${esc(footer)}</text>`));
+}
+
 export function defaultCard() {
   const tagline = 'cinq lignes, cinq mots par ligne, cinq signes de ponctuation.';
   return render(frame(`<text x="${MARGIN}" y="316" font-family="Spectral" font-style="italic" font-size="96" fill="${INK}">écrivanalyse</text>

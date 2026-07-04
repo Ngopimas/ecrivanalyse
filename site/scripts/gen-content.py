@@ -32,6 +32,14 @@ DATA = os.path.join(ROOT, "ecrivanalyse-backup", "data", "quintesses.json")
 QUINTES = os.path.join(ROOT, "site", "src", "content", "quintes")
 TEXTES = os.path.join(ROOT, "site", "src", "content", "textes")
 
+# the one illustrated article of the corpus (checked by sweeping every content
+# div for <img>): 190 lays its quinte beside a photograph. Only the 210x139
+# SPIP thumbnail survived the crawl; the file is copied to site/public/media/.
+IMAGES = {
+    190: ("/media/mise-au-point-par-md.jpg",
+          "Mise au Point par M. D. · Poseur : I. J."),
+}
+
 # rubriques that are site plumbing, not œuvre — their substance lives in /projet
 PLUMBING = {
     "ÉOK",
@@ -176,6 +184,9 @@ def quinte_yaml(q, prose):
           f"date: {yq(q['date'])}",
           f"author: {yq(q['author'])}"]
     out = "\n".join(y) + "\n"
+    img = IMAGES.get(q["id"])
+    if img:
+        out += f"image: {yq(img[0])}\nimage_caption: {yq(img[1])}\n"
     if prose:
         out += yblock("prose", prose)
     return out

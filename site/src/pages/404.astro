@@ -1,8 +1,27 @@
 ---
+import { readFileSync } from 'node:fs';
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { u } from '../lib/format';
+import { u, slug, BASE } from '../lib/format';
 // The 404 borrows the quintesse status vocabulary (open and playful, DESIGN.md):
 // a missing page is a quintesse whose fate is unknown.
+//
+// It also carries the memory of the old site: twenty years of links point at
+// spip.php?articleN / rubriqueN. Article ids were kept identical, so the
+// inline script forwards them (quinte, else texte); rubriques map to the
+// collection slugs embedded below.
+const quints = JSON.parse(readFileSync(
+  new URL('../../../ecrivanalyse-backup/data/quintesses.json', import.meta.url), 'utf8'));
+const known = new Set([
+  ...(await getCollection('quintes')).map((q) => slug(q.data.collection)),
+  ...(await getCollection('textes')).map((t) => slug(t.data.collection)),
+]);
+const rubriqueMap: Record<number, string> = {};
+for (const q of quints) {
+  if (!q.rubrique_id || !q.collection) continue;
+  const s = slug(q.collection);
+  if (known.has(s)) rubriqueMap[q.rubrique_id] = s;
+}
 ---
 <Base title="Page introuvable - Écrivanalyse">
   <div class="wrap">
@@ -20,6 +39,38 @@ import { u } from '../lib/format';
       </nav>
     </main>
   </div>
+
+  <script type="application/json" id="ea-legacy" data-base={BASE} set:html={JSON.stringify(rubriqueMap)}></script>
+  <script is:inline>
+    (function () {
+      // old SPIP addresses: spip.php?article154, ?rubrique54, ?auteur19,
+      // spip.php?page=forum&id_article=154 - forward them to their new homes
+      var el = document.getElementById('ea-legacy');
+      if (!el) return;
+      var base = el.dataset.base || '';
+      var q = location.pathname + location.search;
+      var m = /article=?(\d+)/.exec(q);
+      if (m) {
+        var id = m[1];
+        // same ids as the old site: try the quinte page, then the texte
+        fetch(base + '/quinte/' + id + '/', { method: 'HEAD' }).then(function (r) {
+          if (r.ok) { location.replace(base + '/quinte/' + id); return; }
+          return fetch(base + '/texte/' + id + '/', { method: 'HEAD' }).then(function (r2) {
+            if (r2 && r2.ok) location.replace(base + '/texte/' + id);
+          });
+        }).catch(function () {});
+        return;
+      }
+      m = /rubrique(\d+)/.exec(q);
+      if (m) {
+        var map = {};
+        try { map = JSON.parse(el.textContent); } catch (e) {}
+        if (map[m[1]]) location.replace(base + '/collection/' + map[m[1]]);
+        return;
+      }
+      if (/auteur\d+/.test(q)) location.replace(base + '/projet');
+    })();
+  </script>
 
   <style>
     .wrap { max-width: 760px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 32px) 80px;

@@ -17,6 +17,12 @@ import { BASE } from '../lib/format';
           autocomplete="off" autocapitalize="off" spellcheck="false" />
       </form>
 
+      <div class="facets" role="group" aria-label="Filtrer par type">
+        <button class="facet on" data-f="all" type="button">tout</button>
+        <button class="facet" data-f="quinte" type="button">quintes</button>
+        <button class="facet" data-f="texte" type="button">textes</button>
+      </div>
+
       <p class="count" id="count" aria-live="polite"></p>
       <div id="hits" data-base={BASE}></div>
       <button class="more" id="more" type="button" hidden>voir plus</button>
@@ -63,13 +69,15 @@ import { BASE } from '../lib/format';
         more.hidden = shown >= results.length;
       }
 
+      let typ = 'all';   // tout / quintes / textes (Pagefind `type` filter)
+
       async function run(q) {
         q = q.trim();
         const url = new URL(location);
         if (q) url.searchParams.set('q', q); else url.searchParams.delete('q');
         history.replaceState(null, '', url);
         if (!q) { results = []; shown = 0; hits.innerHTML = ''; count.innerHTML = ''; more.hidden = true; return; }
-        const res = await pf.debouncedSearch(q, {}, 220);
+        const res = await pf.debouncedSearch(q, typ === 'all' ? {} : { filters: { type: typ } }, 220);
         if (res === null) return;              // superseded by a newer keystroke
         results = res.results; shown = 0; hits.innerHTML = '';
         const quoted = `«${NNBSP}${esc(q)}${NNBSP}»`;
@@ -78,12 +86,21 @@ import { BASE } from '../lib/format';
           more.hidden = true;
           return;
         }
-        count.innerHTML = `${fmt(results.length)} quinte${results.length > 1 ? 's' : ''} pour ${quoted}`;
+        const noun = typ === 'all' ? 'résultat' : typ;
+        count.innerHTML = `${fmt(results.length)} ${noun}${results.length > 1 ? 's' : ''} pour ${quoted}`;
         await renderMore();
       }
 
       input.oninput = () => run(input.value);
       more.onclick = renderMore;
+
+      const chips = document.querySelectorAll('.facet');
+      chips.forEach((b) => b.onclick = () => {
+        chips.forEach((x) => x.classList.remove('on'));
+        b.classList.add('on');
+        typ = b.getAttribute('data-f');
+        run(input.value);
+      });
 
       // ?q= deep link: a search can be shared like any page
       const q0 = new URL(location).searchParams.get('q');
@@ -107,6 +124,12 @@ import { BASE } from '../lib/format';
     #q::placeholder { color: var(--color-muted); font-style: italic; }
     #q:focus-visible { outline: 1px solid var(--color-ocre); outline-offset: -1px; }
     #q::-webkit-search-cancel-button { -webkit-appearance: none; }
+    .facets { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+    .facet { font-family: var(--font-mono); font-size: 12px; cursor: pointer; color: var(--color-muted);
+      background: none; border: 1px solid var(--color-hair); border-radius: 999px; padding: 7px 14px; }
+    .facet:hover { border-color: var(--color-ocre); color: var(--color-ocre); }
+    .facet.on { border-color: var(--color-ocre); color: var(--color-ocre);
+      background: color-mix(in srgb, var(--color-ocre) 8%, transparent); }
     .count { font-family: var(--font-mono); font-size: 11px; letter-spacing: .05em;
       color: var(--color-muted); margin: 20px 0 6px; min-height: 1.2em; }
     .more { font-family: var(--font-mono); font-size: 12px; cursor: pointer;

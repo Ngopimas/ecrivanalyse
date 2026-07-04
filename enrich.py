@@ -98,6 +98,10 @@ def parse(path):
     sous = sous.get_text(" ",strip=True) if sous else ""
     det = col.find("p", class_="details")
     det_txt = det.get_text(" ",strip=True) if det else ""
+    # the SPIP rubrique id from the breadcrumb link: the only reliable
+    # id -> collection mapping (data/rubriques.json is another taxonomy)
+    rub = det.find("a", href=re.compile(r"rubrique(\d+)")) if det else None
+    rub_id = int(re.search(r"rubrique(\d+)", rub["href"]).group(1)) if rub else None
     author, collection, date = "", "", det_txt
     m = re.match(r"(.*?),\s*par\s*(.*?)\s*//\s*(.*)$", det_txt)
     if m: date, author, collection = m.group(1).strip(), m.group(2).strip(), m.group(3).strip()
@@ -147,8 +151,8 @@ def parse(path):
     return dict(id=aid, url=f"https://ecrivanalyse.net/spip.php?article{aid}", title=title,
                 soustitre=sous, lines=lines or [], is_5x5=is_5x5, mode=mode,
                 participant_role=role, participant_name=name, quintesse_num=num,
-                status=status, collection=collection, recueil=recueil,
-                date=date_iso, author=author or "Ivan Joseph")
+                status=status, collection=collection, rubrique_id=rub_id,
+                recueil=recueil, date=date_iso, author=author or "Ivan Joseph")
 
 def main():
     files=[f for f in glob.glob(os.path.join(RAW,"article*.html")) if "_" not in os.path.basename(f)]
