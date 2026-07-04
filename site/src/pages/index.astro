@@ -14,11 +14,14 @@ const totalFr = total.toLocaleString('fr-FR').replace(/[  ]/g, ' ');
 
 // ~90 quintes spread across the corpus carry full data inline: they are the
 // candidates the dive can land on (2–8 lines, so the writing always sits well).
+// The most recent one is always among them: a returning visitor lands on it
+// when it is new to them (see the ea-latest logic in the script).
 const pool = all.filter((q) => q.data.lines.length >= 2 && q.data.lines.length <= 8);
+const newest = pool[pool.length - 1];
 const step = Math.max(1, Math.floor(pool.length / 90));
-const sample = pool
-  .filter((_, i) => i % step === 0)
-  .slice(0, 90)
+const picked = pool.filter((_, i) => i % step === 0).slice(0, 90);
+if (newest && !picked.includes(newest)) picked.push(newest);
+const sample = picked
   .map((q) => ({
     id: q.id,
     t: q.data.title,
@@ -47,6 +50,14 @@ const wall = all
   .map((v) => ({ v, k: rnd() }))
   .sort((a, b) => a.k - b.k)
   .map(({ v }) => v);
+// the newest quinte sits at the visual center of the wall, so the
+// returning-visitor dive can always reach it (the camera needs its title
+// inside the viewport)
+const ni = newest ? wall.findIndex((v) => v.id === newest.id) : -1;
+if (ni >= 0) {
+  const mid = Math.floor(wall.length / 2);
+  [wall[ni], wall[mid]] = [wall[mid], wall[ni]];
+}
 const BANDS = 16;
 const perBand = Math.ceil(wall.length / BANDS);
 const bands = Array.from({ length: BANDS }, (_, b) => wall.slice(b * perBand, (b + 1) * perBand));
@@ -59,7 +70,7 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
 ---
 <Base>
   <div class="ea-page">
-    <main class="scene" id="scene" data-total={total} data-base={BASE}>
+    <main class="scene" id="scene" data-total={total} data-base={BASE} data-newest={newest ? newest.id : undefined}>
       <!-- Every title in the corpus. aria-hidden + tabindex=-1: 3 000 links are a
            texture for pointer users; /archive is the accessible archive. -->
       <div class="wall" id="wall" aria-hidden="true">
@@ -71,6 +82,10 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
           </span>
         ))}
       </div>
+
+      <!-- the spot: during the encounter beat, the mass recedes behind
+           translucent paper and only the chosen title stays clear -->
+      <div class="veil" id="veil" aria-hidden="true"></div>
 
       <div class="stage" id="stage">
         <div class="kicker">une quinte · cinq lignes, cinq mots, cinq ponctuations</div>
@@ -108,12 +123,24 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
     const descEl = document.getElementById('q-desc');
     const metaEl = document.getElementById('q-meta');
     const nib = document.getElementById('nib');
+    const veil = document.getElementById('veil');
     const sample = JSON.parse(document.getElementById('ea-sample').textContent);
     const byId = Object.fromEntries(sample.map((s) => [String(s.id), s]));
     const TOTAL = Number(scene.dataset.total) || sample.length;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let seen = false;
     try { seen = !!localStorage.getItem('ea-visited'); } catch {}
+
+    // A returning visitor for whom a quinte was published since the last visit
+    // lands on it (once — after that, the hasard stays a hasard). First-ever
+    // visits keep the serendipity: which quinte you meet first is chance.
+    const NEWEST = Number(scene.dataset.newest) || 0;
+    let target0 = 0;
+    try {
+      const last = Number(localStorage.getItem('ea-latest') || 0);
+      if (NEWEST && last && NEWEST > last) target0 = NEWEST;
+      if (NEWEST) localStorage.setItem('ea-latest', String(NEWEST));
+    } catch {}
 
     const S = { state: 'boot', current: null, last: null, timers: [], anims: [], wallEnd: '' };
     const later = (fn, ms) => { const id = setTimeout(fn, ms); S.timers.push(id); return id; };
@@ -214,6 +241,18 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
       return q;
     }
 
+    // first quinte of the session on the no-wall paths (reduced motion, skip):
+    // the fresh one if the visitor has new content waiting, chance otherwise
+    function firstSample() {
+      if (target0 && byId[target0]) {
+        const q = byId[target0];
+        target0 = 0;
+        S.last = q;
+        return q;
+      }
+      return randomSample();
+    }
+
     // ---------- the wall (targets + dive + pull-back) ----------
 
     function unlit() { wallEl.querySelectorAll('.lit').forEach((el) => el.classList.remove('lit')); }
@@ -221,6 +260,12 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
     // Prefer a dive target whose wall title sits inside the viewport; on small
     // screens (few candidates visible) fall back to the nearest ones.
     function pickTarget() {
+      if (target0) {
+        const el = wallEl.querySelector('a[data-id="' + target0 + '"]');
+        const item = byId[target0];
+        target0 = 0;
+        if (el && item) { S.last = item; return { el, item }; }
+      }
       const els = [...wallEl.querySelectorAll('a[data-id]')];
       if (!els.length) return { el: null, item: randomSample() };
       const sr = scene.getBoundingClientRect();
@@ -242,16 +287,39 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
       return { el, item: item || sample[0] };
     }
 
+    // The encounter has its own beat before the camera moves: the chosen title
+    // lights up (ocre, slight growth) while the veil recedes the mass, so the
+    // eye finds the one voice before diving into it. Skippable like every phase.
+    const SPOT_MS = 560;
+    function spotOn(el) {
+      const sr = scene.getBoundingClientRect();
+      const r = el.getBoundingClientRect();
+      veil.style.setProperty('--vx', (r.left + r.width / 2 - sr.left) + 'px');
+      veil.style.setProperty('--vy', (r.top + r.height / 2 - sr.top) + 'px');
+      scene.classList.add('spot');
+    }
+    function spotOff() { scene.classList.remove('spot'); }
+
     function dive(fast) {
       S.state = 'dive';
       S.prep = null;
       unlit();
       const pick = pickTarget();
       S.current = pick.item;
+      if (pick.el) {
+        pick.el.classList.add('lit');
+        spotOn(pick.el);
+        later(() => descend(pick, fast), SPOT_MS);
+      } else {
+        descend(pick, fast);
+      }
+    }
+
+    function descend(pick, fast) {
+      spotOff();
       const sr = scene.getBoundingClientRect();
       let dx = 0, dy = 0;
       if (pick.el) {
-        pick.el.classList.add('lit');
         const r = pick.el.getBoundingClientRect();
         // origin in the wall's own space — the wall bleeds past the scene, so
         // scene-relative offsets would misplace the zoom by the bleed width
@@ -340,8 +408,9 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
       if (S.state === 'written') return;
       cancelAll();
       clearFly();
+      spotOff();
       scene.classList.add('inkdone');
-      if (!S.current) S.current = randomSample();
+      if (!S.current) S.current = firstSample();
       unlit();
       populate(S.current, true);
       scene.dataset.state = 'write';
@@ -354,6 +423,7 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
     function rencontre() {
       cancelAll();
       clearFly();
+      spotOff();
       wake();
       const hadWall = S.state === 'wall';
       scene.classList.remove('inked');
@@ -404,7 +474,7 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
     function boot() {
       if (reduced) {
         wallEl.style.display = 'none';
-        S.current = randomSample();
+        S.current = firstSample();
         populate(S.current, true);
         scene.dataset.state = 'write';
         scene.classList.add('stage-in', 'inked');
@@ -515,6 +585,22 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
     #wall .wt:nth-child(2n) { color: color-mix(in srgb, var(--color-ink) 29%, transparent); }
     #wall .wt:nth-child(5n) { color: color-mix(in srgb, var(--color-ink) 40%, transparent); }
     #wall .wt:hover, #wall .wt.lit { color: var(--color-ocre); }
+    /* the chosen title grows slightly toward the eye during the spot beat
+       (transform only: no reflow in a 3 000-title galley) */
+    #wall .wt.lit { transform: scale(1.3); transition: color .25s, transform .5s cubic-bezier(.2, .65, .25, 1); }
+
+    /* ---- the veil (the encounter beat) ---- */
+    /* one element animated on opacity only: the mass recedes behind translucent
+       paper, a soft clear halo stays around the chosen title (--vx/--vy set by
+       spotOn() in scene coordinates) */
+    #veil {
+      position: absolute; inset: 0; pointer-events: none; opacity: 0;
+      background: radial-gradient(circle at var(--vx, 50%) var(--vy, 45%),
+        transparent 0, transparent 60px,
+        color-mix(in srgb, var(--color-paper) 88%, transparent) 200px);
+      transition: opacity .3s ease-out;
+    }
+    #scene.spot #veil { opacity: 1; }
     /* small screens: one band spans the whole viewport, so the patch-stagger reads
        as emptiness — compress it into a single gentle ink-in, and densify the galley */
     @media (max-width: 720px) {

@@ -31,7 +31,7 @@ const nEcri = all.filter((q) => q.kind === 'quinte' && q.data.mode === 'ecrivana
   <div class="wrap">
     <main>
       <h1>L'archive</h1>
-      <p class="lede">{nQuintes} quintes de cinq lignes, cinq mots, cinq ponctuations, et {nTextes} textes, archivés de {years[years.length - 1]} à {years[0]}.</p>
+      <p class="lede">{nQuintes.toLocaleString('fr-FR').replace(/[  ]/g, ' ')} quintes et {nTextes} textes, archivés de {years[years.length - 1]} à {years[0]}.</p>
 
       <div class="facets" role="group" aria-label="Filtrer par mode">
         <button class="facet on" data-f="all">tout · {total}</button>
