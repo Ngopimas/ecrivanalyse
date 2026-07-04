@@ -162,5 +162,14 @@ const nEcri = all.filter((q) => q.kind === 'quinte' && q.data.mode === 'ecrivana
     .yr .d { font-family: var(--font-serif); font-style: italic; font-size: 13.5px;
       color: var(--color-muted); line-height: 1.35; }
     .yr .r { font-family: var(--font-mono); font-size: 10.5px; color: var(--color-muted); white-space: nowrap; }
+    /* narrow screens: title and meta share the first line as before, but the
+       soustitre spans the WHOLE row - it was wrapping at the entry column's
+       width while the space under the meta sat empty */
+    @media (max-width: 560px) {
+      .yr li a { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; align-items: baseline; }
+      .yr .entry { display: contents; }
+      .yr .r { grid-column: 2; grid-row: 1; }
+      .yr .d { grid-column: 1 / -1; }
+    }
   </style>
 </Base>
