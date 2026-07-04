@@ -17,11 +17,18 @@ const oek = ['127', '797'].map((id) => pages[id]);
 const MANUNEWS =
   'https://emmanuellewaechter.blogspot.com/2012/03/parution-imminente-du-recueil-faire-une.html';
 const html = (b: (typeof pages)['14']) => {
-  const h = proseHtml(b.text);
-  return b === pages['797']
-    ? h.replace('<p>Manunews</p>',
-      `<p><a href="${MANUNEWS}" target="_blank" rel="noopener">Manunews</a></p>`)
-    : h;
+  let h = proseHtml(b.text);
+  if (b === pages['797']) {
+    h = h.replace('<p>Manunews</p>',
+      `<p><a href="${MANUNEWS}" target="_blank" rel="noopener">Manunews</a></p>`);
+  }
+  if (b === pages['14']) {
+    // the original linked the phrase to the PDF of the mémoire (saved by the
+    // crawl; the prose extraction had dropped the link)
+    h = h.replace('la version téléchargeable de ce mémoire',
+      `<a href="${u('/media/memoire-eok-2004.pdf')}">la version téléchargeable de ce mémoire</a>`);
+  }
+  return h;
 };
 ---
 <Base

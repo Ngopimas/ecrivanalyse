@@ -275,12 +275,15 @@ import { u } from '../lib/format';
     .video-sec { text-align: center; }
     .video-sec h2 { display: inline-block; }
     .video-sec h2::before { margin: 0 auto 16px; }
+    /* the film content occupies 360x241 of YouTube's 480x360 thumbnail (black
+       bars on all four sides): the card takes the film's own ratio and scales
+       the background (480/360 = 133.4%) so the bars fall exactly outside */
     .video { position: relative; display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 16px; width: 100%; aspect-ratio: 4 / 3; margin: 0;
+      justify-content: center; gap: 16px; width: 100%; aspect-ratio: 360 / 241; margin: 0;
       border-radius: 12px; overflow: hidden; text-decoration: none; color: #fff;
       border: 1px solid var(--color-hair); background: var(--color-paper-raised);
       background-image: linear-gradient(rgba(23,19,15,.35), rgba(23,19,15,.6)), url('https://i.ytimg.com/vi/aGdme5n1ots/hqdefault.jpg');
-      background-size: cover; background-position: center; }
+      background-size: 133.4% auto; background-position: center; }
     .video .play { width: 58px; height: 58px; border-radius: 50%; background: var(--color-ocre);
       display: grid; place-items: center; font-size: 20px; padding-left: 4px; transition: transform .2s; }
     .video .vlabel { font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; }
