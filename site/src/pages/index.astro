@@ -3,11 +3,13 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import { frDate, participant, quintesseObject, u, BASE } from '../lib/format';
 
-// « Le mur, puis l'encre » (DESIGN.md, direction C2): the whole corpus inks in
-// as a wall of titles, the camera dives into one, and that quinte writes itself.
-// Same filter as the /quinte pages, so every wall title links to a page that exists.
+// « Le mur, puis l'encre » (DESIGN.md): the whole corpus inks in as a wall of
+// titles, the camera dives into one, and that quinte writes itself.
+// Same filter as the /quinte pages (ghost séance records included - their
+// pages exist), so every wall title links to a page and the count matches
+// the archive's.
 const all = (await getCollection('quintes'))
-  .filter((q) => q.data.lines.length > 0)
+  .filter((q) => q.data.lines.length > 0 || q.data.participant_role)
   .sort((a, b) => (a.data.id ?? 0) - (b.data.id ?? 0));
 const total = all.length;
 const totalFr = total.toLocaleString('fr-FR').replace(/[  ]/g, ' ');
