@@ -13,10 +13,12 @@ const total = all.length;
 const totalFr = total.toLocaleString('fr-FR').replace(/[  ]/g, ' ');
 
 // ~90 quintes spread across the corpus carry full data inline: they are the
-// candidates the dive can land on (2–8 lines, so the writing always sits well).
+// candidates the dive can land on (2–8 lines, so the writing always sits well;
+// never a hybrid like 154, whose quinte only reads with its prose around it).
 // The most recent one is always among them: a returning visitor lands on it
 // when it is new to them (see the ea-latest logic in the script).
-const pool = all.filter((q) => q.data.lines.length >= 2 && q.data.lines.length <= 8);
+const pool = all.filter((q) =>
+  q.data.lines.length >= 2 && q.data.lines.length <= 8 && !q.data.prose);
 const newest = pool[pool.length - 1];
 const step = Math.max(1, Math.floor(pool.length / 90));
 const picked = pool.filter((_, i) => i % step === 0).slice(0, 90);
