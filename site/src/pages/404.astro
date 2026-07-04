@@ -68,7 +68,13 @@ for (const q of quints) {
         if (map[m[1]]) location.replace(base + '/collection/' + map[m[1]]);
         return;
       }
-      if (/auteur\d+/.test(q)) location.replace(base + '/projet');
+      if (/auteur\d+/.test(q)) { location.replace(base + '/projet'); return; }
+      // the SPIP utility pages: the site map and the search form
+      if (/page=plan\b/.test(q)) { location.replace(base + '/archive'); return; }
+      if (/page=recherche\b/.test(q)) {
+        var s = /recherche=([^&]+)/.exec(q);
+        location.replace(base + '/recherche' + (s ? '?q=' + s[1] : ''));
+      }
     })();
   </script>
 
