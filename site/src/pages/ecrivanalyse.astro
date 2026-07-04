@@ -3,21 +3,21 @@ import Base from '../layouts/Base.astro';
 import { proseHtml, slug, u } from '../lib/format';
 import pages from '../data/legacy-pages.json';
 
-// « Qu'est-ce que l'écrivanalyse ? » - Ivan Joseph's own presentation of the
-// practice, in five chapters, exactly as the original site carried it
+// « Qu'est-ce que l'écrivanalyse ? » - the presentation of the practice in
+// five chapters, written by Perrine Tamerlis for the original site
 // (articles 129-134, extracted to legacy-pages.json by gen-content.py).
-// /projet is the site's editorial voice; this page is his.
 const chapters = ['129', '130', '131', '132', '134'].map((id) => pages[id]);
+const author = chapters[0].author;
 const year = (chapters[0].date || '').slice(0, 4);
 ---
 <Base
   title="Qu’est-ce que l’écrivanalyse ? - Écrivanalyse"
-  description="La présentation de l’écrivanalyse par Ivan Joseph, en cinq chapitres : une expérience de création littéraire d’inspiration psychanalytique."
+  description="La pratique d’Ivan Joseph présentée en cinq chapitres par Perrine Tamerlis : une expérience de création littéraire d’inspiration psychanalytique."
 >
   <div class="wrap">
     <main data-pagefind-body>
       <h1>Qu’est-ce que l’écrivanalyse&#8239;?</h1>
-      <p class="lede" data-pagefind-ignore>La présentation d’Ivan Joseph, en cinq chapitres, telle qu’elle se lisait sur le site d’origine.</p>
+      <p class="lede" data-pagefind-ignore>La pratique présentée en cinq chapitres, par Perrine Tamerlis.</p>
 
       {chapters.map((c) => (
         <section id={slug(c.title)}>
@@ -28,7 +28,7 @@ const year = (chapters[0].date || '').slice(0, 4);
       ))}
 
       <div class="object">
-        <div>Ivan Joseph{year ? ` · ${year}` : ''}</div>
+        <div>{author}{year ? ` · ${year}` : ''}</div>
         <a class="gloss" href={u('/projet')}>← Le projet</a>
       </div>
     </main>

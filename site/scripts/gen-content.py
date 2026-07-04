@@ -238,6 +238,7 @@ def main():
                     "title": q["title"],
                     "soustitre": q["soustitre"],
                     "collection": q["collection"],
+                    "author": q["author"],  # 129-134 are by Perrine Tamerlis
                     "date": q["date"],
                     "text": "\n\n".join("\n".join(lines) for _, lines in bl),
                 }

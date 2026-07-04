@@ -70,7 +70,7 @@ const bandOrder = Array.from({ length: BANDS }, (_, i) => i)
   .map(({ v }) => v);
 const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(2);
 ---
-<Base>
+<Base footer={false}>
   <div class="ea-page">
     <main class="scene" id="scene" data-total={total} data-base={BASE} data-newest={newest ? newest.id : undefined}>
       <!-- Every title in the corpus. aria-hidden + tabindex=-1: 3 000 links are a
