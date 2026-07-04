@@ -48,5 +48,11 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      # the ~280 MB artifact makes deploy-pages flaky ("Deployment failed, try
+      # again later"); a second attempt has always gone through
       - id: deployment
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
+      - id: retry
+        if: steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@v4
