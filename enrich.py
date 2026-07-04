@@ -31,7 +31,12 @@ ROLE_RE = re.compile(
     r"(P\(au\)seuse|P\(au\)seur|Pauseuse|Pauseur|Analisante|Analisant)\s*:\s*(.*)$", re.I)
 QUINTESSE_RE = re.compile(r"Quintesse\s+(?:([IVXLC]+)\s+)?(.+)$")
 
-def wc(l): return len(re.findall(r"[0-9A-Za-zÀ-ÿ’'-]+", l))
+# a word must contain a letter or digit: standalone dashes ("- possible mais
+# inimaginable -") are punctuation, not words. œ/æ sit outside À-ÿ (U+0153 vs
+# U+00C0-U+00FF) and would otherwise split "l'œil" in two. Dotted acronyms
+# ("O.R.L.") count as one word, not one per letter.
+W = r"[0-9A-Za-zÀ-ÿœŒæÆ]"
+def wc(l): return len(re.findall(rf"(?:{W}\.){{2,}}|[’'-]*{W}[0-9A-Za-zÀ-ÿœŒæÆ’'-]*", l))
 
 def fr_iso(s):
     m = re.search(r"(\d{1,2})(?:\s*er)?\s+([A-Za-zûéèêôàçé]+)\s+(\d{4})", s, re.I)
@@ -53,7 +58,8 @@ def split_lines(html, sep):
              for x in re.split(sep, html)]
     return [re.sub(r"\s+", " ", x) for x in parts if x.strip()]
 
-def br_lines(html): return split_lines(html, r"<br\s*/?>")
+# incl. <br style="…"> (553); a table cell boundary is a line boundary too (190)
+def br_lines(html): return split_lines(html, r"<br[^>]*>|</td>")
 def nl_lines(html): return split_lines(html, r"\n")
 
 def parse_meta(texts):
@@ -99,7 +105,7 @@ def parse(path):
     # metadata blocks + lines
     for s in col.find_all(["h1","h3"]): s.decompose()
     for s in col.find_all("p", class_="details"): s.decompose()
-    meta_texts = []; lines = None; nl_fallback = None
+    meta_texts = []; lines = None; nl_fallback = None; recueil_pending = False
     for d in col.find_all("div"):
         if d.get("class"): continue  # class="" is [], falsy: the P.-S. div stays in
         for sm in d.find_all("small"):
@@ -108,6 +114,15 @@ def parse(path):
             t = flat(p)
             if ROLE_RE.search(t):
                 meta_texts.append(t)  # P.-S.-era participant paragraph
+                continue
+            if recueil_pending:  # title paragraph after "…recueil :"
+                meta_texts.append("recueil : " + t)
+                recueil_pending = False
+                continue
+            if re.search(r"recueil\s*:\s*$", t, re.I):
+                # ~2010 pages split it: "Quinte publiée dans le recueil :"
+                # then the linked title in its own paragraph
+                recueil_pending = True
                 continue
             # ~2010 quintes: real line breaks are plain newlines inside a <p>.
             # Long prose is also hard-wrapped with newlines, so gate hard:
@@ -122,9 +137,13 @@ def parse(path):
     # <br>-based lines always win; the newline fallback needs a participant
     # (real ~2010 quintes carry a P.-S. block — contact/prose pages don't)
     if lines is None and role: lines = nl_fallback
+    aid = int(re.search(r"article(\d+)", path).group(1))
+    # 190 lays the quinte out in a table beside a photograph ("Mise au Point
+    # par M. D."): the caption cell merges into the line split — the quinte
+    # is the first five lines (the left cell)
+    if aid == 190 and lines: lines = lines[:5]
     is_5x5 = bool(lines and len(lines)==5 and all(4<=wc(l)<=6 for l in lines))
     mode = "pause" if role in ("pauseur","pauseuse") else ("ecrivanalyse" if role in ("analisant","analisante") else None)
-    aid = int(re.search(r"article(\d+)", path).group(1))
     return dict(id=aid, url=f"https://ecrivanalyse.net/spip.php?article{aid}", title=title,
                 soustitre=sous, lines=lines or [], is_5x5=is_5x5, mode=mode,
                 participant_role=role, participant_name=name, quintesse_num=num,

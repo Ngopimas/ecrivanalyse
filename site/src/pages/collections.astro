@@ -3,13 +3,18 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import { slug, modeLabel } from '../lib/format';
 
-const all = (await getCollection('quintes'))
-  .filter((q) => q.data.lines.length > 0 && q.data.collection);
+const all = [
+  ...(await getCollection('quintes'))
+    .filter((q) => (q.data.lines.length > 0 || q.data.participant_role) && q.data.collection),
+  ...(await getCollection('textes')).filter((t) => t.data.collection),
+];
 const map = new Map<string, { name: string; mode: string | null; n: number }>();
 for (const q of all) {
   const s = slug(q.data.collection);
   if (!map.has(s)) map.set(s, { name: q.data.collection!, mode: q.data.mode, n: 0 });
-  map.get(s)!.n++;
+  const v = map.get(s)!;
+  v.n++;
+  if (!v.mode) v.mode = q.data.mode;
 }
 const cols = [...map.entries()].map(([s, v]) => ({ slug: s, ...v })).sort((a, b) => b.n - a.n);
 ---
@@ -17,7 +22,7 @@ const cols = [...map.entries()].map(([s, v]) => ({ slug: s, ...v })).sort((a, b)
   <div class="wrap">
     <main>
       <h1>Les collections</h1>
-      <p class="lede">{cols.length} séries. Chaque quinte appartient à l'une d'elles.</p>
+      <p class="lede">{cols.length} séries. Chaque quinte, chaque texte appartient à l'une d'elles.</p>
       <ul>
         {cols.map((c) => (
           <li>

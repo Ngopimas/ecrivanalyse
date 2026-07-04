@@ -7,7 +7,7 @@ lines:
   - "s’hyperveiller au cœur du chœur,"
   - "ne se résumant en rhizome,"
   - "à l’endroit de sa vie !"
-is_5x5: false
+is_5x5: true
 mode: "ecrivanalyse"
 participant_role: "analisante"
 participant_name: "anonyme"

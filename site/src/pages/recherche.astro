@@ -8,7 +8,7 @@ import Base from '../layouts/Base.astro';
   <div class="wrap">
     <main>
       <h1>Rechercher</h1>
-      <p class="lede">Un mot, un vers, un nom — dans l'ensemble des quintes.</p>
+      <p class="lede">Un mot, un vers, un nom - dans l'ensemble des quintes et des textes.</p>
 
       <form class="box" role="search" onsubmit="return false">
         <label class="vh" for="q">Rechercher dans les quintes</label>
@@ -66,7 +66,7 @@ import Base from '../layouts/Base.astro';
         results = res.results; shown = 0; hits.innerHTML = '';
         const quoted = `«${NNBSP}${esc(q)}${NNBSP}»`;
         if (!results.length) {
-          count.innerHTML = `rien pour ${quoted} — <a href="/hasard" data-astro-reload>tenter une rencontre au hasard&nbsp;↻</a>`;
+          count.innerHTML = `rien pour ${quoted} - <a href="/hasard" data-astro-reload>tenter une rencontre au hasard&nbsp;↻</a>`;
           more.hidden = true;
           return;
         }

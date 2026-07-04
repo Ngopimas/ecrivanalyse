@@ -7,7 +7,7 @@ lines:
   - "- à la traversée des autres -,"
   - "elle tourne le long kilométrage"
   - "du petit monde des routards."
-is_5x5: false
+is_5x5: true
 mode: "pause"
 participant_role: "pauseuse"
 participant_name: "Charlotte Comte"

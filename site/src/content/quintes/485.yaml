@@ -7,7 +7,7 @@ lines:
   - "après le mors - nœud décisif"
   - "rêveillé du râble en âge..."
   - "pour qu’il en reste coi ?"
-is_5x5: false
+is_5x5: true
 mode: "ecrivanalyse"
 participant_role: "analisante"
 participant_name: "Annick Lebédyk"

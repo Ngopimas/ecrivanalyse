@@ -7,7 +7,7 @@ lines:
   - "- poignant cassage des dents paresseuses -"
   - "rassurant l’arrivée messianique laïque vague"
   - "pour suivre un fictionnaire public."
-is_5x5: false
+is_5x5: true
 mode: "pause"
 participant_role: "pauseuse"
 participant_name: "Céline Dornon"

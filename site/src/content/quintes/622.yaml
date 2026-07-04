@@ -7,7 +7,7 @@ lines:
   - "s’engager à n’en fumer qu’une"
   - "- pour ne pas faire contre -"
   - "et à en assurer l’impermanence."
-is_5x5: false
+is_5x5: true
 mode: "pause"
 participant_role: "pauseur"
 participant_name: "anonyme"

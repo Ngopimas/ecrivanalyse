@@ -1,0 +1,233 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { frDate, slug, proseHtml, prosePlain } from '../../lib/format';
+
+// The non-quinte œuvre: prose narratives, verse texts, Fluides chapters.
+// Reading page — same design language as the quinte page, but the body is
+// paragraphs, not a fitted five-line wall. Prev/next leaf within the same
+// série (Fluides chapters read in order).
+export async function getStaticPaths() {
+  const all = (await getCollection('textes'))
+    .sort((a, b) => (a.data.id ?? 0) - (b.data.id ?? 0));
+  const byQuinte = new Map();
+  for (const c of await getCollection('comments')) {
+    const list = byQuinte.get(c.data.quinte) ?? [];
+    list.push(c.data);
+    byQuinte.set(c.data.quinte, list);
+  }
+  for (const list of byQuinte.values()) list.sort((a, b) => a.date.localeCompare(b.date));
+  return all.map((t) => {
+    const serie = all.filter((x) => x.data.collection === t.data.collection);
+    const i = serie.indexOf(t);
+    return {
+      params: { id: t.id },
+      props: {
+        t: t.data,
+        tid: t.id,
+        comments: byQuinte.get(t.id) ?? [],
+        prev: serie[i - 1]?.id ?? null,
+        next: serie[i + 1]?.id ?? null,
+      },
+    };
+  });
+}
+
+const { t, tid, comments, prev, next } = Astro.props;
+
+// apostrophe-split copy for Pagefind — see quinte/[id].astro
+const deElide = (s: unknown) => (s ?? '').toString().replace(/[’']/g, '$& ');
+const searchExtra = [t.title, t.soustitre, prosePlain(t.text), t.collection,
+  ...comments.map((c) => c.text)].filter(Boolean).map(deElide).join('  ');
+const rMeta = [t.date ? String(t.date).slice(0, 4) : null, 'texte'].filter(Boolean).join(' · ');
+---
+<Base
+  title={`« ${t.title} » - Écrivanalyse`}
+  description={t.soustitre || prosePlain(t.text).slice(0, 160)}
+  ogImageAlt={`Le texte « ${t.title} »`}
+  ogType="article"
+>
+  <div class="wrap">
+    <main data-pagefind-body>
+      <h1 transition:name="qtitle">{t.title}</h1>
+      {t.soustitre && <p class="desc">{t.soustitre}</p>}
+      <div class="breadcrumb" data-pagefind-ignore>
+        {t.collection && <a class="col" href={`/collection/${slug(t.collection)}`}>«&#8239;{t.collection}&#8239;»</a>}
+        <span> · texte</span>
+      </div>
+
+      <div class="texte" data-pagefind-meta={rMeta ? `r:${rMeta}` : undefined} set:html={proseHtml(t.text)} />
+
+      <div class="object">
+        <div class="byline">{t.author} · {frDate(t.date)}</div>
+        <div class="obj-actions">
+          <button class="share" type="button" data-title={t.title}>partager</button>
+        </div>
+      </div>
+
+      {comments.length > 0 && (
+        <section class="reponses" id="reponses">
+          <h2>{comments.length} réponse{comments.length > 1 ? 's' : ''}</h2>
+          {comments.map((c) => (
+            <article class="rep">
+              <div class="rep-meta">{c.author || 'anonyme'} · {frDate(c.date.slice(0, 10))}</div>
+              {c.title && c.title !== t.title && <p class="rep-title">«&#8239;{c.title}&#8239;»</p>}
+              <div class="rep-text">{c.text}</div>
+            </article>
+          ))}
+        </section>
+      )}
+
+      <section class="repondre">
+        <h2>répondre</h2>
+        <p class="merci" id="merci">Merci. Votre message a été envoyé&nbsp;: il sera publié après lecture.</p>
+        <form method="post" action="/api/comment">
+          <input type="hidden" name="quinte" value={tid} />
+          <input type="hidden" name="kind" value="texte" />
+          <input type="hidden" name="title" value={t.title} />
+          <p class="hp" aria-hidden="true">
+            <label>Ne pas remplir <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+          </p>
+          <label class="lab" for="rep-nom">votre nom</label>
+          <input id="rep-nom" type="text" name="author" maxlength="80" autocomplete="name" />
+          <label class="lab" for="rep-msg">votre message</label>
+          <textarea id="rep-msg" name="text" required maxlength="2000" rows="5"></textarea>
+          <div class="send">
+            <button type="submit">envoyer</button>
+            <span class="send-note">publié après lecture</span>
+          </div>
+        </form>
+      </section>
+
+      <nav class="pager">
+        {prev ? <a rel="prev" href={`/texte/${prev}`}>← précédent</a> : <span></span>}
+        {t.collection && <a class="serie" href={`/collection/${slug(t.collection)}`}>toute la série</a>}
+        {next ? <a rel="next" href={`/texte/${next}`}>suivant →</a> : <span></span>}
+      </nav>
+
+      <div class="pf-extra" aria-hidden="true">{searchExtra}</div>
+    </main>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: t.title,
+    author: { '@type': 'Person', name: t.author },
+    ...(t.date ? { datePublished: t.date } : {}),
+    ...(t.soustitre ? { description: t.soustitre } : {}),
+    inLanguage: 'fr',
+  })} />
+
+  <style>
+    .wrap { max-width: 680px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 32px) 80px; }
+    main { padding-top: 0; }
+    .breadcrumb { font-family: var(--font-mono); font-size: 11px; letter-spacing: .05em;
+      color: var(--color-muted); margin: 0 0 36px; }
+    .breadcrumb .col { color: inherit; text-decoration: none; }
+    .breadcrumb .col:hover { color: var(--color-ocre); }
+    h1 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(28px, 5vw, 42px);
+      letter-spacing: -.01em; margin: clamp(18px, 4vw, 32px) 0 8px; }
+    .desc { font-family: var(--font-serif); font-style: italic; color: var(--color-muted);
+      font-size: clamp(16px, 2.2vw, 19px); margin: 0 0 14px; }
+    .texte { font-family: var(--font-serif); font-weight: 400; font-size: clamp(16.5px, 2.3vw, 18.5px);
+      line-height: 1.72; margin: 36px 0 44px; }
+    .texte :global(p) { margin: 0 0 1em; }
+    .pf-extra { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+    .object { font-family: var(--font-mono); font-size: 12px; color: var(--color-muted);
+      border-top: 1px solid var(--color-hair); padding-top: 20px; line-height: 1.9; }
+    .obj-actions { display: flex; gap: 22px; align-items: baseline; }
+    .share { font-family: var(--font-mono); font-size: 12px; letter-spacing: .05em;
+      background: none; border: none; cursor: pointer;
+      padding: 12px 2px 12px 0; margin: -6px 0 -12px;
+      color: var(--color-muted); text-decoration: underline; text-underline-offset: 3px; }
+    .share:hover { color: var(--color-ocre); }
+    .reponses, .repondre { border-top: 1px solid var(--color-hair); margin-top: 44px; padding-top: 18px; }
+    .reponses h2, .repondre h2 { font-family: var(--font-mono); font-weight: 400; font-size: 11px;
+      letter-spacing: .08em; color: var(--color-muted); margin: 0 0 24px; }
+    .rep { margin: 0 0 32px; }
+    .rep:last-of-type { margin-bottom: 8px; }
+    .rep-meta { font-family: var(--font-mono); font-size: 12px; color: var(--color-muted); margin: 0 0 8px; }
+    .rep-title { font-family: var(--font-serif); font-style: italic; font-size: 16px; margin: 0 0 6px; }
+    .rep-text { font-family: var(--font-serif); font-size: 16.5px; line-height: 1.65; white-space: pre-line; }
+
+    .repondre form { display: grid; gap: 10px; }
+    .lab { font-family: var(--font-mono); font-size: 11px; letter-spacing: .05em; color: var(--color-muted); }
+    .repondre input[type="text"], .repondre textarea { width: 100%; font-family: var(--font-serif);
+      font-size: 16px; color: var(--color-ink); background: var(--color-paper-raised);
+      border: 1px solid var(--color-hair); border-radius: 2px; padding: 10px 12px; }
+    .repondre input[type="text"]:focus-visible, .repondre textarea:focus-visible {
+      outline: 1px solid var(--color-ocre); outline-offset: -1px; }
+    .repondre textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
+    .send { display: flex; align-items: center; gap: 14px; margin-top: 4px; }
+    .send button { font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em;
+      padding: 9px 20px; background: none; border: 1px solid var(--color-ink); border-radius: 2px;
+      color: var(--color-ink); cursor: pointer; }
+    .send button:hover { border-color: var(--color-ocre); color: var(--color-ocre); }
+    .send-note { font-family: var(--font-serif); font-style: italic; font-size: 13.5px; color: var(--color-muted); }
+    .hp { position: absolute; left: -9999px; margin: 0; }
+    .merci { display: none; font-family: var(--font-serif); font-style: italic;
+      font-size: 16px; color: var(--color-ocre); margin: 0 0 8px; }
+    .merci:target { display: block; }
+    .merci:target ~ form { display: none; }
+
+    @media print {
+      :global(.site-header), .breadcrumb, .reponses, .repondre, .pager,
+      .obj-actions, .pf-extra { display: none !important; }
+      :global(body) { background: #fff !important; color: #111 !important; }
+      .wrap { max-width: none; padding: 0; }
+      h1 { margin-top: 22mm; color: #111; }
+      .desc { color: #555; }
+      @page { margin: 22mm 24mm; }
+      .object { border-top-color: #ddd; color: #555; }
+      .byline::after { content: " · ecrivanalyse.net"; }
+    }
+
+    .pager { display: flex; justify-content: space-between; margin-top: 48px;
+      font-family: var(--font-serif); font-style: italic; font-size: 15px; }
+    .pager a { color: var(--color-ocre); text-decoration: none; padding: 10px 2px; margin: -10px 0; }
+    .pager a:hover { text-decoration: underline; }
+    @media (max-width: 560px) {
+      .pager { flex-wrap: wrap; row-gap: 10px; }
+      .pager > :first-child { order: 1; }
+      .pager > :last-child { order: 2; }
+      .pager .serie { order: 3; flex-basis: 100%; text-align: center; }
+    }
+  </style>
+
+  <script is:inline data-astro-rerun>
+    (() => {
+    // « partager » — same pattern as the quinte page (onclick, never double-binds)
+    const b = document.querySelector('.share');
+    if (!b) return;
+    b.onclick = async () => {
+      const url = location.origin + location.pathname;
+      const title = '« ' + b.dataset.title + ' » - Écrivanalyse';
+      if (navigator.share) {
+        try { await navigator.share({ title, url }); } catch {}
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(url);
+        b.textContent = 'lien copié';
+        setTimeout(() => { b.textContent = 'partager'; }, 2000);
+      }
+    };
+    })();
+  </script>
+
+  <script is:inline data-astro-rerun>
+    (() => {
+    // leaf through the série: ← / → keys (same guards as the quinte page)
+    const go = (dir) => document.querySelector('.pager a[rel="' + dir + '"]')?.click();
+    if (window.__eaQKey) document.removeEventListener('keydown', window.__eaQKey);
+    window.__eaQKey = (e) => {
+      if (!document.querySelector('.pager')) return;
+      if (e.altKey || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      if (e.target.closest?.('input, textarea, select')) return;
+      if (e.key === 'ArrowLeft') go('prev');
+      else if (e.key === 'ArrowRight') go('next');
+    };
+    document.addEventListener('keydown', window.__eaQKey);
+    })();
+  </script>
+</Base>

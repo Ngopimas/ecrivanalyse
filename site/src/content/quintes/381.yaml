@@ -7,7 +7,7 @@ lines:
   - "la danse qu’elle a cheminée :"
   - "c’est comme se réserver le"
   - "sensu de déballer sa vie."
-is_5x5: false
+is_5x5: true
 mode: ""
 participant_role: ""
 participant_name: ""

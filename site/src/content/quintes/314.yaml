@@ -7,7 +7,7 @@ lines:
   - "qui se retrouve au septième"
   - "siècle, farci d’un merci farsi :"
   - "timide superbe crispation sans gêne."
-is_5x5: false
+is_5x5: true
 mode: "pause"
 participant_role: "pauseur"
 participant_name: "L. I."

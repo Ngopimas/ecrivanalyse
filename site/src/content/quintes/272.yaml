@@ -7,7 +7,7 @@ lines:
   - "les coûts du son s’acharnent"
   - "et déchantent l’harmonie des solitudes :"
   - "échos et mots d’ecce homo."
-is_5x5: false
+is_5x5: true
 mode: "pause"
 participant_role: "pauseur"
 participant_name: ""

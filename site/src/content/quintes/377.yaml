@@ -7,7 +7,7 @@ lines:
   - "je nous surjoue en surje :"
   - "rétorque oui de mon corps"
   - "où mon crâne se redresse !"
-is_5x5: false
+is_5x5: true
 mode: "pause"
 participant_role: "pauseuse"
 participant_name: "anonyme"

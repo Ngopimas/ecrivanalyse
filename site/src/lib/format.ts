@@ -16,7 +16,7 @@ export function frDate(iso?: string | null): string {
 }
 
 export function year(iso?: string | null): string {
-  return iso ? iso.slice(0, 4) : '—';
+  return iso ? iso.slice(0, 4) : '-';
 }
 
 /** URL-safe slug from a French collection/série name. */
@@ -57,4 +57,23 @@ export function participant(q: Q): string {
 export function quintesseObject(q: Q): string {
   if (!q.quintesse_num && !q.status) return '';
   return ['Quintesse', q.quintesse_num, q.status].filter(Boolean).join(' ');
+}
+
+/**
+ * Light-markup body text (gen-content.py: paragraphs = \n\n, line breaks = \n,
+ * italics/bold as literal <i>/<b>) -> safe HTML paragraphs. Everything is
+ * escaped, then only the two allowed tags are re-opened.
+ */
+export function proseHtml(text: string): string {
+  const esc = text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/&lt;(\/?)(i|b)&gt;/g, '<$1$2>');
+  return esc.split(/\n{2,}/)
+    .map((p) => `<p>${p.replace(/\n/g, '<br>')}</p>`)
+    .join('\n');
+}
+
+/** The same body text as plain text (search index, meta descriptions). */
+export function prosePlain(text: string): string {
+  return text.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 }

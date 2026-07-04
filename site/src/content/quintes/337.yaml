@@ -7,7 +7,7 @@ lines:
   - "l’antinomie touristique d’une affectation saugrenue"
   - "- se retenir de tout lâcher -"
   - "avec exactitude ne répond pas."
-is_5x5: false
+is_5x5: true
 mode: "pause"
 participant_role: "pauseuse"
 participant_name: "anonyme"

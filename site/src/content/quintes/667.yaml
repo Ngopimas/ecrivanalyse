@@ -7,7 +7,7 @@ lines:
   - "- d’être un peu plus familier"
   - "d’un pas de ses amis -"
   - "de s’en remettre au jourd’hui."
-is_5x5: false
+is_5x5: true
 mode: "pause"
 participant_role: "pauseuse"
 participant_name: "Joseph B."

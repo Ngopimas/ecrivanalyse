@@ -23,9 +23,11 @@ export async function onRequestPost({ request, env }) {
   const qtitle = String(form.get('title') ?? '').trim().slice(0, 200);
   const author = String(form.get('author') ?? '').trim().slice(0, 80);
   const text = String(form.get('text') ?? '').replace(/\r\n/g, '\n').trim().slice(0, 2000);
+  // textes share the reply flow; only the page path differs
+  const kind = form.get('kind') === 'texte' ? 'texte' : 'quinte';
 
   const origin = new URL(request.url).origin;
-  const back = `${origin}/quinte/${quinte}/#merci`;
+  const back = `${origin}/${kind}/${quinte}/#merci`;
 
   // Filled honeypot: a bot. Pretend success, send nothing.
   if (form.get('website')) return Response.redirect(back, 303);
@@ -35,16 +37,16 @@ export async function onRequestPost({ request, env }) {
       '<p>Le message est vide ou la quinte est introuvable. <a href="javascript:history.back()">Revenir</a>.</p>');
   }
 
-  const payload = { quinte, author, text, date: new Date().toISOString().slice(0, 19) };
+  const payload = { quinte, kind, author, text, date: new Date().toISOString().slice(0, 19) };
   const data = toB64url(new TextEncoder().encode(JSON.stringify(payload)));
   const approveUrl = `${origin}/api/approve?d=${data}&s=${await sign(env.COMMENT_SECRET, data)}`;
-  const quinteUrl = `${origin}/quinte/${quinte}`;
+  const quinteUrl = `${origin}/${kind}/${quinte}`;
 
   const html = `
 <div style="font-family: Georgia, serif; color: #17130F; max-width: 560px;">
   <p style="font-size:13px; color:#6B635A;">Réponse reçue sur
     <a href="${quinteUrl}" style="color:#B0472C;">«&#8239;${escapeHtml(qtitle) || `quinte ${quinte}`}&#8239;»</a>
-    — ${escapeHtml(author) || 'anonyme'}</p>
+    - ${escapeHtml(author) || 'anonyme'}</p>
   <blockquote style="margin:16px 0; padding:12px 16px; border-left:2px solid #E2DACA; font-size:16px; line-height:1.6;">
     ${escapeHtml(text).replace(/\n/g, '<br>')}
   </blockquote>
@@ -66,7 +68,7 @@ export async function onRequestPost({ request, env }) {
     body: JSON.stringify({
       from: env.FROM_EMAIL,
       to: [env.MODERATOR_EMAIL],
-      subject: `Réponse à « ${qtitle || `quinte ${quinte}`} » — ${author || 'anonyme'}`,
+      subject: `Réponse à « ${qtitle || `quinte ${quinte}`} » - ${author || 'anonyme'}`,
       html,
     }),
   });
@@ -74,7 +76,7 @@ export async function onRequestPost({ request, env }) {
   if (!sent.ok) {
     return page(502, 'Envoi impossible',
       `<p>Votre message n’a pas pu être transmis. Merci de réessayer plus tard.
-       <a href="${quinteUrl}">Revenir à la quinte</a>.</p>`);
+       <a href="${quinteUrl}">Revenir à la page</a>.</p>`);
   }
 
   // Back to the quinte: #merci shows the confirmation and hides the form (CSS :target).

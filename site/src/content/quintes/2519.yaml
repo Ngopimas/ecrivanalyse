@@ -7,7 +7,7 @@ lines:
   - "ce qu’on ne voit jamais,"
   - "la vie qu’on se donne ?"
   - "ça se prend à témoin !"
-is_5x5: false
+is_5x5: true
 mode: "ecrivanalyse"
 participant_role: "analisante"
 participant_name: "Annick Lebédyk"

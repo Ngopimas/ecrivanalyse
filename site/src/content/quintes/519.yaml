@@ -7,7 +7,7 @@ lines:
   - "- s’en remettre à plus tard -"
   - "et dire ce qu’on panse :"
   - "s’en tirer dans le ventre !"
-is_5x5: false
+is_5x5: true
 mode: "ecrivanalyse"
 participant_role: "analisante"
 participant_name: "Annick Lebédyk"

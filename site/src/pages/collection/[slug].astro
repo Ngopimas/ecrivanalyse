@@ -4,13 +4,22 @@ import Base from '../../layouts/Base.astro';
 import { slug, roleLabel, modeLabel, year } from '../../lib/format';
 
 export async function getStaticPaths() {
-  const all = (await getCollection('quintes'))
-    .filter((q) => q.data.lines.length > 0 && q.data.collection);
+  // quintes (incl. the ghost séance records) and textes, one merged list per série
+  const all = [
+    ...(await getCollection('quintes'))
+      .filter((q) => (q.data.lines.length > 0 || q.data.participant_role) && q.data.collection)
+      .map((q) => ({ kind: 'quinte', id: q.id, data: q.data })),
+    ...(await getCollection('textes'))
+      .filter((t) => t.data.collection)
+      .map((t) => ({ kind: 'texte', id: t.id, data: t.data })),
+  ];
   const map = new Map<string, { name: string; mode: string | null; items: typeof all }>();
   for (const q of all) {
     const s = slug(q.data.collection);
     if (!map.has(s)) map.set(s, { name: q.data.collection!, mode: q.data.mode, items: [] });
-    map.get(s)!.items.push(q);
+    const v = map.get(s)!;
+    v.items.push(q);
+    if (!v.mode) v.mode = q.data.mode; // first non-empty mode names the série
   }
   return [...map.entries()].map(([s, v]) => ({
     params: { slug: s },
@@ -19,18 +28,22 @@ export async function getStaticPaths() {
 }
 
 const { name, mode, items } = Astro.props;
+const nQ = items.filter((i) => i.kind === 'quinte').length;
+const nT = items.length - nQ;
+const countLabel = [nQ ? `${nQ} quinte${nQ > 1 ? 's' : ''}` : '', nT ? `${nT} texte${nT > 1 ? 's' : ''}` : '']
+  .filter(Boolean).join(' · ');
 ---
 <Base title={`« ${name} » - Écrivanalyse`}>
   <div class="wrap">
     <main>
       <h1 transition:name="qtitle">«&#8239;{name}&#8239;»</h1>
-      <div class="breadcrumb"><a href="/collections">← Collections</a>{modeLabel(mode) && <span> · {modeLabel(mode)}</span>} · {items.length} quintes</div>
+      <div class="breadcrumb"><a href="/collections">← Collections</a>{modeLabel(mode) && <span> · {modeLabel(mode)}</span>} · {countLabel}</div>
       <ul>
         {items.map((q) => (
           <li>
-            <a href={`/quinte/${q.id}`}>
+            <a href={`/${q.kind}/${q.id}`}>
               <span class="t" data-vt-title>{q.data.title}</span>
-              <span class="r">{year(q.data.date)}{q.data.quintesse_num ? ` · ${q.data.quintesse_num}` : ''}</span>
+              <span class="r">{year(q.data.date)}{q.kind === 'texte' ? ' · texte' : ''}{q.data.quintesse_num ? ` · ${q.data.quintesse_num}` : ''}</span>
             </a>
           </li>
         ))}

@@ -49,7 +49,7 @@ export function page(status, title, bodyHtml) {
 <html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>${escapeHtml(title)} — Écrivanalyse</title>
+<title>${escapeHtml(title)} - Écrivanalyse</title>
 <style>
   body { background: #F6F1E7; color: #17130F; font-family: Georgia, serif;
     display: grid; place-items: center; min-height: 100vh; margin: 0; padding: 24px; }

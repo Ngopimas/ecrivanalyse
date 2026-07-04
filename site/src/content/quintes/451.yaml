@@ -7,7 +7,7 @@ lines:
   - "- la tiédeur n’étant jamais bonne -,"
   - "le vrai talent se postjuge"
   - "à la hauteur de l’inondation."
-is_5x5: false
+is_5x5: true
 mode: "pause"
 participant_role: "pauseur"
 participant_name: "Yassine Ouldammar"

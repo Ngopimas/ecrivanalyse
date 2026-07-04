@@ -1,7 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 
-// Every quinte that has its own page (mirrors getStaticPaths in quinte/[id].astro).
+// Every quinte whose text is readable online: the ghost séance records
+// (lines: []) have pages too, but a chance encounter must land on a quinte.
 const ids = (await getCollection('quintes'))
   .filter((q) => q.data.lines.length > 0)
   .map((q) => q.id);

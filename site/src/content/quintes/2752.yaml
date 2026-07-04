@@ -7,7 +7,7 @@ lines:
   - "cœur de métier de cœur ?"
   - "être ce qui peut s’aider :"
   - "en zone où se trouver !"
-is_5x5: false
+is_5x5: true
 mode: "pause"
 participant_role: "pauseur"
 participant_name: "anonime"

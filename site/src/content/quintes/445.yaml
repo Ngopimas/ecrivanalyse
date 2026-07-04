@@ -7,7 +7,7 @@ lines:
   - "- novice obligeance ronde et tirée -"
   - "se considère embringué comme donnée"
   - "d’étude, telle une cachette d’argument."
-is_5x5: false
+is_5x5: true
 mode: "pause"
 participant_role: "pauseur"
 participant_name: "anonyme"

@@ -7,7 +7,7 @@ lines:
   - "l’interrompt ! l’entrecoupe ! l’insupporte ! parole ! tue !"
   - "qui baille au nez, encore"
   - "chuchote - chochotte ? - cette chute : « Chut ! »"
-is_5x5: false
+is_5x5: true
 mode: "pause"
 participant_role: "pauseuse"
 participant_name: "Ana"

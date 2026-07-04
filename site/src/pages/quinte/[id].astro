@@ -1,11 +1,14 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import { frDate, participant, quintesseObject, modeLabel, slug } from '../../lib/format';
+import { frDate, participant, quintesseObject, modeLabel, slug, proseHtml, prosePlain } from '../../lib/format';
 
 export async function getStaticPaths() {
+  // lines can be empty: a "ghost" séance record whose quinte was never
+  // published online (quintesse bought, text only in a print recueil) —
+  // the page then states that instead of showing a quinte
   const all = (await getCollection('quintes'))
-    .filter((q) => q.data.lines.length > 0)
+    .filter((q) => q.data.lines.length > 0 || q.data.participant_role)
     .sort((a, b) => (a.data.id ?? 0) - (b.data.id ?? 0));
   const byQuinte = new Map();
   for (const c of await getCollection('comments')) {
@@ -32,16 +35,23 @@ const { q, qid, comments, prev, next } = Astro.props;
 // so "imam" isn't findable on its own (and misses fall back to loose letter matches).
 // Index an apostrophe-split copy of the text — visible text keeps its typography.
 const deElide = (s: unknown) => (s ?? '').toString().replace(/[’']/g, '$& ');
-const searchExtra = [q.title, q.soustitre, ...(q.lines ?? []), participant(q), q.collection,
+const searchExtra = [q.title, q.soustitre, ...(q.lines ?? []), prosePlain(q.prose ?? ''),
+  participant(q), q.collection,
   ...comments.map((c) => c.text)].filter(Boolean).map(deElide).join('  ');
 
 // year · quintesse number, exposed to Pagefind — the search results' mono column
 const rMeta = [q.date ? String(q.date).slice(0, 4) : null, q.quintesse_num].filter(Boolean).join(' · ');
+
+// the ghost note, when the quinte itself was never put online
+const ghost = q.lines.length === 0;
+const ghostNote = ghost
+  ? `La quinte n'a pas été mise en ligne${q.recueil ? ` : elle se lit dans le recueil « ${q.recueil} »` : ''}.`
+  : '';
 ---
 <Base
   title={`« ${q.title} » - Écrivanalyse`}
-  description={q.soustitre || q.lines.join(' / ')}
-  ogImage={`/og/${qid}.png`}
+  description={q.soustitre || q.lines.join(' / ') || ghostNote}
+  ogImage={ghost ? '/og/default.png' : `/og/${qid}.png`}
   ogImageAlt={`La quinte « ${q.title} »`}
   ogType="article"
 >
@@ -56,11 +66,17 @@ const rMeta = [q.date ? String(q.date).slice(0, 4) : null, q.quintesse_num].filt
         {modeLabel(q.mode) && <span> · {modeLabel(q.mode)}</span>}
       </div>
 
-      <div class="quinte enter" transition:name="quinte" data-pagefind-meta={rMeta ? `r:${rMeta}` : undefined}>
-        <!-- the {' '} keeps Pagefind from jamming line ends together ("bleue,à")
-             in excerpts; between block spans it never renders -->
-        {q.lines.map((l, i) => <><span class="ln" style={`--i:${i}`}>{l}</span>{' '}</>)}
-      </div>
+      {q.prose && <div class="prose" set:html={proseHtml(q.prose)} />}
+
+      {!ghost ? (
+        <div class="quinte enter" transition:name="quinte" data-pagefind-meta={rMeta ? `r:${rMeta}` : undefined}>
+          <!-- the {' '} keeps Pagefind from jamming line ends together ("bleue,à")
+               in excerpts; between block spans it never renders -->
+          {q.lines.map((l, i) => <><span class="ln" style={`--i:${i}`}>{l}</span>{' '}</>)}
+        </div>
+      ) : (
+        <p class="ghost" transition:name="quinte" data-pagefind-meta={rMeta ? `r:${rMeta}` : undefined}>{ghostNote}</p>
+      )}
 
       <div class="object">
         {participant(q) && <div class="who oe">{participant(q)}</div>}
@@ -143,6 +159,13 @@ const rMeta = [q.date ? String(q.date).slice(0, 4) : null, q.quintesse_num].filt
       letter-spacing: -.01em; margin: clamp(18px, 4vw, 32px) 0 8px; }
     .desc { font-family: var(--font-serif); font-style: italic; color: var(--color-muted);
       font-size: clamp(16px, 2.2vw, 19px); margin: 0 0 14px; }
+    /* prose the original page set around the quinte (hybrid pages like 154) */
+    .prose { font-family: var(--font-serif); font-weight: 400; font-size: clamp(16px, 2.2vw, 18px);
+      line-height: 1.7; margin: 36px 0 0; }
+    .prose :global(p) { margin: 0 0 1em; }
+    /* the quinte was never put online: say so, in the reading voice */
+    .ghost { font-family: var(--font-serif); font-style: italic; font-size: clamp(17px, 2.4vw, 20px);
+      line-height: 1.7; color: var(--color-muted); margin: 44px 0 52px; }
     .quinte { font-family: var(--font-serif); font-weight: 300; font-size: clamp(21px, 3vw, 28px);
       line-height: 1.72; margin: 36px 0 44px; }
     /* entrance for direct arrivals only (shared link, refresh): the lines ink in
@@ -296,7 +319,7 @@ const rMeta = [q.date ? String(q.date).slice(0, 4) : null, q.quintesse_num].filt
     if (!b) return;
     b.onclick = async () => {
       const url = location.origin + location.pathname;
-      const title = '« ' + b.dataset.title + ' » — Écrivanalyse';
+      const title = '« ' + b.dataset.title + ' » - Écrivanalyse';
       if (navigator.share) {
         try { await navigator.share({ title, url }); } catch {}
       } else if (navigator.clipboard) {

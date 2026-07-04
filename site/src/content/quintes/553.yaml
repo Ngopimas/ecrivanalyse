@@ -3,10 +3,11 @@ title: "Pour n’être pas si simple"
 soustitre: ""
 lines:
   - "Entrer dans son intimidité... à"
-  - "la navigatrice du se faire balader... la récupère... lui fait"
+  - "la navigatrice du se faire"
+  - "balader... la récupère... lui fait"
   - "la comédie à l’actrice... n’ayant"
   - "plus besoin de s’en passer..."
-is_5x5: false
+is_5x5: true
 mode: "pause"
 participant_role: "pauseuse"
 participant_name: "Isabel Jeannin"

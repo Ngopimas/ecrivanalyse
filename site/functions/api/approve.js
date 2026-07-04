@@ -26,7 +26,7 @@ export async function onRequestGet({ request, env }) {
     return page(400, 'Lien illisible', '<p>Le contenu du lien n’a pas pu être décodé.</p>');
   }
 
-  const { quinte, author, text, date } = payload;
+  const { quinte, kind, author, text, date } = payload;
   const entry = { quinte, title: '', author, date, text };
   const dir = env.COMMENTS_DIR || 'site/src/content/comments';
   const path = `${dir}/${quinte}-${date.replace(/\D/g, '')}.json`;
@@ -47,13 +47,13 @@ export async function onRequestGet({ request, env }) {
   });
 
   const who = escapeHtml(author) || 'anonyme';
-  const quinteUrl = `${url.origin}/quinte/${quinte}`;
+  const quinteUrl = `${url.origin}/${kind === 'texte' ? 'texte' : 'quinte'}/${quinte}`;
 
   // 422 = the file already exists: this link was already clicked.
   if (res.status === 422) {
     return page(200, 'Déjà publié',
       `<p>Cette réponse de ${who} est déjà publiée
-       — <a href="${quinteUrl}">voir la quinte</a>.</p>`);
+       - <a href="${quinteUrl}">voir la page</a>.</p>`);
   }
   if (!res.ok) {
     return page(502, 'Publication impossible',
@@ -62,6 +62,6 @@ export async function onRequestGet({ request, env }) {
   }
   return page(200, 'Publié',
     `<p>La réponse de ${who} est acceptée. Elle apparaîtra
-     <a href="${quinteUrl}">sur la quinte</a> d’ici quelques minutes,
+     <a href="${quinteUrl}">sur la page</a> d’ici quelques minutes,
      le temps que le site se reconstruise.</p>`);
 }

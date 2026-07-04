@@ -7,7 +7,7 @@ lines:
   - "s’évaluer au ras du plafond :"
   - "déclin d’œil en clin d’œil,"
   - "à hauteur de son travail !"
-is_5x5: false
+is_5x5: true
 mode: "ecrivanalyse"
 participant_role: "analisante"
 participant_name: "Annick Lebédyk"

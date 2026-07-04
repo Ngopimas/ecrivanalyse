@@ -7,7 +7,7 @@ lines:
   - "à la compagnie du régisseur,"
   - "faire le pas plus démonstratif :"
   - "travailler à en être capable !"
-is_5x5: false
+is_5x5: true
 mode: "pause"
 participant_role: "pauseur"
 participant_name: "Clément Guio"

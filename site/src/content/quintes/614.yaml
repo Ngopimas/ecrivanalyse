@@ -7,7 +7,7 @@ lines:
   - "- un bien-fait d’y être sensible -,"
   - "être une méthode à suivre :"
   - "le porte-mot n’est pas l’avoir."
-is_5x5: false
+is_5x5: true
 mode: "pause"
 participant_role: "pauseuse"
 participant_name: "Coline Faucon"

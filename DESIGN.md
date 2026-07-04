@@ -50,6 +50,17 @@ The 5/5/5 dispositif is the quinte's signature, but the design must not cage it:
   shorter wall beat (localStorage); `prefers-reduced-motion` gets a full static composition.
 - **Quinte page** (`/quinte/[id]`) — intimate reading: title, description, the quinte,
   then the **quintesse** it was written on (number + status + participant + mode + collection + date).
+  Two variants: **hybrid** (the original page set prose around the quinte, e.g. 154
+  "La maison dans la maison": the prose renders above the quinte, italics kept) and
+  **ghost** (39 séance records from 2010 whose quinte was never put online, the
+  quintesse bought or print-only: the page states "La quinte n'a pas été mise en
+  ligne : elle se lit dans le recueil « Faire une quinte de tout »" in place of the
+  quinte; excluded from /hasard and the landing wall).
+- **Texte page** (`/texte/[id]`) — the non-quinte œuvre (97: prose of "La petite fille
+  à côté" co-signed Annick Lebédyk, "La danseuse de vélo", the serialized "Fluides ou
+  Le singulier pluriel" chapters). Reading layout (Spectral 400, 680px measure),
+  paragraphs with light <i>/<b>, réponses + form like a quinte, prev/next within the
+  série. Listed in /archive (facet "textes"), collections, and search.
 - **Archive** (`/archive`) — quintes by year, facets p(au)se vs écrivanalyse.
 - **Le projet** — the manifesto + the quinte/quintesse distinction, using the project
   photos (quintesse-en-cours, Ivan, Annick, the clothesline) and the video. Assets in
@@ -60,6 +71,8 @@ The 5/5/5 dispositif is the quinte's signature, but the design must not cage it:
   + true italics 300/400; never synthesize italics). **Interface:** Instrument Sans.
   **Metadata:** JetBrains Mono. Self-hosted via Fontsource. (Never Inter / Space Grotesk.)
 - Font assets (OG-card TTFs + the traced favicon é) regenerate via `site/scripts/gen-fonts.py`.
+- **No em dashes in UI copy** (Romain's preference): use a plain hyphen "-". Em dashes
+  appear only inside corpus content quoted verbatim from the backup.
 
 ## Color — encre sur papier
 Paper `#F6F1E7` / raised `#FBF8F1` / ink `#17130F` / muted `#6B635A` / hairline `#E2DACA` /
@@ -79,12 +92,15 @@ body; frontmatter = `title, description, lines, mode, participant_role, particip
 quintesse_num, status, collection, recueil, date, author, is_5x5`. `status` holds the
 **full original phrase** ("achetée par l'analisante", "suspendue pour la p(au)seuse"),
 free text — not an enum. Keystatic edits these natively (Git-based, no DB). Astro loads
-them via a glob collection. Regenerable from
-`ecrivanalyse-backup/data/quintesses.json` via `enrich.py` + a generator.
+them via a glob collection. A second collection `src/content/textes/` holds the
+non-quinte œuvre (`text` = paragraphs \n\n, breaks \n, light <i>/<b>). Both regenerate
+from the backup via `enrich.py` + `site/scripts/gen-content.py`; quintes may carry
+`prose` (hybrid pages) and ghosts keep `lines: []`.
 
 ## Decisions Log
 | Date | Decision | Rationale |
 |------|----------|-----------|
+| 2026-07-04 | **Taxonomie du corpus complet** (3 157 articles) : 3 047 quintes (dont 1 hybride avec prose, 154 ; 39 « fantômes » de 2010 sans texte en ligne, quintesse achetée, recueil « Faire une quinte de tout » ; 1024 en six lignes, produit de séance quand même) + 97 textes (nouvelle collection : « La petite fille à côté », « La danseuse de vélo », « Fluides ou Le singulier pluriel »…) + 13 pages de plomberie SPIP écartées (couvertes par /projet). 42 quintes récupérées en corrigeant le compteur de mots d'enrich.py (tirets d'incise comptés comme mots, œ hors de À-ÿ, sigles « O.R.L. », `<br style>` non splitté, tableau-photo de 190). Un texte n'est jamais présenté comme une quinte, et inversement. | Sur le site d'origine, une partie de l'œuvre n'était pas des quintes (prose, feuilletons, pièces dialoguées) ; l'extraction les écrasait au format quinte ou les perdait. is_5x5 reste le drapeau strict ; le dispositif est « caractéristique, pas une cage ». |
 | 2026-07-04 | Dive sharpness: the GPU zooms a raster made at scale 1, so the wall went pixelated as it grew. Now the **real title** (full-resolution raster, scaled down then animated to identity — only ever minified) flies from the wall title's place to its exact landing seat; the wall fades earlier (gone ~72 %) and the zoom tops at 6×; the stage reveals by opacity alone so the flying title lands seamlessly. Rhythm: line-break breath 0.12 → 0.22 s (a line break ≥ a comma); first-visit dive at 2.15 s. | Raster big, animate small→identity — downscaling stays sharp at every frame. The blurred mass receding behind one crisp voice is also the right metaphor. |
 | 2026-07-04 | **Spectral remplace Fraunces** partout (site, cartes OG, favicon é retracé) — poids 300 (grande quinte), 400 (lecture), 500 ; italiques vraies 300/400. Les axes WONK/SOFT disparaissent avec Fraunces. `/specimen` (comparatif Fraunces / Spectral / Cormorant / EB Garamond sur texte réel) a servi la décision puis a été supprimé. | Choix de Romain sur spécimen : plus littéraire et plus calme que Fraunces (qui datait les sites 2021-2025), Production Type **Paris** — la provenance française a du sens pour ce corpus. Libre (SIL OFL). Cormorant éliminée (trop fine au corps du mur), EB Garamond trop sage. |
 | 2026-07-02 | Direction C + A, tokens, fonts | /design-consultation. |

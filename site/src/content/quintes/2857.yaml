@@ -7,7 +7,7 @@ lines:
   - "corps et cœur et âme-sœur !"
   - "en scandale qu’on peut faire :"
   - "qui s’emboîte le pas fusionnel."
-is_5x5: false
+is_5x5: true
 mode: "ecrivanalyse"
 participant_role: "analisante"
 participant_name: "Annick Lebédyk"

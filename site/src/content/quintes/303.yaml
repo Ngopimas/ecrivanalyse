@@ -7,7 +7,7 @@ lines:
   - "sa porte à un prénom"
   - "- égoïsme ponctuel de la plupart -,"
   - "s’emboîte au bénéfice du doute."
-is_5x5: false
+is_5x5: true
 mode: ""
 participant_role: ""
 participant_name: ""

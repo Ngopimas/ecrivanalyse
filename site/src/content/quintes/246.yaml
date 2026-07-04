@@ -7,7 +7,7 @@ lines:
   - "son privilège - possible mais inimaginable -"
   - "d’être bien - quelqu’un qu’elle hait ? - :"
   - "fiable de se montrer faible !"
-is_5x5: false
+is_5x5: true
 mode: "pause"
 participant_role: "pauseuse"
 participant_name: "anonyme"

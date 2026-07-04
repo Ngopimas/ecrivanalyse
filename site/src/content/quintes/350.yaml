@@ -7,7 +7,7 @@ lines:
   - "la heurtera l’ôtage d’autres lunettes"
   - "jusqu’à s’en retourner, la veste"
   - "- sans relâcher la bride - abattue."
-is_5x5: false
+is_5x5: true
 mode: "pause"
 participant_role: "pauseuse"
 participant_name: "J."

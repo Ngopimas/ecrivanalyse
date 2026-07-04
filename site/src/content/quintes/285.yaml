@@ -7,7 +7,7 @@ lines:
   - "- malgré sa peur d’être excitoire -"
   - "l’honnête remerciement d’une intrigante représentation :"
   - "on y pense le soir."
-is_5x5: false
+is_5x5: true
 mode: "pause"
 participant_role: "pauseuse"
 participant_name: "anonyme"

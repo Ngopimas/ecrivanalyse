@@ -33,11 +33,11 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 186,2010-01-26,La vessie de la lanterne,pause,pauseuse,Morgane Rossi,,autorisée à la vente,Séances de p(au)se de 2010,True
 188,2010-02-01,Petit précis piteux de l’hésitation,pause,pauseuse,Sandra F.,,achevable avec la pauseuse,Séances de p(au)se de 2010,False
 189,2010-01-30,À l’origine de la coupure,pause,pauseuse,anonyme,,achetée par la pauseuse,Séances de p(au)se de 2010,False
-190,2010-02-11,Un lieu commun pour cliché,pause,pauseur,M. D.,,,Séances de p(au)se de 2010,False
+190,2010-02-11,Un lieu commun pour cliché,pause,pauseur,M. D.,,,Séances de p(au)se de 2010,True
 191,2010-01-29,À tenter à la vie,pause,pauseuse,Nelly,,achetée par la pauseuse,Séances de p(au)se de 2010,False
 192,2010-02-10,Des couches à la souche,,,,,,La danseuse de vélo,False
 193,2010-02-03,L’exploit de l’abandon,,,,,,La petite fille à côté,False
-194,2010-02-10,Se taire les yeux ouverts,pause,pauseuse,Ana,,,Séances de p(au)se de 2010,False
+194,2010-02-10,Se taire les yeux ouverts,pause,pauseuse,Ana,,,Séances de p(au)se de 2010,True
 195,2010-02-12,Les gros mots du silence,,,,,,La petite fille à côté,False
 196,2010-02-13,La montagne accouche d’un sourire,pause,pauseuse,Cendrine Gourbin,,,Séances de p(au)se de 2010,True
 197,2010-02-12,Tu penses comme les on-dit,pause,pauseuse,M. T.,,,Séances de p(au)se de 2010,True
@@ -88,7 +88,7 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 243,2010-04-21,Se voir en double aveugle,pause,pauseur,R. T.,,achevable avec le pauseur,Séances de p(au)se de 2010,False
 244,2010-04-22,Rompre sur un bon soutenir,pause,pauseuse,Soline,,achetée par la pauseuse,Séances de p(au)se de 2010,False
 245,2010-05-09,Carnet de notes qui dénote,,,,,,La petite fille à côté,False
-246,2010-04-25,Poser le pied d’une mise,pause,pauseuse,anonyme,,autorisée à la vente,Séances de p(au)se de 2010,False
+246,2010-04-25,Poser le pied d’une mise,pause,pauseuse,anonyme,,autorisée à la vente,Séances de p(au)se de 2010,True
 247,2010-04-27,Planète avec ou sans hasch,,,,,,Des figures féminines de moi,True
 248,2010-05-05,Choix de crise en scène,pause,pauseuse,Anonyme,,,Séances de p(au)se de 2010,True
 249,2010-05-02,La portée d’un tel attachement,,,,,,La danseuse de vélo,False
@@ -114,7 +114,7 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 269,2010-06-07,Séance de pause entre guillemets,pause,pauseuse,Julia Clause,,achetée par la pauseuse,Séances de p(au)se de 2010,False
 270,2010-06-13,Le Gille est de sauvetage,,,,,,La petite fille à côté,False
 271,2010-06-09,Le secret de la profession,pause,pauseuse,Shirley-Light,,achetée par Emmanuelle Waechter,Séances de p(au)se de 2010,False
-272,2010-06-10,Canon à la plume éclectique,pause,pauseur,,,,Séances de p(au)se de 2010,False
+272,2010-06-10,Canon à la plume éclectique,pause,pauseur,,,,Séances de p(au)se de 2010,True
 273,2010-06-23,Traité de tous les noms,,,,,,La petite fille à côté,False
 274,2010-06-14,Tâche à peu près étrange,pause,pauseuse,Nazli Haghaniparast,,achetée par la pauseuse,Séances de p(au)se de 2010,False
 275,2010-06-16,Liberter de sabler le soleil,pause,pauseur,L. B.,,achetée par le pauseur,Séances de p(au)se de 2010,False
@@ -127,15 +127,15 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 282,2010-06-29,Être à l’opposé du regard,pause,pauseuse,anonyme,,achetée par la pauseuse,Séances de p(au)se de 2010,True
 283,2010-06-30,Questions et réponses sans sadisme,,,,,,La petite fille à côté,False
 284,2010-07-07,Un pardon sans aucune excuse,,,,,,La petite fille à côté,False
-285,2010-07-01,Se souvenir juste une vie,pause,pauseuse,anonyme,,,Séances de p(au)se de 2010,False
+285,2010-07-01,Se souvenir juste une vie,pause,pauseuse,anonyme,,,Séances de p(au)se de 2010,True
 286,2010-07-02,La politique de l’autre huche,pause,pauseuse,anonyme,,autorisée à la vente,Séances de p(au)se de 2010,True
 287,2010-07-05,Ça veut dire la solitude,pause,pauseuse,anonyme,,,Séances de p(au)se de 2010,True
 288,2010-07-06,Les lectures de la soif,pause,pauseuse,anonyme,,achetée par la p(au)seuse,Séances de p(au)se de 2010,True
 289,2010-07-08,Avoir des enfants de film,,,,,,Séances de p(au)se de 2010,True
 290,2010-07-13,Le blocage de la fin,,,,,,La petite fille à côté,False
 291,2010-07-12,Énergie des formes de tête,pause,pauseuse,Théodora Mayer,,achetée par la pauseuse,Séances de p(au)se de 2010,True
-292,2010-07-09,Pignon fixe sur rue libre,,,,,,Des figures féminines de moi,False
-293,2010-07-14,Le grand-chose à faire d’autre,pause,pauseuse,Céline Dornon,,,Séances de p(au)se de 2010,False
+292,2010-07-09,Pignon fixe sur rue libre,,,,,,Des figures féminines de moi,True
+293,2010-07-14,Le grand-chose à faire d’autre,pause,pauseuse,Céline Dornon,,,Séances de p(au)se de 2010,True
 294,2010-07-16,À la pointe d’une psyché,,,,,,Séances de p(au)se de 2010,True
 295,2010-08-16,Une impression d’être à Rio,pause,pauseuse,anonyme,,,Séances de p(au)se de 2010,True
 296,2010-07-19,Ça ne regarde que moi,pause,pauseuse,Océane Gauchet,,,Séances de p(au)se de 2010,True
@@ -145,7 +145,7 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 300,2010-07-15,Ça ne me dérangerait pas,,,,,,Des figures féminines de moi,True
 301,2010-08-18,Rétivité à la bretelle avachie,pause,pauseuse,anonyme,,achevable avec la pauseuse,Séances de p(au)se de 2010,True
 302,2010-09-24,Ces gens qui sont là,pause,pauseuse,anonyme,,détruite pour la pauseuse,Séances de p(au)se de 2010,True
-303,2010-07-20,Au style au faire forgé,,,,,,Être un travail à faire,False
+303,2010-07-20,Au style au faire forgé,,,,,,Être un travail à faire,True
 304,2010-07-22,Riposte du toc au toc,,,,,,Des figures féminines de moi,True
 305,2010-08-20,Faire les pieds au seuil,pause,pauseuse,Hélène Esnault,,,Séances de p(au)se de 2010,True
 306,2010-08-17,Par la force des autres,,,,,,Être un travail à faire,True
@@ -156,7 +156,7 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 311,2010-10-25,À la dérive des contenants,,,,,,Séances de p(au)se de 2010,True
 312,2010-10-26,L’avenir n’a pas de souci,pause,pauseuse,anonyme,,,Séances de p(au)se de 2010,True
 313,2010-08-24,Le fantastique trouvère à soi,pause,pauseuse,anonyme,,,Séances de p(au)se de 2010,True
-314,2010-08-25,On lit toujours un peu,pause,pauseur,L. I.,,,Séances de p(au)se de 2010,False
+314,2010-08-25,On lit toujours un peu,pause,pauseur,L. I.,,,Séances de p(au)se de 2010,True
 315,2010-08-26,La vie fait le travail,pause,pauseur,David Faro,,achetée par le pauseur,Séances de p(au)se de 2010,True
 316,2010-08-27,Souffrir une mutuelle de peur,pause,pauseuse,Juliette Imbert,,achetée par la pauseuse,Séances de p(au)se de 2010,False
 317,2010-08-30,Le fatal d’être une femme,pause,pauseuse,Océane Gauchet,,achetée pour un tiers,Séances de p(au)se de 2010,True
@@ -179,7 +179,7 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 334,2010-09-28,Ça ne se pose pas,pause,pauseuse,Maritie Linise,,achetée pour un tiers,Séances de p(au)se de 2010,True
 335,2010-10-18,Un parcours hors du mortel,pause,pauseuse,anonyme,,,Séances de p(au)se de 2010,True
 336,2010-10-11,En sapeur de la mort,pause,pauseur,Orphéo Grelttie,,achetée pour un tiers,Séances de p(au)se de 2010,True
-337,2010-09-15,Avoir son imago en qualité,pause,pauseuse,anonyme,,autorisée à la vente,Séances de p(au)se de 2010,False
+337,2010-09-15,Avoir son imago en qualité,pause,pauseuse,anonyme,,autorisée à la vente,Séances de p(au)se de 2010,True
 338,2010-09-16,Machine de la vraie vie,,,,,,Des figures féminines de moi,True
 339,2010-09-30,La provocation de se tromper,pause,pauseuse,anonyme,,achetée par la pauseuse,Séances de p(au)se de 2010,True
 340,2010-10-05,Un chat de sa puce,pause,pauseuse,anonyme,,achetée par la pauseuse,Séances de p(au)se de 2010,True
@@ -192,19 +192,19 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 347,2010-11-01,La lectrice et son clone,pause,pauseuse,anonyme,,détruite pour la pauseuse,Séances de p(au)se de 2010,True
 348,2010-11-02,Encore capable de le faire,pause,pauseuse,anonyme,,détruite pour la pauseuse,Séances de p(au)se de 2010,True
 349,2010-10-15,Ça fait un peu rêver,pause,pauseuse,Joa Neves,,achetée par la pauseuse,Séances de p(au)se de 2010,False
-350,2010-10-22,Flagrance du mur du don,pause,pauseuse,J.,,achetée par la pauseuse,Séances de p(au)se de 2010,False
+350,2010-10-22,Flagrance du mur du don,pause,pauseuse,J.,,achetée par la pauseuse,Séances de p(au)se de 2010,True
 351,2010-09-29,Ici aussi bien que là-bas,,,,,,Être un travail à faire,True
 352,2010-11-04,L’âme avec qui je vis,pause,pauseuse,anonyme,,,Séances de p(au)se de 2010,True
 353,2010-11-08,Ça va mal pour l’autre,pause,pauseuse,anonyme,,,Séances de p(au)se de 2010,True
 354,2010-10-01,L’amie de quelqu’un de bien,,,,,,Des figures féminines de moi,True
-355,2010-11-10,Des coups de mains visuelles,pause,pauseur,François Ménard,,achetée par un tiers,Séances de p(au)se de 2010,False
+355,2010-11-10,Des coups de mains visuelles,pause,pauseur,François Ménard,,achetée par un tiers,Séances de p(au)se de 2010,True
 356,2010-10-29,La logique de la chance,pause,pauseuse,Lucie Crouan,,achetée par la pauseuse,Séances de p(au)se de 2010,False
 357,2010-11-05,Être du genre à suivre,pause,pauseuse,Éloïse Dumas,,achetée par la pauseuse,Séances de p(au)se de 2010,False
 358,2010-11-11,Coupe de tête aux ongles,pause,pauseuse,Aurore Boise,,achetée par la pauseuse,Séances de p(au)se de 2010,False
 359,2010-11-12,La précieuse d’un effet passager,pause,pauseuse,Véronique Mappa,,achetée par la pauseuse,Séances de p(au)se de 2010,False
 360,2010-10-06,Se faire exploser de silence,ecrivanalyse,analisante,Annick Lebédyk,II,achetée par l’analisante,La risée du plombier miraculeux,True
 361,2010-11-26,Un sens à un moment,pause,pauseuse,anonyme,,achetée par la pauseuse,Séances de p(au)se de 2010,True
-362,2010-10-07,Avoue que je l’ai dit,,,,,,Des figures féminines de moi,False
+362,2010-10-07,Avoue que je l’ai dit,,,,,,Des figures féminines de moi,True
 363,2010-12-03,À l’intention de la présence,,,,,,Séances de p(au)se de 2010,True
 364,2010-11-16,N’avoir ni queue ni tête,pause,pauseuse,anonyme,,autorisée à la vente,Séances de p(au)se de 2010,True
 365,2010-12-06,Le vide à moitié plein,pause,pauseur,Jean-Pierre Dalous,,achetée par le pauseur,Séances de p(au)se de 2010,True
@@ -219,17 +219,17 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 374,2010-12-02,Ce qui ne s’attaque pas,pause,pauseuse,anonyme,,inachevée avec la pauseuse,Séances de p(au)se de 2010,True
 375,2010-12-07,Pour le regard du plaisir,pause,pauseuse,anonyme,,inachevée sans la p(au)seuse,Séances de p(au)se de 2010,True
 376,2010-12-08,Qui n’est plus vraiment là,pause,pauseuse,anonyme,,,Séances de p(au)se de 2010,True
-377,2010-12-13,Mes hommages à ma sœur,pause,pauseuse,anonyme,,esquintée sans la p(au)seuse,Séances de p(au)se de 2010,False
+377,2010-12-13,Mes hommages à ma sœur,pause,pauseuse,anonyme,,esquintée sans la p(au)seuse,Séances de p(au)se de 2010,True
 378,2010-11-09,Le petit non d’une fille,ecrivanalyse,analisante,Annick Lebédyk,IV,achetée par l’analisante,La risée du plombier miraculeux,True
 379,2010-11-17,À peu près cinq ans,ecrivanalyse,analisante,Annick Lebédyk,V,achetée par l’analisante,La risée du plombier miraculeux,True
 380,2010-11-15,Ne pas pouvoir faire mieux,,,,,,Des figures féminines de moi,True
-381,2010-11-25,Un dialecte sur le chenu,,,,,,Je n’en serai pas morte,False
+381,2010-11-25,Un dialecte sur le chenu,,,,,,Je n’en serai pas morte,True
 382,2010-11-19,Celui pour qui l’on conte,,,,,,Être un travail à faire,True
 383,2010-12-10,Elle saura écrit d’être passée,pause,pauseuse,Laura C.,,achetée par la pauseuse,Séances de p(au)se de 2010,True
 384,2010-12-17,Regarder si vous me touchiez,pause,pauseur,anonyme,,achetée par le pauseur,Séances de p(au)se de 2010,True
 385,2010-12-20,Le franc parti du s’inégaler,pause,pauseur,anonyme,,,Séances de p(au)se de 2010,True
-386,2010-12-21,Se faire voler une image,pause,pauseuse,anonyme,,achetée par la pauseuse,Séances de p(au)se de 2010,False
-387,2010-12-22,Ne pas calculer le numérique,pause,pauseur,anonyme,,achetée par le pauseur,Séances de p(au)se de 2010,False
+386,2010-12-21,Se faire voler une image,pause,pauseuse,anonyme,,achetée par la pauseuse,Séances de p(au)se de 2010,True
+387,2010-12-22,Ne pas calculer le numérique,pause,pauseur,anonyme,,achetée par le pauseur,Séances de p(au)se de 2010,True
 388,2010-11-23,Une voyageuse dans la peau,,,,,,Des figures féminines de moi,True
 389,2010-12-23,Venir pour s’ôter la mort,pause,pauseur,anonyme,,,Séances de p(au)se de 2010,True
 390,2010-12-24,Qui n’aurait pas dû répondre,pause,pauseuse,anonyme,,achetée par la pauseuse,Séances de p(au)se de 2010,True
@@ -267,7 +267,7 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 422,2011-01-18,Trouver masure à son pied,ecrivanalyse,analisante,Annick Lebédyk,IX,achetée par l’analisante,La risée du plombier miraculeux,True
 423,2011-02-08,À l’avantage des verves ardues,,,,,,Séances de p(au)se de 2010,True
 424,2011-02-09,Ça commence à se voir,pause,pauseuse,anonyme,,,Séances de p(au)se de 2010,True
-425,2011-02-11,La peine à se rappeler,pause,pauseur,anonyme,,achetée par le p(au)seur,Séances de p(au)se de 2011,False
+425,2011-02-11,La peine à se rappeler,pause,pauseur,anonyme,,achetée par le p(au)seur,Séances de p(au)se de 2011,True
 426,2011-02-14,Un bon heurt de soi,pause,pauseuse,Maria Mestre,,achetée par la pauseuse,Séances de p(au)se de 2011,True
 427,2011-02-16,À la place des gens,pause,pauseur,Simon Maison-Marcheux,,achetée par le pauseur,Séances de p(au)se de 2011,True
 428,2011-02-17,Ne parler de la vie,pause,pauseuse,Nora Lange,,achetée par la pauseuse,Séances de p(au)se de 2011,True
@@ -276,7 +276,7 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 431,2011-04-11,Ne pas s’en laisser tomber,pause,pauseur,anonyme,,achetée par le pauseur,Séances de p(au)se de 2011,True
 432,2011-02-21,De sourire et de silence,pause,pauseuse,Virginia Nahmani,,autorisée à la vente,Séances de p(au)se de 2011,True
 433,2011-02-22,Du travail pour ses études,pause,pauseuse,Morgane,,achetée par la p(au)seuse,Séances de p(au)se de 2011,True
-434,2011-02-24,Un être loin d’être fréquente,pause,pauseuse,Nikita Vidal,,achetée par la pauseuse,Séances de p(au)se de 2011,False
+434,2011-02-24,Un être loin d’être fréquente,pause,pauseuse,Nikita Vidal,,achetée par la pauseuse,Séances de p(au)se de 2011,True
 435,2011-01-27,La mort avant les vies,,,,,,Des figures féminines de moi,True
 436,2011-02-25,La face cachée du cerveau,pause,pauseur,Adrien Conrad,,achetée par le pauseur,Séances de p(au)se de 2011,True
 437,2011-02-28,En le pays de l’étranger,pause,pauseur,Anonyme,,achetée par le pauseur,Séances de p(au)se de 2011,True
@@ -287,13 +287,13 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 442,2011-03-08,Ce qui est vraiment partout,pause,pauseuse,Caroline C.,,achetée par la pauseuse,Séances de p(au)se de 2011,True
 443,2011-03-09,La mort de sa vie,pause,pauseuse,anonyme,,détruite pour la pauseuse,Séances de p(au)se de 2011,True
 444,2011-02-15,Un sens au sans lendemain,ecrivanalyse,analisante,Annick Lebédyk,XI,achetée par l’analisante,La risée du plombier miraculeux,True
-445,2011-03-10,La pétition du sans importance,pause,pauseur,anonyme,,inachevée sans le p(au)seur,Séances de p(au)se de 2011,False
+445,2011-03-10,La pétition du sans importance,pause,pauseur,anonyme,,inachevée sans le p(au)seur,Séances de p(au)se de 2011,True
 446,2011-03-11,La moire fêlée d’une éponge,pause,pauseuse,Virginie Le Normand,,achetée par la pauseuse,Séances de p(au)se de 2011,True
 447,2011-02-23,Avec cela faire cela avec,,,,,,Des figures féminines de moi,True
-448,2011-02-10,Retrouver le fil en tropique,,,,,,Je n’en serai pas morte,False
+448,2011-02-10,Retrouver le fil en tropique,,,,,,Je n’en serai pas morte,True
 449,2011-03-14,Être un homme de l’être,pause,pauseur,anonyme,,achetée par le pauseur,Séances de p(au)se de 2011,True
 450,2011-03-16,Meilleur plus petit que soi,pause,pauseur,anonyme,,autorisée à la vente,Séances de p(au)se de 2011,True
-451,2011-03-17,Ne pas ne pas faire,pause,pauseur,Yassine Ouldammar,,achetée par le pauseur,Séances de p(au)se de 2011,False
+451,2011-03-17,Ne pas ne pas faire,pause,pauseur,Yassine Ouldammar,,achetée par le pauseur,Séances de p(au)se de 2011,True
 452,2011-03-18,Le temps du contrat assigné,pause,pauseur,anonyme,,inachevée sans le p(au)seur,Séances de p(au)se de 2011,True
 453,2011-04-05,Sans se séparer de soi,pause,pauseuse,anonyme,,achetée par la pauseuse,Séances de p(au)se de 2011,True
 454,2011-03-01,Pouvoir se faire sa famille,ecrivanalyse,analisante,Annick Lebédyk,XII,achetée par l’analisante,La risée du plombier miraculeux,True
@@ -304,7 +304,7 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 459,2011-03-23,Créer la zone du possible,pause,pauseur,Claudio Rufino,,autorisée à la vente,Séances de p(au)se de 2011,True
 460,2011-03-28,L’ire qu’on ne l’aime pas,pause,pauseuse,anonyme,,,Séances de p(au)se de 2011,True
 461,2011-03-29,À l’extérieur de sa tête,pause,pauseuse,Louise Jardin,,achetée par la pauseuse,Séances de p(au)se de 2011,True
-462,2011-04-04,À la porte de l’audition,pause,pauseur,anonyme,,détruite par le pauseur,Séances de p(au)se de 2011,False
+462,2011-04-04,À la porte de l’audition,pause,pauseur,anonyme,,détruite par le pauseur,Séances de p(au)se de 2011,True
 463,2011-06-14,Du côté de chez soi,pause,pauseur,anonyme,,,Séances de p(au)se de 2011,True
 464,2011-04-07,Pour qui compte les mots,pause,pauseur,Patrick Ribault-Menetière,,achetée par le pauseur,Séances de p(au)se de 2011,True
 465,2011-04-08,Les gens de l’entre soi,pause,pauseuse,anonyme,,achetée par la pauseuse,Séances de p(au)se de 2011,True
@@ -327,7 +327,7 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 482,2011-05-04,Toucher le tissu de soi,pause,pauseuse,Emmanuelle Waechter,,achetée par la pauseuse,Séances de p(au)se de 2011,True
 483,2011-05-06,Aux poings de s’en taper,pause,pauseuse,Rachel Marques-Blanchard,,autorisée à la vente,Séances de p(au)se de 2011,True
 484,2011-05-09,Fatalyse de la part d’éraillée,pause,pauseuse,anonyme,,achetée par un tiers,Séances de p(au)se de 2011,True
-485,2011-03-30,À la fortification en plastique,ecrivanalyse,analisante,Annick Lebédyk,XIV,achetée par l’analisante,La risée du plombier miraculeux,False
+485,2011-03-30,À la fortification en plastique,ecrivanalyse,analisante,Annick Lebédyk,XIV,achetée par l’analisante,La risée du plombier miraculeux,True
 486,2011-05-10,Prier de ne rien faire,pause,pauseuse,anonyme,,achetée par la pauseuse,Séances de p(au)se de 2011,True
 487,2011-05-11,Beauté qui vient de soi,pause,pauseuse,Fanny Lamoureux,,achetée par la pauseuse,Séances de p(au)se de 2011,True
 488,2011-04-01,Des gens qui se massent,,,,,,Des figures féminines de moi,True
@@ -340,7 +340,7 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 495,2011-05-20,Le portrait de son souvenir,pause,pauseur,),,autorisée à la vente,Séances de p(au)se de 2011,True
 496,2011-05-23,Pas sage comme une image,pause,pauseuse,anonyme,,achetée par la pauseuse,Séances de p(au)se de 2011,True
 497,2011-04-14,Se voir d’un autre œil,,,,,,Des figures féminines de moi,True
-498,2011-05-24,En regard de son verbe,pause,pauseur,anonyme,,achetée par le pauseur,Séances de p(au)se de 2011,False
+498,2011-05-24,En regard de son verbe,pause,pauseur,anonyme,,achetée par le pauseur,Séances de p(au)se de 2011,True
 499,2011-05-25,Savoir si l’on est miroir,pause,pauseur,anonyme,,autorisée à la vente,Séances de p(au)se de 2011,True
 500,2011-05-26,Être en trouble avec l’aléa,pause,pauseuse,Pomme Papion,,autorisée à la vente,Séances de p(au)se de 2011,True
 501,2011-04-22,Un devis de belle facture,ecrivanalyse,analisante,Annick Lebédyk,XV,achetée par l’analisante,La risée du plombier miraculeux,True
@@ -353,7 +353,7 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 508,2011-04-28,Le troc de la coïncidence,,,,,,Des figures féminines de moi,True
 509,2011-06-07,Se modèle de qui conçoit,pause,pauseur,Marc S.,,autorisée à la vente,Séances de p(au)se de 2011,True
 510,2011-06-09,Quand même le sourire bouge,pause,pauseuse,A. H.,,détruite par la pauseuse,Séances de p(au)se de 2011,True
-511,2011-06-10,Inconsidérable je ne sait pas,pause,pauseuse,Charlotte Comte,,achetée par la pauseuse,Séances de p(au)se de 2011,False
+511,2011-06-10,Inconsidérable je ne sait pas,pause,pauseuse,Charlotte Comte,,achetée par la pauseuse,Séances de p(au)se de 2011,True
 512,2011-05-05,La première des fois hors-série,,,,,,Des figures féminines de moi,True
 513,2011-06-14,Un binôme de tout seul,pause,pauseuse,anonyme,,,Séances de p(au)se de 2011,True
 514,2011-05-18,La partie immigrée de l’iceberg,ecrivanalyse,analisante,Annick Lebédyk,XVI,achetée par l’analisante,La risée du plombier miraculeux,True
@@ -361,8 +361,8 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 516,2011-06-17,Pousser le meilleur à être,pause,pauseur,anonyme,,achetée par Jean Yves,Séances de p(au)se de 2011,True
 517,2011-06-06,Ne pas montrer de porte,ecrivanalyse,analisante,anonyme,XXXVII,achetée par l’analisante,Des figures féminines de moi,True
 518,2011-06-20,Les à-côtés de la fonction,pause,pauseuse,anonyme,,achetée par la pauseuse,Séances de p(au)se de 2011,True
-519,2011-06-01,Ordonnance à se faire délivrer,ecrivanalyse,analisante,Annick Lebédyk,XVII,achetée par l’analisante,La risée du plombier miraculeux,False
-520,2011-06-08,Être mieux que presque rien,ecrivanalyse,analisante,Annick Lebédyk,XVIII,achetée par l’analisante,La risée du plombier miraculeux,False
+519,2011-06-01,Ordonnance à se faire délivrer,ecrivanalyse,analisante,Annick Lebédyk,XVII,achetée par l’analisante,La risée du plombier miraculeux,True
+520,2011-06-08,Être mieux que presque rien,ecrivanalyse,analisante,Annick Lebédyk,XVIII,achetée par l’analisante,La risée du plombier miraculeux,True
 521,2011-06-21,Faire comme un fait exprès,pause,pauseuse,anonyme,,,Séances de p(au)se de 2011,True
 522,2011-06-15,À la mesure du silence,ecrivanalyse,analisante,Annick Lebédyk,XIX,achetée par l’analisante,La risée du plombier miraculeux,True
 523,2011-06-22,Trop de riens de grave,pause,pauseur,anonyme,,,Séances de p(au)se de 2011,True
@@ -394,7 +394,7 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 550,2011-07-27,Sa place que l’on traverse,pause,pauseur,Alexandre Israël,,achetée par un tiers,Séances de p(au)se de 2011,True
 551,2011-07-29,Entre soi et sa mère,ecrivanalyse,analisante,Annick Lebédyk,XXIII,achetée par l’analisante,La risée du plombier miraculeux,True
 552,2011-08-01,La langue d’une bonne idée,pause,pauseuse,anonyme,,,Séances de p(au)se de 2011,True
-553,2011-07-28,Pour n’être pas si simple,pause,pauseuse,Isabel Jeannin,,achetée par la pauseuse,Séances de p(au)se de 2011,False
+553,2011-07-28,Pour n’être pas si simple,pause,pauseuse,Isabel Jeannin,,achetée par la pauseuse,Séances de p(au)se de 2011,True
 554,2011-08-02,Être le bâton de finesse,pause,pauseuse,L. L. B.,,achetée par la pauseuse,Séances de p(au)se de 2011,True
 555,2011-08-04,Un cadre pas trop professionnel,pause,pauseur,Pierre-Antoine Marraud,,achetée par le pauseur,Séances de p(au)se de 2011,True
 556,2011-08-05,La pêche à la vie,pause,pauseur,anonyme,,achetée par un tiers,Séances de p(au)se de 2011,True
@@ -455,15 +455,15 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 611,2011-09-12,Être cossue de fil noir,ecrivanalyse,analisante,Annick Lebédyk,XXIV,achetée par l’analisante,La risée du plombier miraculeux,True
 612,2011-09-13,Sortie de la tête vide,pause,pauseur,Victor Hüllenhagen,,achetée par le pauseur,Séances de p(au)se de 2011,True
 613,2011-09-14,Pas à pas de famille,pause,pauseuse,Cotillard,,achetée par la pauseuse,Séances de p(au)se de 2011,True
-614,2011-09-19,Un peu tout le temps,pause,pauseuse,Coline Faucon,,achetée par Denise Ravier,Séances de p(au)se de 2011,False
-615,2011-09-15,Voir ce qu’on a envie,pause,pauseur,anonyme,,achetée par la pauseur,Séances de p(au)se de 2011,False
+614,2011-09-19,Un peu tout le temps,pause,pauseuse,Coline Faucon,,achetée par Denise Ravier,Séances de p(au)se de 2011,True
+615,2011-09-15,Voir ce qu’on a envie,pause,pauseur,anonyme,,achetée par la pauseur,Séances de p(au)se de 2011,True
 616,2011-09-16,Avoir dû faire quelque chose,pause,pauseuse,Amy Ennis,,achetée par la pauseuse,Séances de p(au)se de 2011,True
 617,2011-09-20,Ce qui marche avec soi,pause,pauseuse,faux-nom,,achetée par Denise Ravier,Séances de p(au)se de 2011,True
 618,2011-09-21,À bien ce mâle mener,ecrivanalyse,analisante,Annick Lebédyk,XXV,achetée par l’analisante,La risée du plombier miraculeux,True
 619,2011-09-23,Être bien fait pour soi,pause,pauseuse,anonyme,,autorisée à la vente,Séances de p(au)se de 2011,True
 620,2011-09-22,Protestant en étude de l’être,pause,pauseuse,anonyme,,achetée par la pauseuse,Séances de p(au)se de 2011,True
-621,2011-09-26,Pour se voir qui arrive,pause,pauseur,Clément Guio,,achetée par le pauseur,Séances de p(au)se de 2011,False
-622,2011-09-27,Au seuil de la saturation,pause,pauseur,anonyme,,achetée par le pauseur,Séances de p(au)se de 2011,False
+621,2011-09-26,Pour se voir qui arrive,pause,pauseur,Clément Guio,,achetée par le pauseur,Séances de p(au)se de 2011,True
+622,2011-09-27,Au seuil de la saturation,pause,pauseur,anonyme,,achetée par le pauseur,Séances de p(au)se de 2011,True
 623,2011-09-28,L’abri du regard de l’autre,pause,pauseuse,Fedora Vannerum,,achetée par un tiers,Séances de p(au)se de 2011,True
 624,2011-09-29,Au large de la solitude,pause,pauseur,Bastien Dandrea,,achetée par le pauseur,Séances de p(au)se de 2011,True
 625,2011-09-30,Où se trouver assez palpable,pause,pauseuse,Béatrice,,achetée par un tiers,Séances de p(au)se de 2011,True
@@ -508,7 +508,7 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 664,2011-12-08,L’autre regard autour de soi,pause,pauseuse,anonyme,,détruite pour la pauseuse,Séances de p(au)se de 2011,True
 665,2011-11-11,La reconnaissance de la victime,ecrivanalyse,analisante,anonyme,IV,achetée par l’analisante,Une plante verte à caresser,True
 666,2011-12-09,Se faire bien au monde,pause,pauseuse,Valérie Kilcer,,achetée par la pauseuse,Séances de p(au)se de 2011,True
-667,2011-12-13,Dire ce qui est possible,pause,pauseuse,Joseph B.,,achetée par Denise Ravier,Séances de p(au)se de 2011,False
+667,2011-12-13,Dire ce qui est possible,pause,pauseuse,Joseph B.,,achetée par Denise Ravier,Séances de p(au)se de 2011,True
 668,2011-12-15,Avoir à faire avec l’être,pause,pauseuse,Florence Wiss,,achetée par la pauseuse,Séances de p(au)se de 2011,True
 669,2011-12-20,Pour ne pas s’arrêter là,pause,pauseur,anonyme,,achetée par le pauseur,Séances de p(au)se de 2011,True
 670,2011-11-10,Ce qui se joue là,ecrivanalyse,analisante,anonyme,I,achetée par l’analisante,Le contenu de la forme,True
@@ -1446,7 +1446,7 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 1609,2017-01-24,Par peur de se perdre,ecrivanalyse,analisante,anonyme,X,achetée par l’analisante,Ce qui se mérite bien,True
 1610,2017-02-03,Avoir à voir avec voir,pause,pauseur,Maxime,,autorisée à la vente,Séances de p(au)se de 2017,True
 1611,2017-02-09,Avec l’art je mens plus,pause,pauseur,Arthur Buigues,,achetée par le pauseur,Séances de p(au)se de 2017,True
-1612,2017-01-31,À la nue du sang,ecrivanalyse,analisante,Annick Lebédyk,I,achetée par l’analisante,Feu feu le feu d’artifice,False
+1612,2017-01-31,À la nue du sang,ecrivanalyse,analisante,Annick Lebédyk,I,achetée par l’analisante,Feu feu le feu d’artifice,True
 1613,2017-02-10,Si ça avait été soi,pause,pauseur,Louïs Rault Watanabe,,achetée par le pauseur,Séances de p(au)se de 2017,True
 1614,2017-02-02,Il y a du taf,ecrivanalyse,analisante,anonyme,I,achetée par l’analisante,Autre voix que l’autre voie,True
 1615,2017-02-28,À bord de la rue,pause,pauseur,Victor,,achetée par le pauseur,Séances de p(au)se de 2017,True
@@ -1869,7 +1869,7 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 2043,2019-07-03,À la fin du lu,ecrivanalyse,analisant,anonyme,V,achetée par l’analisant,Ce qui va chez soi,True
 2044,2019-10-10,Ça se dit en corps,pause,pauseuse,N. M.,,achetée par la p(au)seuse,Séances de p(au)se de 2019,True
 2045,2019-07-05,Au prix de ses clés,ecrivanalyse,analisante,anonyme,VI,achetée par l’analisante,En vie d’en être fière,True
-2046,2019-07-12,En folie à son goût,ecrivanalyse,analisante,Annick Lebédyk,II,achetée par l’analisante,Ce qui ne se rate,False
+2046,2019-07-12,En folie à son goût,ecrivanalyse,analisante,Annick Lebédyk,II,achetée par l’analisante,Ce qui ne se rate,True
 2047,2019-10-11,Ce qui a été écrit,pause,pauseuse,anonyme,,autorisée à la vente,Séances de p(au)se de 2019,True
 2048,2019-07-08,Ça ne se fait suer,ecrivanalyse,analisante,anonyme,XVII,achetée par l’analisante,En pas pas en couple,True
 2049,2019-10-16,Sous le X le X,pause,pauseuse,anonyme,,achetée par la p(au)seuse,Séances de p(au)se de 2019,True
@@ -2324,7 +2324,7 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 2515,2022-01-11,Ne se laisser de rater,ecrivanalyse,analisant,anonyme,XIII,achetée par l’analisant,À se voir de prêt,True
 2516,2022-01-14,Être ce qui se pousse,pause,pauseuse,anonyme,,suspendue pour la p(au)seuse,Séances de p(au)se de 2021,True
 2517,2022-01-13,Là où l’on serait là,ecrivanalyse,analisante,anonyme,XXII,achetée par l’analisante,En une nouvelle vraie couche,True
-2519,2022-01-18,Ce que l’on a pu,ecrivanalyse,analisante,Annick Lebédyk,XXI,achetée par l’analisante,Ce qui se peu coûte,False
+2519,2022-01-18,Ce que l’on a pu,ecrivanalyse,analisante,Annick Lebédyk,XXI,achetée par l’analisante,Ce qui se peu coûte,True
 2520,2022-01-19,Là où l’on s’y sent,ecrivanalyse,analisante,anonyme,XX,achetée par l’analisante,Ne se le lise s’enlise,True
 2522,2022-01-20,Le chat à la gorge,ecrivanalyse,analisante,anonyme,XXII,achetée par l’analisante,En accès à sa vie,True
 2523,2022-01-25,Mieux vaut ce qu’il faut,ecrivanalyse,analisante,Annick Lebédyk,XXII,achetée par l’analisante,Ce qui se peu coûte,True
@@ -2336,7 +2336,7 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 2529,2022-02-09,Vue de son bon côté,ecrivanalyse,analisante,anonyme,XXI,achetée par l’analisante,Ne se le lise s’enlise,True
 2530,2022-02-10,Ce qui ne se veut,ecrivanalyse,analisante,anonyme,XXIV,achetée par l’analisante,En une nouvelle vraie couche,True
 2531,2024-05-30,Ce que ça va changer,pause,pauseuse,anonyme,,achetée par la p(au)seuse,Séances de p(au)se de 2022,True
-2532,2022-02-15,Le prix du pas vu,ecrivanalyse,analisante,Annick Lebédyk,XXV,achetée par l’analisante,Ce qui se peu coûte,False
+2532,2022-02-15,Le prix du pas vu,ecrivanalyse,analisante,Annick Lebédyk,XXV,achetée par l’analisante,Ce qui se peu coûte,True
 2533,2022-02-23,Ce que l’on a su,pause,pauseuse,anonyme,,suspendue pour la p(au)seuse,Séances de p(au)se de 2022,True
 2534,2022-02-16,Pair de mère en fils,ecrivanalyse,analisant,anonyme,XIV,achetée par l’analisant,À se voir de prêt,True
 2535,2022-02-17,Plus qu’on ne le pense,ecrivanalyse,analisante,anonyme,XXIV,achetée par l’analisante,En accès à sa vie,True
@@ -2448,7 +2448,7 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 2656,2022-11-02,Abus de qui a bu,ecrivanalyse,analisante,anonyme,XII,achetée par l’analisante,Qui entre dans sa vie,True
 2657,2022-11-04,Le bris de son cœur,ecrivanalyse,analisant,anonyme,VI,achetée par l’analisant,À la force du doute,True
 2658,2022-11-08,Ce qu’on a même vécu,ecrivanalyse,analisant,anonyme,XXII,achetée par l’analisant,À se voir de prêt,True
-2659,2022-11-09,Ça va au-delà de ça,ecrivanalyse,analisante,anonyme,XV,achetée par l’analisante,Ça se sort de soi,False
+2659,2022-11-09,Ça va au-delà de ça,ecrivanalyse,analisante,anonyme,XV,achetée par l’analisante,Ça se sort de soi,True
 2660,2022-11-03,L’à peine que ça vaut,ecrivanalyse,analisante,Annick Lebédyk,IV,achetée par l’analisante,Ne manquer de se dire,True
 2661,2022-11-15,En ce que l’on veut,ecrivanalyse,analisante,anonyme,XIII,achetée par l’analisante,Ce que l’on sait dit,True
 2662,2022-11-10,Tant de peu de mots,ecrivanalyse,analisante,Annick Lebédyk,V,achetée par l’analisante,Ne manquer de se dire,True
@@ -2534,7 +2534,7 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 2748,2023-05-05,Ce qui sert à tout,ecrivanalyse,analisante,Annick Lebédyk,II,achetée par l’analisante,Ce que l’on se fait,True
 2749,2023-05-09,À qui en est digne,ecrivanalyse,analisant,anonyme,IV,achetée par l’analisant,Être ce qui va venir,True
 2750,2023-05-10,Le rôle à se jouer,ecrivanalyse,analisant,anonyme,XIII,achetée par l’analisant,À la force du doute,True
-2752,2024-08-22,Ce qui se voit assez,pause,pauseur,anonime,,achetée offerte au p(au)seur,Séances de p(au)se de 2023,False
+2752,2024-08-22,Ce qui se voit assez,pause,pauseur,anonime,,achetée offerte au p(au)seur,Séances de p(au)se de 2023,True
 2753,2023-05-11,Sur la tête à mère,ecrivanalyse,analisante,Annick Lebédyk,III,achetée par l’analisante,Ce que l’on se fait,True
 2754,2023-05-12,Ce qui fait le pont,ecrivanalyse,analisante,anonyme,III,achetée par l’analisante,En quoi et avec qui,True
 2755,2023-05-16,Au si vite que ça,ecrivanalyse,analisante,anonyme,III,achetée par l’analisante,Et là où l’on s’est,True
@@ -2626,7 +2626,7 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 2854,2023-11-01,Ce qui est bel vu,ecrivanalyse,analisante,anonyme,XVIII,achetée par l’analisante,Ce que l’on aura fait,True
 2855,2023-11-02,En vie qu’on en ait,ecrivanalyse,analisante,anonyme,XV,achetée par l’analisante,Et là où l’on s’est,True
 2856,2023-10-26,Ce qui est pour plaire,ecrivanalyse,analisante,anonyme,XXIV,achetée par l’analisante,En quoi et avec qui,True
-2857,2023-10-31,Pour qui on y est,ecrivanalyse,analisante,Annick Lebédyk,I,achetée par l’analisante,Aimer que ça se reproduise,False
+2857,2023-10-31,Pour qui on y est,ecrivanalyse,analisante,Annick Lebédyk,I,achetée par l’analisante,Aimer que ça se reproduise,True
 2859,2023-11-08,À pic sur la soupe,ecrivanalyse,analisante,anonyme,XXV,achetée par l’analisante,En quoi et avec qui,True
 2860,2023-11-16,Se dire où on est,ecrivanalyse,analisante,anonyme,XVI,achetée par l’analisante,Et là où l’on s’est,True
 2861,2023-11-07,Ce qui naît plus fort,ecrivanalyse,analisante,Annick Lebédyk,II,achetée par l’analisante,Aimer que ça se reproduise,True
@@ -3113,7 +3113,7 @@ id,date,title,mode,participant_role,participant_name,quintesse_num,status,collec
 3443,2026-04-18,À ça va se savoir,ecrivanalyse,analisant,anonyme,XXV,achetée par l’analisant,À bon bout de soi,True
 3445,2026-05-02,Le fruit pour le corps,pause,pauseuse,anonyme,,autorisée à la vente,Séances de p(au)se de 2026,True
 3446,2026-05-09,À mi amusé mi ému,pause,pauseuse,Roxane Ruvel,,achetée par la p(au)seuse,Séances de p(au)se de 2026,True
-3447,2026-04-25,À sa place du tri,ecrivanalyse,analisante,anonyme,IX,achetée par l’analisante,Là où est la joie,False
+3447,2026-04-25,À sa place du tri,ecrivanalyse,analisante,anonyme,IX,achetée par l’analisante,Là où est la joie,True
 3448,2026-04-21,À ne pas se noyer,ecrivanalyse,analisant,anonyme,XVI,achetée par l’analisant,À jouir de la vie,True
 3449,2026-04-09,À jà fit le tiers,ecrivanalyse,analisante,Annick Lebédyk,I,achetée par l’analisante,À ça s’y voit bien,True
 3451,2026-04-16,À se dire à l’envi,ecrivanalyse,analisante,anonyme,XV,troquée avec l’analisante,À ce qui s’en sort,True

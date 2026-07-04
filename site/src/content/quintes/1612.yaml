@@ -7,7 +7,7 @@ lines:
   - "s’attendre à régler seule l’hémorragie"
   - "– heureuse de s’estimer encore humaine"
   - "– à la prochaine circonstance hors-concours."
-is_5x5: false
+is_5x5: true
 mode: "ecrivanalyse"
 participant_role: "analisante"
 participant_name: "Annick Lebédyk"

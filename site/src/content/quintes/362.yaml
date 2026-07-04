@@ -7,7 +7,7 @@ lines:
   - "les veillées du pater parti"
   - "- fatum intermédiaire chasseur des fixettes ! -"
   - "manquera de ne pas échapper."
-is_5x5: false
+is_5x5: true
 mode: ""
 participant_role: ""
 participant_name: ""
