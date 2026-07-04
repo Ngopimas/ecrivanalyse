@@ -86,12 +86,13 @@ punctuation, ink drying). Rules: animate transform/opacity/clip-path only; custo
 exits are designed, not just entrances; zero autonomous motion once the writing ends.
 Honor `prefers-reduced-motion` with a complete static composition.
 
-## Content model & storage (Astro + Keystatic)
+## Content model & storage (Astro)
 Store **one Markdown file per quinte** (`src/content/quintes/[id].md`): the five lines in the
 body; frontmatter = `title, description, lines, mode, participant_role, participant_name,
 quintesse_num, status, collection, recueil, date, author, is_5x5`. `status` holds the
 **full original phrase** ("achetée par l'analisante", "suspendue pour la p(au)seuse"),
-free text — not an enum. Keystatic edits these natively (Git-based, no DB). Astro loads
+free text — not an enum. The YAML files are edited directly (no CMS; Keystatic was
+removed 2026-07-04). Astro loads
 them via a glob collection. A second collection `src/content/textes/` holds the
 non-quinte œuvre (`text` = paragraphs \n\n, breaks \n, light <i>/<b>). Both regenerate
 from the backup via `enrich.py` + `site/scripts/gen-content.py`; quintes may carry
@@ -100,6 +101,7 @@ from the backup via `enrich.py` + `site/scripts/gen-content.py`; quintes may car
 ## Decisions Log
 | Date | Decision | Rationale |
 |------|----------|-----------|
+| 2026-07-04 | **Hébergement GitHub Pages** (repo public Ngopimas/ecrivanalyse, build via Actions : astro + pagefind, deploy-pages). **Keystatic retiré** (config, React et contournements Vite compris) : les YAML s'éditent à la main ou se régénèrent par gen-content.py ; pour Ivan, flux « e-mail + lien Publier » à construire sur le modèle des réponses. Restant : les deux endpoints réponses (functions/api) sont du code Cloudflare Pages Functions, à héberger en Worker sur un sous-domaine avant mise en ligne publique ; le domaine (ou nouveau.ecrivanalyse.net) reste à pointer. | Choix de Romain (GitHub Pages plutôt que Cloudflare Pages, qui plafonne à 20 000 fichiers par déploiement, déjà 19 173). Keystatic ne servait qu'en local et dupliquait le schéma une troisième fois. |
 | 2026-07-04 | **Taxonomie du corpus complet** (3 157 articles) : 3 047 quintes (dont 1 hybride avec prose, 154 ; 39 « fantômes » de 2010 sans texte en ligne, quintesse achetée, recueil « Faire une quinte de tout » ; 1024 en six lignes, produit de séance quand même) + 97 textes (nouvelle collection : « La petite fille à côté », « La danseuse de vélo », « Fluides ou Le singulier pluriel »…) + 13 pages de plomberie SPIP écartées (couvertes par /projet). 42 quintes récupérées en corrigeant le compteur de mots d'enrich.py (tirets d'incise comptés comme mots, œ hors de À-ÿ, sigles « O.R.L. », `<br style>` non splitté, tableau-photo de 190). Un texte n'est jamais présenté comme une quinte, et inversement. | Sur le site d'origine, une partie de l'œuvre n'était pas des quintes (prose, feuilletons, pièces dialoguées) ; l'extraction les écrasait au format quinte ou les perdait. is_5x5 reste le drapeau strict ; le dispositif est « caractéristique, pas une cage ». |
 | 2026-07-04 | Dive sharpness: the GPU zooms a raster made at scale 1, so the wall went pixelated as it grew. Now the **real title** (full-resolution raster, scaled down then animated to identity — only ever minified) flies from the wall title's place to its exact landing seat; the wall fades earlier (gone ~72 %) and the zoom tops at 6×; the stage reveals by opacity alone so the flying title lands seamlessly. Rhythm: line-break breath 0.12 → 0.22 s (a line break ≥ a comma); first-visit dive at 2.15 s. | Raster big, animate small→identity — downscaling stays sharp at every frame. The blurred mass receding behind one crisp voice is also the right metaphor. |
 | 2026-07-04 | **Spectral remplace Fraunces** partout (site, cartes OG, favicon é retracé) — poids 300 (grande quinte), 400 (lecture), 500 ; italiques vraies 300/400. Les axes WONK/SOFT disparaissent avec Fraunces. `/specimen` (comparatif Fraunces / Spectral / Cormorant / EB Garamond sur texte réel) a servi la décision puis a été supprimé. | Choix de Romain sur spécimen : plus littéraire et plus calme que Fraunces (qui datait les sites 2021-2025), Production Type **Paris** — la provenance française a du sens pour ce corpus. Libre (SIL OFL). Cormorant éliminée (trop fine au corps du mur), EB Garamond trop sage. |

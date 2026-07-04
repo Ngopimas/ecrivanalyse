@@ -1,9 +1,10 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-// One YAML file per quinte (src/content/quintes/<slug>.yaml), managed by Keystatic.
-// Enum-like fields are plain strings ('' when empty) so any file validates and
-// the Keystatic form never chokes on null. Route by entry id (the filename).
+// One YAML file per quinte (src/content/quintes/<id>.yaml), regenerated from
+// the backup by scripts/gen-content.py and edited directly when needed.
+// Enum-like fields are plain strings ('' when empty) so any file validates.
+// Route by entry id (the filename).
 const quintes = defineCollection({
   loader: glob({ pattern: '**/*.yaml', base: './src/content/quintes' }),
   schema: z.object({
