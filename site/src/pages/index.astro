@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { frDate, participant, quintesseObject, u, BASE } from '../lib/format';
+import { diveData, u, BASE } from '../lib/format';
 
 // « Le mur, puis l'encre » (DESIGN.md): the whole corpus inks in as a wall of
 // titles, the camera dives into one, and that quinte writes itself.
@@ -25,18 +25,10 @@ const newest = pool[pool.length - 1];
 const step = Math.max(1, Math.floor(pool.length / 90));
 const picked = pool.filter((_, i) => i % step === 0).slice(0, 90);
 if (newest && !picked.includes(newest)) picked.push(newest);
-const sample = picked
-  .map((q) => ({
-    id: q.id,
-    t: q.data.title,
-    desc: q.data.soustitre || '',
-    l: q.data.lines,
-    who: participant(q.data),
-    obj: quintesseObject(q.data),
-    d: frDate(q.data.date),
-    coll: q.data.collection || '',
-  }));
-const sampleIds = new Set(sample.map((s) => s.id));
+const sample = picked.map((q) => diveData(q.id, q.data));
+// every pool member is divable: its wall title carries data-id and its full
+// data lives at /data/quinte/<id>.json, fetched during the encounter beat
+const poolIds = new Set(pool.map((q) => q.id));
 
 // The wall: every title, deterministically shuffled (stable builds). Titles are
 // grouped into contiguous bands so the ink-in animates 16 nodes, not 3 000.
@@ -50,7 +42,7 @@ function mulberry32(seed: number) {
 }
 const rnd = mulberry32(2006);
 const wall = all
-  .map((q) => ({ id: q.id, t: q.data.title, s: sampleIds.has(q.id) }))
+  .map((q) => ({ id: q.id, t: q.data.title, s: poolIds.has(q.id) }))
   .map((v) => ({ v, k: rnd() }))
   .sort((a, b) => a.k - b.k)
   .map(({ v }) => v);
@@ -146,6 +138,27 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
       if (NEWEST) localStorage.setItem('ea-latest', String(NEWEST));
     } catch {}
 
+    // quintes already met on this landing (capped list): the dive prefers
+    // titles the visitor has not read yet
+    let seenIds = new Set();
+    try { seenIds = new Set(JSON.parse(localStorage.getItem('ea-seen') || '[]')); } catch {}
+    function markSeen(id) {
+      if (!id) return;
+      seenIds.add(String(id));
+      try { localStorage.setItem('ea-seen', JSON.stringify([...seenIds].slice(-400))); } catch {}
+    }
+
+    const base = scene.dataset.base || '';
+    // the inlined sample answers instantly; any other divable title fetches
+    // its own small JSON (generated at build) during the encounter beat
+    function getItem(id) {
+      if (byId[id]) return Promise.resolve(byId[id]);
+      return fetch(base + '/data/quinte/' + id + '.json').then((r) => {
+        if (!r.ok) throw new Error(String(r.status));
+        return r.json();
+      });
+    }
+
     const S = { state: 'boot', current: null, last: null, timers: [], anims: [], wallEnd: '' };
     const later = (fn, ms) => { const id = setTimeout(fn, ms); S.timers.push(id); return id; };
     const anim = (el, kf, opts) => { const a = el.animate(kf, opts); S.anims.push(a); return a; };
@@ -240,8 +253,8 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
 
     function randomSample() {
       let q, guard = 20;
-      do { q = sample[Math.floor(Math.random() * sample.length)]; } while (q === S.last && sample.length > 1 && guard--);
-      S.last = q;
+      do { q = sample[Math.floor(Math.random() * sample.length)]; } while (String(q.id) === S.last && sample.length > 1 && guard--);
+      S.last = String(q.id);
       return q;
     }
 
@@ -251,7 +264,7 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
       if (target0 && byId[target0]) {
         const q = byId[target0];
         target0 = 0;
-        S.last = q;
+        S.last = String(q.id);
         return q;
       }
       return randomSample();
@@ -269,15 +282,11 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
         const item = byId[target0];
         target0 = 0;
         if (item) {
-          S.last = item;
-          if (el) {
-            // only fly from the wall title if it is actually on screen;
-            // otherwise land on the newest quinte without the flight
-            const sr = scene.getBoundingClientRect();
-            const r = el.getBoundingClientRect();
-            if (r.width > 0 && r.top > sr.top + 50 && r.bottom < sr.bottom - 70
-              && r.left > sr.left + 24 && r.right < sr.right - 24) return { el, item };
+          S.last = String(item.id);
+          if (el && onScreen(el.getBoundingClientRect(), scene.getBoundingClientRect())) {
+            return { el, item };
           }
+          // the newest quinte's title is offscreen: land on it without the flight
           return { el: null, item };
         }
       }
@@ -285,21 +294,20 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
       if (!els.length) return { el: null, item: randomSample() };
       const sr = scene.getBoundingClientRect();
       const cx = sr.left + sr.width / 2, cy = sr.top + sr.height / 2;
-      let pool = els.filter((el) => {
-        const r = el.getBoundingClientRect();
-        return r.width > 0 && r.top > sr.top + 50 && r.bottom < sr.bottom - 70
-          && r.left > sr.left + 24 && r.right < sr.right - 24;
-      });
+      let pool = els.filter((el) => onScreen(el.getBoundingClientRect(), sr));
       if (!pool.length) {
         pool = els
           .map((el) => { const r = el.getBoundingClientRect(); return { el, d: Math.hypot(r.left + r.width / 2 - cx, r.top + r.height / 2 - cy) }; })
           .sort((a, b) => a.d - b.d).slice(0, 10).map((x) => x.el);
       }
-      let el, item, guard = 24;
-      do { el = pool[Math.floor(Math.random() * pool.length)]; item = byId[el.dataset.id]; }
-      while ((!item || item === S.last) && guard--);
-      S.last = item;
-      return { el, item: item || sample[0] };
+      // prefer titles this visitor has not read yet
+      const fresh = pool.filter((el) => !seenIds.has(el.dataset.id));
+      const from = fresh.length ? fresh : pool;
+      let el, guard = 24;
+      do { el = from[Math.floor(Math.random() * from.length)]; }
+      while (el.dataset.id === S.last && from.length > 1 && guard--);
+      S.last = el.dataset.id;
+      return { el };
     }
 
     // The encounter has its own beat before the camera moves: the chosen title
@@ -320,14 +328,30 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
       S.prep = null;
       unlit();
       const pick = pickTarget();
-      S.current = pick.item;
-      if (pick.el) {
-        pick.el.classList.add('lit');
-        spotOn(pick.el);
-        later(() => descend(pick, fast), SPOT_MS);
-      } else {
+      if (!pick.el) {
+        S.current = pick.item || randomSample();
         descend(pick, fast);
+        return;
       }
+      const id = pick.item ? String(pick.item.id) : pick.el.dataset.id;
+      pick.el.classList.add('lit');
+      spotOn(pick.el);
+      // the spot beat and the (usually cached-fast) fetch share the wait;
+      // a cancel clears the timer, so a stale dive never lands
+      const beat = new Promise((res) => later(res, SPOT_MS));
+      Promise.all([pick.item ? Promise.resolve(pick.item) : getItem(id), beat])
+        .then(([item]) => {
+          if (S.state !== 'dive') return;
+          S.current = item;
+          descend(pick, fast);
+        })
+        .catch(() => {
+          if (S.state !== 'dive') return;
+          spotOff();
+          unlit();
+          S.current = randomSample();
+          descend({ el: null }, fast);
+        });
     }
 
     function descend(pick, fast) {
@@ -419,7 +443,44 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
     function onWritten() {
       S.state = 'written';
       try { localStorage.setItem('ea-visited', '1'); } catch {}
+      markSeen(S.current && S.current.id);
+      // a new wall for the next rencontre - reshuffled now, while it hides
+      // behind the writing, so nothing visibly moves
+      later(reshuffleWall, 300);
       armStill();
+    }
+
+    // swap an offscreen title with a random visible one (the wall is clipped
+    // to one viewport; the swap runs while it is invisible)
+    function seatVisible(el) {
+      if (!el) return;
+      const sr = scene.getBoundingClientRect();
+      if (onScreen(el.getBoundingClientRect(), sr)) return;
+      const cands = [...wallEl.querySelectorAll('a.wt')]
+        .filter((c) => c !== el && onScreen(c.getBoundingClientRect(), sr));
+      const best = cands[Math.floor(Math.random() * cands.length)];
+      if (!best) return;
+      const ph = document.createElement('span');
+      best.replaceWith(ph);
+      el.replaceWith(best);
+      ph.replaceWith(el);
+    }
+
+    // Fisher-Yates over the whole galley, then re-seat the two promises the
+    // wall keeps: the newest quinte and the one that was just read.
+    function reshuffleWall() {
+      if (reduced || S.state === 'dive') return;
+      const bandEls = [...wallEl.querySelectorAll('.wg')];
+      if (!bandEls.length) return;
+      const anchors = bandEls.flatMap((b) => [...b.children]);
+      for (let i = anchors.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [anchors[i], anchors[j]] = [anchors[j], anchors[i]];
+      }
+      const per = Math.ceil(anchors.length / bandEls.length);
+      bandEls.forEach((b, bi) => b.append(...anchors.slice(bi * per, (bi + 1) * per)));
+      seatVisible(wallEl.querySelector('a[data-id="' + NEWEST + '"]'));
+      if (S.current) seatVisible(wallEl.querySelector('a[href$="/quinte/' + S.current.id + '"]'));
     }
 
     // Jump to the finished composition — the skip for every phase.
@@ -534,6 +595,8 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
         return;
       }
       seatTarget();
+      // the newest quinte is always findable on the wall, targeted or not
+      if (!target0) seatVisible(wallEl.querySelector('a[data-id="' + NEWEST + '"]'));
       S.state = 'wall';
       scene.dataset.state = 'wall';
       if (seen) scene.classList.add('fast');

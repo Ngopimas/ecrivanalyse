@@ -69,6 +69,24 @@ export function quintesseObject(q: Q): string {
 }
 
 /**
+ * The payload the landing's writing stage needs for one quinte - shared by
+ * the inlined sample (index.astro) and the per-quinte JSON endpoints
+ * (data/quinte/[id].json.ts) the rencontre fetches during the spot beat.
+ */
+export function diveData(id: string, d: any) {
+  return {
+    id,
+    t: d.title,
+    desc: d.soustitre || '',
+    l: d.lines,
+    who: participant(d),
+    obj: quintesseObject(d),
+    d: frDate(d.date),
+    coll: d.collection || '',
+  };
+}
+
+/**
  * Light-markup body text (gen-content.py: paragraphs = \n\n, line breaks = \n,
  * italics/bold as literal <i>/<b>) -> safe HTML paragraphs. Everything is
  * escaped, then only the two allowed tags are re-opened.

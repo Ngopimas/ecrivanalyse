@@ -48,7 +48,11 @@ The 5/5/5 dispositif is the quinte's signature, but the design must not cage it:
   sign, ink drying — then stillness (the chrome fades until the visitor moves).
   "rencontre au hasard" pulls back to the wall, marks a beat (the chosen title lights up
   in ocre and grows slightly while the mass recedes behind a translucent paper veil,
-  ~560 ms), then dives into it. Return visits get a shorter wall beat (localStorage);
+  ~560 ms), then dives into it. Every readable quinte is divable: ~90 are inlined, the
+  rest fetch a small per-quinte JSON during the beat; already-read quintes (localStorage
+  `ea-seen`) are avoided while unread ones remain. The wall reshuffles behind each
+  writing (invisible - opacity 0), so every return reveals different titles; the newest
+  quinte and the one just read are re-seated into view after each shuffle. Return visits get a shorter wall beat (localStorage);
   `prefers-reduced-motion` gets a full static composition. The most recent quinte is
   always in the dive sample, seated in the galley's first rows (the only zone visible
   on every viewport): the first visit, and every visit where a quinte was published
@@ -109,6 +113,7 @@ from the backup via `enrich.py` + `site/scripts/gen-content.py`; quintes may car
 ## Decisions Log
 | Date | Decision | Rationale |
 |------|----------|-----------|
+| 2026-07-04 | **La rencontre atteint tout le corpus** : chaque quinte lisible (2-8 lignes) a son JSON (`/data/quinte/<id>.json`) récupéré pendant le battement ; le mur se remélange derrière chaque écriture (invisible, opacité nulle) ; les quintes déjà lues (localStorage `ea-seen`, 400 max) sont évitées tant qu'il en reste d'autres ; après chaque mélange, la plus récente et celle qu'on vient de lire sont réassises dans la zone visible. | L'échantillon de ~90 quintes en ligne faisait vite tourner la rencontre en boucle ; un mur immuable montrait toujours les mêmes titres au point focal. |
 | 2026-07-04 | **Collections triées par vie** (entrée la plus récente d'abord, plage d'années affichée). **« Revenir en haut »** discret sur les pages longues (apparaît après ~1,5 écran, cercle mono en bas à droite). **Barre de navigation non fixée** - la chrome recède, le rail des années de l'archive garde le haut de l'écran ; à la place, un **pied de page discret** (documentaires + hasard) sur toutes les pages sauf la landing. Journal des décisions resserré. | Le tri par volume enterrait les séries vivantes sous les années de séances de 2010 ; le retour en haut couvre le besoin qu'une barre fixe aurait servi, sans coût vertical permanent. |
 | 2026-07-04 | **Pages documentaires** : `/ecrivanalyse` (la pratique en cinq chapitres par Perrine Tamerlis, articles 129-134) et `/editions` (intro ÉOK 14, livres Omar Kaczmar 123-125, côté Œuvres Komplètes 127 et 797 « Faire une quinte de tout »), extraites vers `src/data/legacy-pages.json`, liées depuis /projet ; les pages fantômes lient le recueil ; la 404 redirige leurs anciens ids. Le contact (118, 136) reste écarté. | 797 est la présentation du recueil que citent les 39 fantômes ; 129-134 est la présentation de la pratique écrite par Perrine Tamerlis pour le site d'origine, à côté de la voix éditoriale de /projet. |
 | 2026-07-04 | **Mémoire des anciennes adresses** : la 404 redirige les URL SPIP (`articleN` -> quinte ou texte, mêmes ids ; `rubriqueN` -> collection ; `auteurN` -> /projet ; `page=plan`, `page=recherche` avec sa requête ; `id_article=N` des forums). **Photographie de 190** restaurée (`image`/`image_caption` ; seule page illustrée du corpus, vignette seule rescapée). **Cartes OG des textes**. **Recherche** : filtre quintes/textes. **Archive** : le rail des années suit le défilement. | Vingt ans de liens et de résultats de recherche pointent vers les adresses SPIP ; une archive ne casse pas ses liens. La carte des rubriques vient des fils d'Ariane des articles, `rubriques.json` étant une autre taxonomie. |
