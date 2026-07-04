@@ -8,9 +8,9 @@ lines:
   - "News à ruminer comme moderne"
   - "Job d’une femme à abattre."
 is_5x5: true
-mode: ""
-participant_role: ""
-participant_name: ""
+mode: "pause"
+participant_role: "pauseuse"
+participant_name: "Mc²"
 quintesse_num: ""
 status: ""
 collection: "Séances de p(au)se de 2010"

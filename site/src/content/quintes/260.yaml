@@ -8,9 +8,9 @@ lines:
   - "la question, pose, celle qui"
   - "se fige bien d’ouvrir l’esprit."
 is_5x5: true
-mode: ""
-participant_role: ""
-participant_name: ""
+mode: "pause"
+participant_role: "pauseuse"
+participant_name: "anonyme"
 quintesse_num: ""
 status: ""
 collection: "Séances de p(au)se de 2010"

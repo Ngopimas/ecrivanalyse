@@ -48,16 +48,11 @@ export default config({
         }),
         participant_name: fields.text({ label: 'Nom du·de la participant·e' }),
         quintesse_num: fields.text({ label: 'Quintesse (n° romain)' }),
-        status: fields.select({
+        status: fields.text({
           label: 'Statut de la quintesse',
-          options: [
-            { label: '—', value: '' },
-            { label: 'Achetée', value: 'achetée' },
-            { label: 'Autorisée à la vente', value: 'autorisée à la vente' },
-            { label: 'Détruite', value: 'détruite' },
-            { label: 'Achevable', value: 'achevable' },
-          ],
-          defaultValue: '',
+          description:
+            'La phrase complète, telle qu\'écrite — « achetée par l\'analisante », ' +
+            '« suspendue pour la p(au)seuse », « autorisée à la vente »…',
         }),
         collection: fields.text({ label: 'Collection / série' }),
         recueil: fields.text({ label: 'Recueil (si publiée)' }),

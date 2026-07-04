@@ -8,9 +8,9 @@ lines:
   - "qui baille au nez, encore"
   - "chuchote - chochotte ? - cette chute : « Chut ! »"
 is_5x5: false
-mode: ""
-participant_role: ""
-participant_name: ""
+mode: "pause"
+participant_role: "pauseuse"
+participant_name: "Ana"
 quintesse_num: ""
 status: ""
 collection: "Séances de p(au)se de 2010"

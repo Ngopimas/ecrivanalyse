@@ -8,9 +8,9 @@ lines:
   - "se recueille par labile politique"
   - "où s’apeure son épure amassée."
 is_5x5: true
-mode: ""
-participant_role: ""
-participant_name: ""
+mode: "pause"
+participant_role: "pauseuse"
+participant_name: "Virginie G."
 quintesse_num: ""
 status: ""
 collection: "Séances de p(au)se de 2010"

@@ -8,9 +8,9 @@ lines:
   - "son impalpable crinière fournit l’instant"
   - "infade, débanal, d’attrait assez inutilisé."
 is_5x5: true
-mode: ""
-participant_role: ""
-participant_name: ""
+mode: "pause"
+participant_role: "pauseuse"
+participant_name: "Marine David"
 quintesse_num: ""
 status: ""
 collection: "Séances de p(au)se de 2010"

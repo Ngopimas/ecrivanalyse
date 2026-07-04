@@ -8,9 +8,9 @@ lines:
   - "happy elle file la Germaine :"
   - "vert en prose gegen blues-eyes !"
 is_5x5: true
-mode: ""
-participant_role: ""
-participant_name: ""
+mode: "pause"
+participant_role: "pauseuse"
+participant_name: "Rosa Förster"
 quintesse_num: ""
 status: ""
 collection: "Séances de p(au)se de 2010"

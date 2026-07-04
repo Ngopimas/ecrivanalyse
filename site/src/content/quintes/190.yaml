@@ -9,9 +9,9 @@ lines:
   - "dépendance de son propre objectif. Mise au Point par M. D."
   - "Poseur : I. J."
 is_5x5: false
-mode: ""
-participant_role: ""
-participant_name: ""
+mode: "pause"
+participant_role: "pauseur"
+participant_name: "M. D."
 quintesse_num: ""
 status: ""
 collection: "Séances de p(au)se de 2010"

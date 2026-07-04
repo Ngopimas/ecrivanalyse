@@ -8,9 +8,9 @@ lines:
   - "frange vérifiable, n’allèche même pas"
   - "les mœurs ; ni n’y prélude."
 is_5x5: true
-mode: ""
-participant_role: ""
-participant_name: ""
+mode: "pause"
+participant_role: "pauseur"
+participant_name: "anonyme"
 quintesse_num: ""
 status: ""
 collection: "Séances de p(au)se de 2010"

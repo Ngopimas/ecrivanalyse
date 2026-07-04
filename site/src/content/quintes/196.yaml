@@ -8,9 +8,9 @@ lines:
   - "qu’au théâtre, plus en vie,"
   - "de choisir un autre choix."
 is_5x5: true
-mode: ""
-participant_role: ""
-participant_name: ""
+mode: "pause"
+participant_role: "pauseuse"
+participant_name: "Cendrine Gourbin"
 quintesse_num: ""
 status: ""
 collection: "Séances de p(au)se de 2010"

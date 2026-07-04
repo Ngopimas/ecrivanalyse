@@ -8,9 +8,9 @@ lines:
   - "à l’abdication du sabordage, s’accompagne"
   - "d’abortives retraites masquées de trompe-la-mort-bleue."
 is_5x5: true
-mode: ""
-participant_role: ""
-participant_name: ""
+mode: "pause"
+participant_role: "pauseur"
+participant_name: "Antonio"
 quintesse_num: ""
 status: ""
 collection: "Séances de p(au)se de 2010"

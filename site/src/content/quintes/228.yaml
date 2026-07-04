@@ -8,9 +8,9 @@ lines:
   - "se retourne sur son investissement,"
   - "Faussette, la dépourvue du partage."
 is_5x5: true
-mode: ""
-participant_role: ""
-participant_name: ""
+mode: "pause"
+participant_role: "pauseuse"
+participant_name: "Laure Valentin"
 quintesse_num: ""
 status: ""
 collection: "Séances de p(au)se de 2010"

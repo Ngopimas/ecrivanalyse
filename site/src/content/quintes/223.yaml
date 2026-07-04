@@ -8,9 +8,9 @@ lines:
   - "sein s’urge, sans trêve s’entrave,"
   - "sans cible, s’enterre sans taire."
 is_5x5: true
-mode: ""
-participant_role: ""
-participant_name: ""
+mode: "pause"
+participant_role: "pauseuse"
+participant_name: "anonyme"
 quintesse_num: ""
 status: ""
 collection: "Séances de p(au)se de 2010"

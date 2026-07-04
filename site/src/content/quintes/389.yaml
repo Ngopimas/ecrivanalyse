@@ -8,9 +8,9 @@ lines:
   - "en ruine : le cruel fondé"
   - "dès l’amer exige acte d’émail."
 is_5x5: true
-mode: ""
-participant_role: ""
-participant_name: ""
+mode: "pause"
+participant_role: "pauseur"
+participant_name: "anonyme"
 quintesse_num: ""
 status: ""
 collection: "Séances de p(au)se de 2010"

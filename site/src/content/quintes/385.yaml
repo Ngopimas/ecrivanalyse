@@ -8,9 +8,9 @@ lines:
   - "Des voués hors la disparue."
   - "Du tarif pour une gratuité."
 is_5x5: true
-mode: ""
-participant_role: ""
-participant_name: ""
+mode: "pause"
+participant_role: "pauseur"
+participant_name: "anonyme"
 quintesse_num: ""
 status: ""
 collection: "Séances de p(au)se de 2010"

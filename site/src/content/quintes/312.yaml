@@ -8,9 +8,9 @@ lines:
   - "voit venir - prolifaire sans perpétuer :"
   - "l’humaine exhibition instruirait son hiatus ?"
 is_5x5: true
-mode: ""
-participant_role: ""
-participant_name: ""
+mode: "pause"
+participant_role: "pauseuse"
+participant_name: "anonyme"
 quintesse_num: ""
 status: ""
 collection: "Séances de p(au)se de 2010"

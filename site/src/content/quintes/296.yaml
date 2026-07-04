@@ -8,9 +8,9 @@ lines:
   - "s’affole, ventile : donne la clef"
   - "temporelle des coûts de pompe."
 is_5x5: true
-mode: ""
-participant_role: ""
-participant_name: ""
+mode: "pause"
+participant_role: "pauseuse"
+participant_name: "Océane Gauchet"
 quintesse_num: ""
 status: ""
 collection: "Séances de p(au)se de 2010"

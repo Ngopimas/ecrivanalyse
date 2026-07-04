@@ -4,6 +4,15 @@
 Reads raw article HTML + data/articles.json, writes data/quintesses.json (+ .csv):
   id, url, title, soustitre, lines[], is_5x5, mode, participant_role,
   participant_name, quintesse_num, status, collection, recueil, date, author.
+
+`status` is the full original phrase ("achetée par l'analisante",
+"suspendue pour la p(au)seuse", "autorisée à la vente"), not a normalized word.
+
+The corpus has two participant-block formats:
+  - 2011+ : a <small> block — "P(au)seuse : anonyme / Quintesse suspendue …"
+  - ~2010 : a P.-S. paragraph — "Pauseuse : Morgane Rossi (Quintesse autorisée à la vente)"
+and two quinte-line formats: <br>-separated text directly in a <div> (2011+),
+or plain newlines inside a <p> (~2010).
 """
 import glob, json, os, re, csv
 from bs4 import BeautifulSoup
@@ -17,8 +26,10 @@ ENC = "iso-8859-1"
 FR_MONTHS = {"janvier":1,"février":2,"fevrier":2,"mars":3,"avril":4,"mai":5,"juin":6,
              "juillet":7,"août":8,"aout":8,"septembre":9,"octobre":10,"novembre":11,
              "décembre":12,"decembre":12}
-STATUS = [("achetée par","achetée"),("autorisée à la vente","autorisée à la vente"),
-          ("détruite pour","détruite"),("détruite","détruite"),("achevable avec","achevable")]
+# longer alternatives first (Analisante before Analisant)
+ROLE_RE = re.compile(
+    r"(P\(au\)seuse|P\(au\)seur|Pauseuse|Pauseur|Analisante|Analisant)\s*:\s*(.*)$", re.I)
+QUINTESSE_RE = re.compile(r"Quintesse\s+(?:([IVXLC]+)\s+)?(.+)$")
 
 def wc(l): return len(re.findall(r"[0-9A-Za-zÀ-ÿ’'-]+", l))
 
@@ -29,6 +40,46 @@ def fr_iso(s):
     if not mo: return None
     try: return f"{int(m.group(3)):04d}-{mo:02d}-{int(m.group(1)):02d}"
     except ValueError: return None
+
+def detypo(s):
+    # get_text(" ") puts a space after elisions split across tags: "l’ analisante"
+    return re.sub(r"([’'])\s+", r"\1", s) if s else s
+
+def flat(el):
+    return re.sub(r"\s+", " ", el.get_text(" ", strip=True)).replace("\xa0", " ").strip()
+
+def split_lines(html, sep):
+    parts = [re.sub("<[^>]+>", "", x).replace("\xa0", " ").strip()
+             for x in re.split(sep, html)]
+    return [re.sub(r"\s+", " ", x) for x in parts if x.strip()]
+
+def br_lines(html): return split_lines(html, r"<br\s*/?>")
+def nl_lines(html): return split_lines(html, r"\n")
+
+def parse_meta(texts):
+    """Extract role/name/num/status/recueil from the metadata block texts."""
+    role = name = num = status = recueil = None
+    for t in texts:
+        mr = ROLE_RE.search(t)
+        if mr and role is None:
+            # normalize p(au)seur/euse -> pauseur/euse for the data key
+            role = mr.group(1).lower().replace("(au)", "au")
+            name = detypo(re.split(r"\s*\(?\s*Quintesse", mr.group(2))[0].strip(" (—–-,;:")) or None
+        mq = QUINTESSE_RE.search(t)
+        if mq and status is None:
+            if mq.group(1): num = mq.group(1)
+            p = mq.group(2)
+            rc = re.search(r"recueil\s*:\s*(.+)$", p, re.I)
+            if rc: recueil = re.sub(r"\s*Répondre.*$", "", rc.group(1)).strip() or None
+            p = re.split(r"\s*[—–|,;]?\s*recueil\b.*$", p, flags=re.I)[0]
+            p = re.sub(r"\s*Répondre.*$", "", p)
+            while p.endswith(")") and p.count(")") > p.count("("):
+                p = p[:-1].rstrip()
+            status = detypo(p.strip().rstrip(".").strip()) or None
+        if recueil is None:
+            rc = re.search(r"recueil\s*:\s*(.+)$", t, re.I)
+            if rc: recueil = re.sub(r"\s*Répondre.*$", "", rc.group(1)).strip() or None
+    return role, name, num, status, detypo(recueil)
 
 def parse(path):
     soup = BeautifulSoup(open(path,"rb").read().decode(ENC,"replace"),"lxml")
@@ -45,29 +96,32 @@ def parse(path):
     m = re.match(r"(.*?),\s*par\s*(.*?)\s*//\s*(.*)$", det_txt)
     if m: date, author, collection = m.group(1).strip(), m.group(2).strip(), m.group(3).strip()
     date_iso = fr_iso(date)
-    # metadata small block + lines
+    # metadata blocks + lines
     for s in col.find_all(["h1","h3"]): s.decompose()
     for s in col.find_all("p", class_="details"): s.decompose()
-    role=name=num=status=recueil=None; lines=None
+    meta_texts = []; lines = None; nl_fallback = None
     for d in col.find_all("div"):
-        if d.get("class"): continue
-        sm = d.find("small")
-        if sm:
-            t = re.sub(r"\s+"," ", sm.get_text(" ",strip=True))
-            mr = re.match(r"(Pauseuse|Pauseur|Analisante|Analisant)\s*:\s*(.*)", t, re.I)
-            if mr and role is None:
-                role = mr.group(1).lower(); rest = mr.group(2)
-                qm = re.search(r"Quintesse\s+([IVXLC]+)", rest)
-                if qm: num = qm.group(1)
-                name = re.split(r"\s*Quintesse", rest)[0].strip().strip(":").strip() or None
-                for needle,val in STATUS:
-                    if needle in rest.lower(): status = val; break
-                rc = re.search(r"recueil\s*:\s*(.+)$", rest, re.I)
-                if rc: recueil = re.sub(r"\s*Répondre.*$","",rc.group(1)).strip()
+        if d.get("class"): continue  # class="" is [], falsy: the P.-S. div stays in
+        for sm in d.find_all("small"):
+            meta_texts.append(flat(sm))
+        for p in d.find_all("p"):
+            t = flat(p)
+            if ROLE_RE.search(t):
+                meta_texts.append(t)  # P.-S.-era participant paragraph
+                continue
+            # ~2010 quintes: real line breaks are plain newlines inside a <p>.
+            # Long prose is also hard-wrapped with newlines, so gate hard:
+            # a handful of short lines, or it's not a quinte.
+            parts = nl_lines(p.decode_contents())
+            if 3 <= len(parts) <= 7 and all(len(x) <= 75 for x in parts) \
+               and (nl_fallback is None or len(parts) > len(nl_fallback)): nl_fallback = parts
         for t in d.find_all(["small","p"]): t.extract()
-        parts = [re.sub("<[^>]+>","",x).replace("\xa0"," ").strip() for x in re.split(r"<br\s*/?>", d.decode_contents())]
-        parts = [re.sub(r"\s+"," ",x) for x in parts if x.strip()]
+        parts = br_lines(d.decode_contents())  # 2011+: <br>-separated, direct in div
         if len(parts) >= 3 and (lines is None or len(parts) > len(lines)): lines = parts
+    role, name, num, status, recueil = parse_meta(meta_texts)
+    # <br>-based lines always win; the newline fallback needs a participant
+    # (real ~2010 quintes carry a P.-S. block — contact/prose pages don't)
+    if lines is None and role: lines = nl_fallback
     is_5x5 = bool(lines and len(lines)==5 and all(4<=wc(l)<=6 for l in lines))
     mode = "pause" if role in ("pauseur","pauseuse") else ("ecrivanalyse" if role in ("analisant","analisante") else None)
     aid = int(re.search(r"article(\d+)", path).group(1))
@@ -96,9 +150,10 @@ def main():
     from collections import Counter
     print(f"quintesses: {len(out)}")
     print("is_5x5:", sum(1 for r in out if r['is_5x5']))
+    print("with lines:", sum(1 for r in out if r['lines']))
     print("mode:", Counter(r['mode'] for r in out))
     print("role:", Counter(r['participant_role'] for r in out))
-    print("status:", Counter(r['status'] for r in out))
+    print("status (first word):", Counter((r['status'] or '').split(' ')[0] or None for r in out))
     print("with quintesse_num:", sum(1 for r in out if r['quintesse_num']))
     return out
 

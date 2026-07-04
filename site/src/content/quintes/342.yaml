@@ -8,9 +8,9 @@ lines:
   - "au terme de la fécondité,"
   - "céder son corps au symbole ?"
 is_5x5: true
-mode: ""
-participant_role: ""
-participant_name: ""
+mode: "pause"
+participant_role: "pauseuse"
+participant_name: "anonyme"
 quintesse_num: ""
 status: ""
 collection: "Séances de p(au)se de 2010"

@@ -8,9 +8,9 @@ lines:
   - "l’honnête remerciement d’une intrigante représentation :"
   - "on y pense le soir."
 is_5x5: false
-mode: ""
-participant_role: ""
-participant_name: ""
+mode: "pause"
+participant_role: "pauseuse"
+participant_name: "anonyme"
 quintesse_num: ""
 status: ""
 collection: "Séances de p(au)se de 2010"

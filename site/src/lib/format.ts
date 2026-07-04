@@ -27,8 +27,9 @@ export function slug(s?: string | null): string {
     .slice(0, 80) || 'sans-titre';
 }
 
+// Ivan's orthography (used on the original pages): P(au)seur / P(au)seuse
 const ROLE: Record<string, string> = {
-  pauseur: 'Pauseur', pauseuse: 'Pauseuse', analisant: 'Analisant', analisante: 'Analisante',
+  pauseur: 'P(au)seur', pauseuse: 'P(au)seuse', analisant: 'Analisant', analisante: 'Analisante',
 };
 export function roleLabel(role?: string | null): string {
   return (role && ROLE[role]) || '';
@@ -47,16 +48,13 @@ export function participant(q: Q): string {
   return q.participant_name ? `${r} : ${q.participant_name}` : r;
 }
 
-const ACQ: Record<string, string> = {
-  analisante: "l'analisante", analisant: "l'analisant",
-  pauseuse: 'la pauseuse', pauseur: 'le pauseur',
-};
-/** The quintesse OBJECT line: "Quintesse XIX · achetée par l'analisante". */
+/**
+ * The quintesse OBJECT line, in the original sentence form. `status` holds the
+ * full phrase as Ivan wrote it ("achetée par l'analisante", "suspendue pour la
+ * p(au)seuse", "autorisée à la vente"), so no reconstruction is needed:
+ * "Quintesse XIX achetée par l'analisante" / "Quintesse suspendue pour la p(au)seuse".
+ */
 export function quintesseObject(q: Q): string {
-  const parts: string[] = [];
-  if (q.quintesse_num) parts.push(`Quintesse ${q.quintesse_num}`);
-  const acquirer = ACQ[q.participant_role || ''] || 'le·la participant·e';
-  if (q.status === 'achetée') parts.push(`achetée par ${acquirer}`);
-  else if (q.status) parts.push(q.status);
-  return parts.join(' · ');
+  if (!q.quintesse_num && !q.status) return '';
+  return ['Quintesse', q.quintesse_num, q.status].filter(Boolean).join(' ');
 }
