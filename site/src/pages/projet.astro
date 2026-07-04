@@ -206,7 +206,7 @@ import { u } from '../lib/format';
     p { font-size: 16px; line-height: 1.7; margin: 0 0 14px; max-width: 64ch; }
     p em, section em, figcaption em { font-style: italic; color: var(--color-ocre); }
     blockquote { font-family: var(--font-serif); font-style: italic; font-size: clamp(18px, 2.6vw, 22px);
-      line-height: 1.6; margin: 0 0 20px; padding-left: 20px; border-left: 2px solid var(--color-ocre); max-width: 54ch; }
+      line-height: 1.6; margin: 24px 0 12px; padding-left: 20px; border-left: 2px solid var(--color-ocre); max-width: 54ch; }
     blockquote em { font-style: normal; color: var(--color-ocre); }
 
     /* uniform image treatment - aspect-ratio sizes the box, cover crops; NO height:100% */
@@ -230,7 +230,7 @@ import { u } from '../lib/format';
     .cap:hover { color: var(--color-ocre); }
     /* after the quote, the link is its source line: seated under the quote's
        text column (border 2px + padding 20px), with a little more air */
-    blockquote + .cap { margin: 6px 0 0 22px; }
+    blockquote + .cap { margin: 0 0 0 22px; }
 
     /* Le Point — one contact card: real OSM street plan (left) | address + contact (right).
        The 'divan d'Ivan' wordplay is the card title. Uses tokens → inverts in dark mode. */
@@ -298,7 +298,9 @@ import { u } from '../lib/format';
     nav.foot { display: flex; justify-content: space-between; gap: 20px; margin-top: 64px;
       border-top: 1px solid var(--color-hair); padding-top: 24px;
       font-family: var(--font-serif); font-style: italic; font-size: 16px; }
-    nav.foot a { color: var(--color-ocre); text-decoration: none; }
+    nav.foot a { color: var(--color-ocre); text-decoration: none; white-space: nowrap; }
     nav.foot a:hover { text-decoration: underline; }
+    /* narrow screens: the three destinations stack, whole phrases intact */
+    @media (max-width: 560px) { nav.foot { flex-direction: column; gap: 16px; } }
   </style>
 </Base>

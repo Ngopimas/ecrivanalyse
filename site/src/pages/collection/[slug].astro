@@ -42,7 +42,10 @@ const countLabel = [nQ ? `${nQ} quinte${nQ > 1 ? 's' : ''}` : '', nT ? `${nT} te
         {items.map((q) => (
           <li>
             <a href={u(`/${q.kind}/${q.id}`)}>
-              <span class="t" data-vt-title>{q.data.title}</span>
+              <span class="entry">
+                <span class="t" data-vt-title>{q.data.title}</span>
+                {q.data.soustitre && <span class="d">{q.data.soustitre}</span>}
+              </span>
               <span class="r">{year(q.data.date)}{q.kind === 'texte' ? ' · texte' : ''}{q.data.quintesse_num ? ` · ${q.data.quintesse_num}` : ''}</span>
             </a>
           </li>
@@ -66,9 +69,16 @@ const countLabel = [nQ ? `${nQ} quinte${nQ > 1 ? 's' : ''}` : '', nT ? `${nT} te
     li a { display: flex; justify-content: space-between; gap: 20px; align-items: baseline; text-decoration: none;
       padding: 10px 2px; border-bottom: 1px solid color-mix(in srgb, var(--color-hair) 60%, transparent); }
     li a:hover { color: var(--color-ocre); }
-    .t { font-family: var(--font-serif); font-size: 18px; display: inline-block;
+    .entry { display: flex; flex-direction: column; gap: 3px; min-width: 0;
       transition: transform .35s cubic-bezier(.2, .65, .25, 1); }
-    li a:hover .t { transform: translateX(3px); }
+    li a:hover .entry { transform: translateX(3px); }
+    .t { font-family: var(--font-serif); font-size: 18px; }
+    .d { font-family: var(--font-serif); font-style: italic; font-size: 13.5px;
+      color: var(--color-muted); line-height: 1.35; }
     .r { font-family: var(--font-mono); font-size: 10.5px; color: var(--color-muted); white-space: nowrap; }
+    /* narrow screens: the meta sits under the entry instead of squeezing it */
+    @media (max-width: 560px) {
+      li a { flex-direction: column; align-items: flex-start; gap: 5px; padding: 12px 2px; }
+    }
   </style>
 </Base>

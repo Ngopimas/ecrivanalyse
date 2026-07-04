@@ -29,6 +29,16 @@ const years = (c: { dmin: string; dmax: string }) => {
   const a = c.dmin.slice(0, 4), b = c.dmax.slice(0, 4);
   return !c.dmax ? '' : a === b ? a : `${a}-${b}`;
 };
+// say only what the title does not already say: the séance séries carry
+// their mode and often their year in the name itself
+const meta = (c: { name: string; mode: string | null; n: number; dmin: string; dmax: string }) => {
+  const y = years(c);
+  return [
+    c.name.startsWith('Séances de p(au)se') ? '' : modeLabel(c.mode),
+    c.name.includes(y) ? '' : y,
+    String(c.n),
+  ].filter(Boolean).join(' · ');
+};
 ---
 <Base title="Collections - Écrivanalyse">
   <div class="wrap">
@@ -40,7 +50,7 @@ const years = (c: { dmin: string; dmax: string }) => {
           <li>
             <a href={u(`/collection/${c.slug}`)}>
               <span class="t" data-vt-title>«&#8239;{c.name}&#8239;»</span>
-              <span class="r">{[modeLabel(c.mode), years(c), String(c.n)].filter(Boolean).join(' · ')}</span>
+              <span class="r">{meta(c)}</span>
             </a>
           </li>
         ))}
@@ -66,5 +76,9 @@ const years = (c: { dmin: string; dmax: string }) => {
       transition: transform .35s cubic-bezier(.2, .65, .25, 1); }
     li a:hover .t { transform: translateX(3px); }
     .r { font-family: var(--font-mono); font-size: 10.5px; color: var(--color-muted); white-space: nowrap; }
+    /* narrow screens: the meta sits under the title instead of squeezing it */
+    @media (max-width: 560px) {
+      li a { flex-direction: column; align-items: flex-start; gap: 5px; padding: 12px 2px; }
+    }
   </style>
 </Base>
