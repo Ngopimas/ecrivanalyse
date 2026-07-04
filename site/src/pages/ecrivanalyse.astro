@@ -6,7 +6,12 @@ import pages from '../data/legacy-pages.json';
 // « Qu'est-ce que l'écrivanalyse ? » - the presentation of the practice in
 // five chapters, written by Perrine Tamerlis for the original site
 // (articles 129-134, extracted to legacy-pages.json by gen-content.py).
-const chapters = ['129', '130', '131', '132', '134'].map((id) => pages[id]);
+// Anchors keep slug(full title): the 404's legacy-id map points at them.
+const chapters = ['129', '130', '131', '132', '134'].map((id) => {
+  const c = pages[id];
+  const m = c.title.match(/^(\d+)\.-\s*(.*)$/);
+  return { ...c, anchor: slug(c.title), num: m?.[1] ?? '', head: m?.[2] ?? c.title };
+});
 const author = chapters[0].author;
 const year = (chapters[0].date || '').slice(0, 4);
 ---
@@ -19,9 +24,15 @@ const year = (chapters[0].date || '').slice(0, 4);
       <h1>Qu’est-ce que l’écrivanalyse&#8239;?</h1>
       <p class="lede" data-pagefind-ignore>La pratique présentée en cinq chapitres, par Perrine Tamerlis.</p>
 
-      {chapters.map((c) => (
-        <section id={slug(c.title)}>
-          <h2>{c.title}</h2>
+      <nav class="sommaire" aria-label="Chapitres" data-pagefind-ignore>
+        {chapters.map((c) => (
+          <a href={`#${c.anchor}`}><span class="n">{c.num}</span>{c.head}</a>
+        ))}
+      </nav>
+
+      {chapters.map((c, i) => (
+        <section id={c.anchor} class:list={{ first: i === 0 }}>
+          <h2><span class="n">{c.num}&#8239;·</span> {c.head}</h2>
           {c.soustitre && <p class="sous">{c.soustitre}</p>}
           <div class="texte" set:html={proseHtml(c.text)} />
         </section>
@@ -29,7 +40,10 @@ const year = (chapters[0].date || '').slice(0, 4);
 
       <div class="object">
         <div>{author}{year ? ` · ${year}` : ''}</div>
-        <a class="gloss" href={u('/projet')}>← Le projet</a>
+        <div class="onward">
+          <a class="gloss" href={u('/projet')}>← Le projet</a>
+          <a class="gloss" href={u('/editions')}>Les éditions →</a>
+        </div>
       </div>
     </main>
   </div>
@@ -39,17 +53,32 @@ const year = (chapters[0].date || '').slice(0, 4);
     h1 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(28px, 5vw, 42px);
       letter-spacing: -.01em; margin: clamp(18px, 4vw, 32px) 0 10px; }
     .lede { font-family: var(--font-serif); font-style: italic; color: var(--color-muted);
-      font-size: clamp(15px, 2.2vw, 17px); margin: 0 0 40px; }
-    section { margin: 0 0 40px; }
+      font-size: clamp(15px, 2.2vw, 17px); margin: 0 0 26px; }
+
+    /* the five chapters at a glance */
+    .sommaire { display: flex; flex-direction: column; gap: 2px;
+      border-top: 1px solid var(--color-hair);
+      padding: 16px 0 6px; margin: 0 0 40px; }
+    .sommaire a { display: flex; gap: 12px; align-items: baseline; text-decoration: none;
+      font-family: var(--font-serif); font-size: 16px; color: var(--color-ink);
+      padding: 7px 2px; }
+    .sommaire a:hover { color: var(--color-ocre); }
+    .sommaire .n { font-family: var(--font-mono); font-size: 11px; color: var(--color-ocre); }
+
+    section { border-top: 1px solid var(--color-hair); padding-top: 28px;
+      margin: 0 0 40px; scroll-margin-top: 16px; }
     h2 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(20px, 3vw, 26px);
       letter-spacing: -.01em; margin: 0 0 6px; }
+    h2 .n { font-family: var(--font-mono); font-size: 0.55em; color: var(--color-ocre);
+      letter-spacing: .06em; vertical-align: 0.18em; margin-right: 2px; }
     .sous { font-family: var(--font-serif); font-style: italic; color: var(--color-muted);
       font-size: 15.5px; margin: 0 0 14px; }
     .texte { font-family: var(--font-serif); font-size: clamp(16px, 2.2vw, 18px); line-height: 1.72; }
     .texte :global(p) { margin: 0 0 1em; }
     .object { font-family: var(--font-mono); font-size: 12px; color: var(--color-muted);
       border-top: 1px solid var(--color-hair); padding-top: 20px; line-height: 1.9;
-      display: flex; justify-content: space-between; align-items: baseline; }
+      display: flex; justify-content: space-between; align-items: baseline; gap: 18px; flex-wrap: wrap; }
+    .onward { display: flex; gap: 22px; }
     .gloss { color: var(--color-ocre); text-decoration: none; }
     .gloss:hover { text-decoration: underline; text-underline-offset: 3px; }
   </style>
