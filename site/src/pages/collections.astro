@@ -8,27 +8,39 @@ const all = [
     .filter((q) => (q.data.lines.length > 0 || q.data.participant_role) && q.data.collection),
   ...(await getCollection('textes')).filter((t) => t.data.collection),
 ];
-const map = new Map<string, { name: string; mode: string | null; n: number }>();
+const map = new Map<string, { name: string; mode: string | null; n: number; dmin: string; dmax: string }>();
 for (const q of all) {
   const s = slug(q.data.collection);
-  if (!map.has(s)) map.set(s, { name: q.data.collection!, mode: q.data.mode, n: 0 });
+  if (!map.has(s)) map.set(s, { name: q.data.collection!, mode: q.data.mode, n: 0, dmin: '9999', dmax: '' });
   const v = map.get(s)!;
   v.n++;
   if (!v.mode) v.mode = q.data.mode;
+  if (q.data.date) {
+    if (q.data.date < v.dmin) v.dmin = q.data.date;
+    if (q.data.date > v.dmax) v.dmax = q.data.date;
+  }
 }
-const cols = [...map.entries()].map(([s, v]) => ({ slug: s, ...v })).sort((a, b) => b.n - a.n);
+// the living séries first: sorted by their most recent entry, so what Ivan
+// writes now sits on top and the 2010 séance years settle below
+const cols = [...map.entries()]
+  .map(([s, v]) => ({ slug: s, ...v }))
+  .sort((a, b) => b.dmax.localeCompare(a.dmax));
+const years = (c: { dmin: string; dmax: string }) => {
+  const a = c.dmin.slice(0, 4), b = c.dmax.slice(0, 4);
+  return !c.dmax ? '' : a === b ? a : `${a}-${b}`;
+};
 ---
 <Base title="Collections - Écrivanalyse">
   <div class="wrap">
     <main>
       <h1>Les collections</h1>
-      <p class="lede">{cols.length} séries. Chaque quinte, chaque texte appartient à l'une d'elles.</p>
+      <p class="lede">{cols.length} séries, de la plus récemment écrite à la plus ancienne. Chaque quinte, chaque texte appartient à l'une d'elles.</p>
       <ul>
         {cols.map((c) => (
           <li>
             <a href={u(`/collection/${c.slug}`)}>
               <span class="t" data-vt-title>«&#8239;{c.name}&#8239;»</span>
-              <span class="r">{modeLabel(c.mode)} · {c.n}</span>
+              <span class="r">{[modeLabel(c.mode), years(c), String(c.n)].filter(Boolean).join(' · ')}</span>
             </a>
           </li>
         ))}
