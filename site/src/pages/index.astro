@@ -808,8 +808,11 @@ const bandDelay = (b: number) => (bandOrder.indexOf(b) * (1.1 / BANDS)).toFixed(
 
     /* ---- stillness: once the writing ends, the chrome recedes ---- */
     .site-header { transition: opacity 1.4s ease; }
+    #stage .kicker { transition: opacity 1.4s ease; }
     body.ea-still .site-header { opacity: .08; }
     body.ea-still .ea-page footer { opacity: .22; }
+    /* the dispositif label has done its teaching once the quinte is written */
+    body.ea-still #stage .kicker { opacity: .15; }
 
     @media (prefers-reduced-motion: reduce) {
       #wall .wg { animation: none !important; opacity: 1 !important; }
